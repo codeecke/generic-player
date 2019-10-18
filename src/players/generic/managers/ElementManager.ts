@@ -1,9 +1,7 @@
 import {PlayerManager} from "./PlayerManager";
 
 export class ElementManager {
-    private readonly element: Promise<HTMLElement>;
-    constructor(private playerManager: PlayerManager, private originalElement: HTMLElement) {
-        this.element = playerManager.getElement();
+    constructor(private readonly element: Promise<HTMLElement>, private originalElement: HTMLElement) {
     }
 
     private copyClassList() {
@@ -33,5 +31,17 @@ export class ElementManager {
         this.copyId();
         this.copyClassList();
         this.copyDataAttributes();
+    }
+
+    public controlPlayerByAttributes(player: PlayerManager) {
+
+            if ((this.originalElement as HTMLVideoElement).muted) {
+                player.mute();
+            }
+            if ((this.originalElement as HTMLVideoElement).autoplay) {
+                player.mute();
+                player.play();
+            }
+
     }
 }

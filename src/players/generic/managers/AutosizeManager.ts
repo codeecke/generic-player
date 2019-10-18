@@ -28,8 +28,7 @@ export class AutosizeManager {
     set enabled(value: boolean) {
         if(value && !this.enabledValue) {
             window.addEventListener('resize', this.callback);
-        }
-        if(!value) {
+        } else if(!value) {
             window.removeEventListener('resize', this.callback);
         }
         this.enabledValue = value;

@@ -5,22 +5,17 @@ import {ElementManager} from "./managers/ElementManager";
 
 export class GenericPlayer extends PlayerManager {
     public readonly autosize: AutosizeManager = new AutosizeManager(this);
-    private readonly elementManager: ElementManager = new ElementManager(this, this.originalElement);
+    private readonly elementManager: ElementManager = new ElementManager(this.getElement(), this.originalElement);
 
-    constructor(element: HTMLElement, showWarning: boolean = true) {
+    constructor(element: HTMLElement) {
         super(element);
         if (this.player) {
-            this.initialize();
-        } else if (showWarning) {
-            console.warn('No player for element found', element);
+            this.elementManager.copyStylingRelevantAttributes();
         }
-    }
-
-    private initialize() {
         if (this.originalElement instanceof HTMLVideoElement) {
             this.autosize.enabled = true;
             this.autosize.ratio = 16 / 9;
+            this.elementManager.controlPlayerByAttributes(this);
         }
-        this.elementManager.copyStylingRelevantAttributes();
     }
 }

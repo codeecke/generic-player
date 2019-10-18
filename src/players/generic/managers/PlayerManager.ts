@@ -62,6 +62,7 @@ export class PlayerManager {
 
 
     public mute() {
+        console.log('mute');
         if(this.player) {
             this.player.mute();
         } else if(this.isHtmlVideoTag()) {
