@@ -34,7 +34,7 @@ module.exports = {
 		path: path.resolve(__dirname, 'dist')
 	},
 
-	//plugins: [new webpack.ProgressPlugin(), new HtmlWebpackPlugin()],
+	plugins: [new webpack.ProgressPlugin(), new HtmlWebpackPlugin()],
 
 	module: {
 		rules: [
@@ -46,8 +46,8 @@ module.exports = {
 			}
 		]
 	},
-/*
-	optimization: {
+
+  optimization: {
 		splitChunks: {
 			cacheGroups: {
 				vendors: {
@@ -62,8 +62,8 @@ module.exports = {
 			name: true
 		}
 	},
-*/
-	devServer: {
+
+  devServer: {
 		open: true
 	},
 

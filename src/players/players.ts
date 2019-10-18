@@ -1,2 +1,2 @@
-import './youtube/youtube';
-import './vimeo/vimeo';
+import './youtube/YouTube';
+import './vimeo/Vimeo';

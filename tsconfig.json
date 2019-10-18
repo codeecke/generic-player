@@ -1,11 +1,20 @@
 {
+
+  
   "compilerOptions": {
     "allowSyntheticDefaultImports": true,
+    "sourceMap": true,
     "noImplicitAny": true,
     "module": "es6",
     "target": "es6",
-    "allowJs": true,
+    "declaration": true,
+    "outDir": "dist",
     "experimentalDecorators": true,
-    "typeRoots" : ["./typings"]
-  }
+    "strict": true,
+    "esModuleInterop": true
+  },
+  "exclude": [
+    "node_modules",
+    "dist"
+  ]
 }
