@@ -1,5 +1,5 @@
 import {playerRegistry} from './registries/PlayerRegistry';
-import {GenericPlayer} from './players/GenericPlayer';
+import {GenericPlayer} from './players/generic/GenericPlayer';
 
 exports.playerRegistry = playerRegistry;
 exports.Player = GenericPlayer;

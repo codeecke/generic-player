@@ -1,6 +1,4 @@
-{
-
-  
+{  
   "compilerOptions": {
     "allowSyntheticDefaultImports": true,
     "sourceMap": true,
@@ -8,6 +6,7 @@
     "module": "es6",
     "target": "es6",
     "declaration": true,
+    "declarationDir": "dist/types",
     "outDir": "dist",
     "experimentalDecorators": true,
     "strict": true,

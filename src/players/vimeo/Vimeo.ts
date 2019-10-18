@@ -23,6 +23,7 @@ export class Vimeo extends AbstractPlayer {
   getElement() : Promise<HTMLElement> {
     return Promise.resolve(document.body);
   }
+
   play(): void {}
   pause(): void {}
   stop(): void {}

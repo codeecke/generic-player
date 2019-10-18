@@ -6,8 +6,15 @@ export interface PlayerConstructorInterface {
 export abstract class AbstractPlayer {
   
   static counter: number = 0;
+  public readonly whenReady: Promise<void>;
+  protected loadingFailed: () => void = function(){};
+  protected loadingComplete: () => void = function(){};
   
   constructor(protected element: HTMLElement) {
+    this.whenReady = new Promise((resolve, reject) => {
+      this.loadingComplete = resolve;
+      this.loadingFailed = reject;
+    })
     // here you can register an instance of AbstractPlayer in a InstanceRegistry
   }
   

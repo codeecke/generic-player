@@ -1,5 +1,5 @@
 import {onYouTubeIframeAPIReady} from './onYouTubeIframeAPIReady';
-import {YoutubeAPIInterface} from './APIInterfaces';
+import {YoutubeAPIInterface} from '../interfaces/APIInterfaces';
 
 declare var YT:YoutubeAPIInterface;
 
