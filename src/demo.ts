@@ -1,12 +1,33 @@
 import {GenericPlayer} from './players/generic/GenericPlayer';
 
 const videoElement = document.createElement('video');
-videoElement.src = 'https://www.youtube.com/watch?v=wXhTHyIgQ_U&list=PLx0sYbCqOb8TBPRdmBHs5Iftvv9TPboYG';
-// videoElement.src = 'https://vimeo.com/366068103';
+videoElement.classList.add('testclass');
+videoElement.id='testid';
+videoElement.setAttribute('data-test', '');
+videoElement.setAttribute('data-test2', 'Hello World!!!');
+// YouTube
+// videoElement.src = 'https://www.youtube.com/watch?v=aqz-KE-bpKQ&list=PLx0sYbCqOb8TBPRdmBHs5Iftvv9TPboYG';
+// videoElement.src = 'https://www.youtube.com/watch?v=aqz-KE-bpKQ';
+videoElement.src = 'https://youtu.be/aqz-KE-bpKQ';
+
+// Vimeo
+videoElement.src = 'https://vimeo.com/1084537';
+
+// HTML-VideoTag
+videoElement.src = 'http://distribution.bbb3d.renderfarming.net/video/mp4/bbb_sunflower_1080p_60fps_normal.mp4';
+
+// Sollte später auch noch ausgewertet werden:
+// videoElement.muted = true;
+// videoElement.autoplay = true;
+
 document.body.appendChild(videoElement);
 
 const player = new GenericPlayer(videoElement);
-player.play();
+player.autosize.enabled = true;
+player.whenReady().then(() => {
+    player.mute();
+    player.play();
+});
 
 
 // Idee für die Zukunft
@@ -16,7 +37,7 @@ player.play();
 
 /*
 player.whenReady().then(() => {
-  const 
+  const
     iframe = document.querySelector('iframe'),
     secondReferemceOfPlayerInstance = GenericPlayer.find(iframe),
     thirdReferemceOfPlayerInstance = GenericPlayer.find(videoElement),

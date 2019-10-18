@@ -5,41 +5,44 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 
 module.exports = {
-	mode: 'development',
-	entry: {
-    'demo/demo': './src/demo.ts',
-    player: './src/player.ts'
-  },
+    mode: 'development',
+    entry: {
+        'player': './src/player.ts',
+        'demo/demo': './src/demo.ts'
+    },
 
-	output: {
-      filename: '[name].js',
-      path: path.resolve(__dirname, 'dist')
-	},
+    output: {
+        filename: '[name].js',
+        path: path.resolve(__dirname, 'dist')
+    },
 
-	plugins: [
-    new webpack.ProgressPlugin(), 
-    new HtmlWebpackPlugin({filename: path.resolve(__dirname, 'dist/demo/index.html')})
-  ],
+    plugins: [
+        new webpack.ProgressPlugin(),
+        new HtmlWebpackPlugin({
+            title: 'GenericPlayer Demo',
+            filename: path.resolve(__dirname, 'dist/demo/index.html'),
+            chunks: ['demo/demo']
+        })
+    ],
 
-	module: {
-		rules: [
-			{
-				test: /.(ts|tsx)?$/,
-				loader: 'ts-loader',
-				include: [path.resolve(__dirname, 'src')],
-				exclude: [/node_modules/]
-			}
-		]
-	},
+    module: {
+        rules: [
+            {
+                test: /.(ts|tsx)?$/,
+                loader: 'ts-loader',
+                include: [path.resolve(__dirname, 'src')],
+                exclude: [/node_modules/]
+            }
+        ]
+    },
 
-  devServer: {
-    host: '0.0.0.0',
-    port: 8080,
-    disableHostCheck: true,
-		open: true
-	},
+    devServer: {
+        contentBase: path.resolve(__dirname, 'dist/demo'),
+        port: 8080,
+        open: true
+    },
 
-	resolve: {
-		extensions: ['.tsx', '.ts', '.js']
-	}
+    resolve: {
+        extensions: ['.tsx', '.ts', '.js']
+    }
 };
