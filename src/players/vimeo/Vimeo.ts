@@ -17,23 +17,26 @@ export class Vimeo extends AbstractPlayer {
         this.iframe.setAttribute('src', `https://player.vimeo.com/video/${this.getVideoId()}`);
         this.iframe.setAttribute('frameBorder', '0');
         this.iframe.setAttribute('transparent', '1');
-        // Todo: remove ts-ignore
-        // @ts-ignore
-        element.parentElement.replaceChild(this.iframe, element);
+
+        if (element.parentElement) {
+            element.parentElement.replaceChild(this.iframe, element);
+        }
+
         this.player = new VimeoPlayer(this.iframe);
         this.player.on('loaded', this.loadingComplete);
         this.player.on('error', this.loadingFailed);
 
     }
 
-    private getVideoId() : string {
+    private getVideoId(): string {
         const result = validationPattern.exec(this.element.getAttribute('src') as string);
-        // Todo: remove ts-ignore
-        // @ts-ignore
-        return result.groups.video_id;
+        if(result) {
+            return result[2];
+        }
+        return '';
     }
 
-    public static validate(element: HTMLElement) {
+    public static validate(element: HTMLElement): boolean {
         return ElementValidator.validate(element);
     }
 

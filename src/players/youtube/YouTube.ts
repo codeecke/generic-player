@@ -38,7 +38,7 @@ export class Youtube extends AbstractPlayer {
         };
     }
 
-    public static validate(element: HTMLElement) {
+    public static validate(element: HTMLElement) : boolean {
         const url: string | null = element.getAttribute('src');
         if (url && element.tagName.toLowerCase() === 'video') {
             const urlHelper = new YTUrlHelper(url);

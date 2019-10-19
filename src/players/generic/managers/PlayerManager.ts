@@ -48,7 +48,7 @@ export class PlayerManager {
         if(this.player) {
             this.player.pause();
         } else if(this.isHtmlVideoTag()) {
-            this.getHtmlVideoTag().play();
+            this.getHtmlVideoTag().pause();
         }
     }
 
@@ -62,7 +62,6 @@ export class PlayerManager {
 
 
     public mute() {
-        console.log('mute');
         if(this.player) {
             this.player.mute();
         } else if(this.isHtmlVideoTag()) {

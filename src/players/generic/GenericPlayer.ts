@@ -2,10 +2,12 @@ import '../players';
 import {AutosizeManager} from "./managers/AutosizeManager";
 import {PlayerManager} from "./managers/PlayerManager";
 import {ElementManager} from "./managers/ElementManager";
+import {ConfigurationManager} from "./managers/ConfigurationManager";
 
 export class GenericPlayer extends PlayerManager {
     public readonly autosize: AutosizeManager = new AutosizeManager(this);
     private readonly elementManager: ElementManager = new ElementManager(this.getElement(), this.originalElement);
+    static readonly config = new ConfigurationManager();
 
     constructor(element: HTMLElement) {
         super(element);

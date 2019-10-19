@@ -1,48 +1,92 @@
-const path = require('path');
-const webpack = require('webpack');
-
-const HtmlWebpackPlugin = require('html-webpack-plugin');
-
+const
+    path = require('path'),
+    HtmlWebpackPlugin = require('html-webpack-plugin'),
+    cssFiles = [];
 
 module.exports = {
-    mode: 'development',
+
     entry: {
-        'player': './src/player.ts',
-        'demo/demo': './src/demo.ts'
+        'player' : path.resolve(__dirname, './src/player.ts'),
+        'autoload' : path.resolve(__dirname, './src/autoload.ts'),
+        'demo/demo': path.resolve(__dirname, './src/demo/demo.ts')
     },
 
-    output: {
-        filename: '[name].js',
-        path: path.resolve(__dirname, 'dist')
+    mode: 'production',
+
+    module: {
+        rules: [
+            {
+                test: /\.tsx?$/,
+                use: 'ts-loader',
+                exclude: /node_modules/
+            },
+            {
+                test: /.svg$/,
+                use: [{
+                    loader: 'file-loader',
+                    options: {
+                        name: '[name].[ext]',
+                        outputPath: 'assets/images/',
+                        publicPath: '/assets/images/',
+                    }
+                }]
+            },
+            {
+                test: /.scss$/,
+                use: [
+                    {
+                        loader: 'file-loader',
+                        options: {
+                            name: '[name].css',
+                            outputPath: 'assets/css/',
+                            publicPath: '/assets/css/',
+                            postTransformPublicPath: (path) => {
+                                return `document.write('<link rel="stylesheet" type="text/css" href=${path} />');`;
+                            }
+                        }
+                    },
+                    {
+                        loader: 'extract-loader'
+                    },
+                    {
+                        loader: 'css-loader'
+                    },
+                    {
+                        loader: 'sass-loader'
+                    }
+                ]
+            }
+        ]
     },
+
+    performance: {hints: false},
 
     plugins: [
-        new webpack.ProgressPlugin(),
         new HtmlWebpackPlugin({
-            title: 'GenericPlayer Demo',
+            template: path.resolve(__dirname, 'src/demo/index.html'),
             filename: path.resolve(__dirname, 'dist/demo/index.html'),
             chunks: ['demo/demo']
         })
     ],
 
-    module: {
-        rules: [
-            {
-                test: /.(ts|tsx)?$/,
-                loader: 'ts-loader',
-                include: [path.resolve(__dirname, 'src')],
-                exclude: [/node_modules/]
-            }
-        ]
+    resolve: {
+        extensions: ['.tsx', '.ts', '.js'],
+        alias: {
+            Assets: path.resolve(__dirname, 'assets'),
+            Base: path.resolve(__dirname, 'src/Base'),
+            Components: path.resolve(__dirname, 'src/Components')
+        }
     },
 
     devServer: {
-        contentBase: path.resolve(__dirname, 'dist/demo'),
-        port: 8080,
-        open: true
+        contentBase: path.join(__dirname, 'dist'),
+        compress: true,
+        port: 8080
     },
 
-    resolve: {
-        extensions: ['.tsx', '.ts', '.js']
+    output: {
+        path: path.resolve(__dirname, 'dist'),
+        publicPath: "/",
+        filename: '[name].js'
     }
 };

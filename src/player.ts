@@ -3,5 +3,3 @@ import {GenericPlayer} from './players/generic/GenericPlayer';
 
 exports.playerRegistry = playerRegistry;
 exports.Player = GenericPlayer;
-
-console.log(playerRegistry.fetchAll());

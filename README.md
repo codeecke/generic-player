@@ -28,7 +28,6 @@ to bundle your application
 * alugha
 * metacafe
 * flickr
-* vevo
 
 ### Audio-Plattformen
 * SoundCloud
