@@ -1,34 +1,56 @@
-# 🚀 Welcome to your new awesome project!
+# GenericPlayer
 
-This project has been created using **webpack scaffold**, you can now run
+The GenericPlayer is an interface to manage easily videos from different sources.
+
+
+__Currently supported platforms:__
+
+* YouTube
+* Vimeo
+* JWPlayer
+* standard html-videos
+
+## How to install
 
 ```
-npm run build
+npm install --save codeecke/generic-player
 ```
 
 or
 
 ```
-yarn build
+yarn add codeecke/generic-player
 ```
 
-to bundle your application
+## How to use
 
+### automatic mode
 
+I had implemented an autoloader. If you want to use it, you just have to import like this:
 
-## aktuell geplante Unterstützung
-### Video-Plattformen
-* YouTube
-* Vimeo
-* BitOfTheSun / JWPlayer
-* daily motion
-* Twitch
-* VidLii
-* viddler
-* alugha
-* metacafe
-* flickr
+```JavasScript
+import 'codeecke/generic-player/dist/autload
+```
 
-### Audio-Plattformen
-* SoundCloud
-* Mixcloud
+Now you you can use videos from different sources in your html-code like this:
+
+````html
+<video src="https://youtu.be/aqz-KE-bpKQ"></video>
+````
+
+The GenericPlayer will automaticly replace this html-videoplayer with the correct platform-player (youtube in this case)
+
+### script-mode
+
+Of course you can use this GenericPlayer in your script.
+
+````javascript
+import {GenericPlayer} from 'codeecke/generic-player';
+
+const videoTag = document.getElementById('player'),
+      player = new GenericPlayer(videoTag);
+
+player.mute();
+player.play();
+````
+
