@@ -12,14 +12,14 @@ __Currently supported platforms:__
 
 ## How to install
 
-```
-npm install --save codeecke/generic-player
+```bash
+npm install --save @codeecke/generic-player
 ```
 
 or
 
-```
-yarn add codeecke/generic-player
+```bash
+yarn add @codeecke/generic-player
 ```
 
 ## How to use
@@ -28,8 +28,8 @@ yarn add codeecke/generic-player
 
 I had implemented an autoloader. If you want to use it, you just have to import like this:
 
-```JavasScript
-import 'codeecke/generic-player/dist/autload
+```javascript
+import '@codeecke/generic-player/dist/autoload';
 ```
 
 Now you you can use videos from different sources in your html-code like this:
@@ -38,14 +38,14 @@ Now you you can use videos from different sources in your html-code like this:
 <video src="https://youtu.be/aqz-KE-bpKQ"></video>
 ````
 
-The GenericPlayer will automaticly replace this html-videoplayer with the correct platform-player (youtube in this case)
+The GenericPlayer will automatically replace this video-tag with the correct platform-player (youtube in this case)
 
 ### script-mode
 
 Of course you can use this GenericPlayer in your script.
 
 ````javascript
-import {GenericPlayer} from 'codeecke/generic-player';
+import {GenericPlayer} from '@codeecke/generic-player';
 
 const videoTag = document.getElementById('player'),
       player = new GenericPlayer(videoTag);
@@ -54,3 +54,4 @@ player.mute();
 player.play();
 ````
 
+For more informations look into the [documentation](./docs/index.md)
