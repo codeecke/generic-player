@@ -1,7 +1,4 @@
-const
-    path = require('path'),
-    HtmlWebpackPlugin = require('html-webpack-plugin'),
-    cssFiles = [];
+const path = require('path');
 
 
 const mode = process.argv[3];
@@ -9,8 +6,7 @@ let config = {
 
     entry: {
         'player' : path.resolve(__dirname, './src/player.ts'),
-        'autoload' : path.resolve(__dirname, './src/autoload.ts'),
-        'demo/demo': path.resolve(__dirname, './src/demo/demo.ts')
+        'autoload' : path.resolve(__dirname, './src/autoload.ts')
     },
 
     mode: 'production',
@@ -51,14 +47,6 @@ let config = {
     },
 
     performance: {hints: false},
-
-    plugins: [
-        new HtmlWebpackPlugin({
-            template: path.resolve(__dirname, 'src/demo/index.html'),
-            filename: path.resolve(__dirname, 'dist/demo/index.html'),
-            chunks: ['demo/demo']
-        })
-    ],
 
     resolve: {
         extensions: ['.tsx', '.ts', '.js'],
