@@ -7,7 +7,8 @@ __Currently supported platforms:__
 
 * YouTube
 * Vimeo
-* JWPlayer
+* JW Player
+* dailymotion
 * standard html-videos
 
 ## How to install

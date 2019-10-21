@@ -45,5 +45,5 @@ class YourPlayer {
 }
 
 // register your player-class for using in GenericPlayer
-playerRegistry.register('unique-name-for-player', YourPlayer);
+playerRegistry.register(YourPlayer);
 ```

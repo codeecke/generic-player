@@ -4,7 +4,7 @@ import {JWPlayerConfiguration} from "./JWPlayerConfiguration";
 import {GenericPlayer} from "../generic/GenericPlayer";
 import {jwplayer, JWPlayerPlayer, jwplayerType} from "./JWPlayerTypes";
 
-@Player('jwplayer')
+@Player()
 class JWPlayer extends AbstractPlayer {
 
     private config: JWPlayerConfiguration = GenericPlayer.config.jwPlayer;

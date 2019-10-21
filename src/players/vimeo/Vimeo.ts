@@ -4,7 +4,7 @@ import {ElementValidator, validationPattern} from "./ElementValidator";
 // @ts-ignore
 import VimeoPlayer from '@vimeo/player';
 
-@Player('vimeo')
+@Player()
 export class Vimeo extends AbstractPlayer {
 
     private readonly player: VimeoPlayer;

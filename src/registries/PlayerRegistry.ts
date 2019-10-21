@@ -1,21 +1,14 @@
 import {PlayerConstructorInterface} from '../abstracts/AbstractPlayer';
 
 class PlayerRegistry {
-    private players: { [key: string]: PlayerConstructorInterface } = {};
+    private players: PlayerConstructorInterface[] = [];
 
-    public register(id: string, player: PlayerConstructorInterface) {
-        if (this.players[id]) {
-            throw new Error(`A player with identifier "${id}" is already registered`);
-        }
-        this.players[id] = player;
+    public register(player: PlayerConstructorInterface) {
+        this.players.push(player);
     }
 
     public fetchAll(): PlayerConstructorInterface[] {
-        return Object.values(this.players);
-    }
-
-    public fetchById(id: string) {
-        return this.players[id];
+        return this.players;
     }
 }
 

@@ -13,9 +13,11 @@ export class ElementManager {
     }
 
     private copyId() {
-        this.element.then(element => {
-            element.id = this.originalElement.id;
-        });
+        if (this.originalElement.id) {
+            this.element.then(element => {
+                element.id = this.originalElement.id;
+            });
+        }
     }
 
     private copyDataAttributes() {
@@ -35,13 +37,13 @@ export class ElementManager {
 
     public controlPlayerByAttributes(player: PlayerManager) {
 
-            if ((this.originalElement as HTMLVideoElement).muted) {
-                player.mute();
-            }
-            if ((this.originalElement as HTMLVideoElement).autoplay) {
-                player.mute();
-                player.play();
-            }
+        if ((this.originalElement as HTMLVideoElement).muted) {
+            player.mute();
+        }
+        if ((this.originalElement as HTMLVideoElement).autoplay) {
+            player.mute();
+            player.play();
+        }
 
     }
 }

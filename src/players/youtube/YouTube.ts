@@ -4,7 +4,7 @@ import {APILoader} from './helpers/APILoader';
 import {YoutubePlayerInstanceInterface} from './interfaces/APIInterfaces';
 import {YTUrlHelper} from './helpers/YTUrlHelper';
 
-@Player('youtube')
+@Player()
 export class Youtube extends AbstractPlayer {
     static counter: number = 1;
     public queue: Promise<YoutubePlayerInstanceInterface>;
