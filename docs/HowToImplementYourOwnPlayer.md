@@ -3,7 +3,7 @@
 ## The structure of a player-class
 
 ```javascript
-import {playerRegistry} from '@codeecke/generic-player';
+import {GenericPlayer} from '@codeecke/generic-player';
 
 class YourPlayer {
   
@@ -45,5 +45,5 @@ class YourPlayer {
 }
 
 // register your player-class for using in GenericPlayer
-playerRegistry.register(YourPlayer);
+GenericPlayer.registerPlayer(YourPlayer);
 ```

@@ -3,6 +3,8 @@ import {AutosizeManager} from "./managers/AutosizeManager";
 import {PlayerManager} from "./managers/PlayerManager";
 import {ElementManager} from "./managers/ElementManager";
 import {ConfigurationManager} from "./managers/ConfigurationManager";
+import {PlayerConstructorInterface} from "../../abstracts/AbstractPlayer";
+import {playerRegistry} from "../../registries/PlayerRegistry";
 
 export class GenericPlayer extends PlayerManager {
     public readonly autosize: AutosizeManager = new AutosizeManager(this);
@@ -19,5 +21,9 @@ export class GenericPlayer extends PlayerManager {
             this.autosize.ratio = 16 / 9;
             this.elementManager.controlPlayerByAttributes(this);
         }
+    }
+
+    static registerPlayer(player: PlayerConstructorInterface) {
+        playerRegistry.register(player);
     }
 }

@@ -3,7 +3,9 @@ const
     HtmlWebpackPlugin = require('html-webpack-plugin'),
     cssFiles = [];
 
-module.exports = {
+
+const mode = process.argv[3];
+let config = {
 
     entry: {
         'player' : path.resolve(__dirname, './src/player.ts'),
@@ -19,17 +21,6 @@ module.exports = {
                 test: /\.tsx?$/,
                 use: 'ts-loader',
                 exclude: /node_modules/
-            },
-            {
-                test: /.svg$/,
-                use: [{
-                    loader: 'file-loader',
-                    options: {
-                        name: '[name].[ext]',
-                        outputPath: 'assets/images/',
-                        publicPath: '/assets/images/',
-                    }
-                }]
             },
             {
                 test: /.scss$/,
@@ -90,3 +81,9 @@ module.exports = {
         filename: '[name].js'
     }
 };
+
+if (mode === 'development') {
+    config.devtool = 'source-map';
+}
+
+module.exports = config;

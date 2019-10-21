@@ -1,6 +1,6 @@
 import {PlayerConstructorInterface} from '../abstracts/AbstractPlayer';
 
-class PlayerRegistry {
+export class PlayerRegistry {
     private players: PlayerConstructorInterface[] = [];
 
     public register(player: PlayerConstructorInterface) {
