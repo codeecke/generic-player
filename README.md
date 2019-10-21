@@ -35,7 +35,7 @@ import '@codeecke/generic-player/dist/autoload';
 Now you you can use videos from different sources in your html-code like this:
 
 ````html
-<video src="https://youtu.be/aqz-KE-bpKQ"></video>
+<video src="https://youtu.be/aqz-KE-bpKQ" autoplay></video>
 ````
 
 The GenericPlayer will automatically replace this video-tag with the correct platform-player (youtube in this case)
@@ -54,4 +54,4 @@ player.mute();
 player.play();
 ````
 
-For more informations look into the [documentation](./docs/index.md)
+For more informations look into the [documentation](https://github.com/codeecke/generic-player/blob/master/docs/index.md)
