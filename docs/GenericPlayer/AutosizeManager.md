@@ -37,5 +37,5 @@ const videoTag = document.getElementById('player'),
       width = 20,
       height = 9;
 
-player.autosize.enable = width / height;
+player.autosize.ratio = width / height;
 ```
