@@ -2,7 +2,8 @@ import {AbstractPlayer} from "../../../abstracts/AbstractPlayer";
 import {playerRegistry} from "../../../registries/PlayerRegistry";
 
 export class PlayerManager {
-    protected readonly player: AbstractPlayer | null;
+
+    protected player: AbstractPlayer | null = null;
     protected readonly originalElement: HTMLElement;
 
     constructor(element: HTMLElement) {
@@ -10,7 +11,7 @@ export class PlayerManager {
         this.player = this.findValidPlayer();
     }
 
-    private findValidPlayer(): AbstractPlayer | null {
+    protected findValidPlayer(): AbstractPlayer | null {
         for (const Player of playerRegistry.fetchAll()) {
             if (Player.validate(this.originalElement)) {
                 return new Player(this.originalElement);
@@ -78,10 +79,11 @@ export class PlayerManager {
     }
 
     public getElement(): Promise<HTMLElement> {
-        const fallback: Promise<HTMLElement> = Promise.resolve(this.originalElement);
-        if (this.player) {
-            return this.player.getElement() || fallback;
-        }
-        return fallback;
+        return this.whenReady().then(() => {
+            if (this.player) {
+                return this.player.getElement() || this.originalElement;
+            }
+            return this.originalElement;
+        });
     }
 }

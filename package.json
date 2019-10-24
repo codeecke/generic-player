@@ -5,6 +5,17 @@
   "license": "MIT",
   "main": "dist/player.js",
   "types": "dist/types/player.d.ts",
+  "keywords": [
+    "youtube",
+    "vimeo",
+    "jwplayer",
+    "dailymotion",
+    "video",
+    "player",
+    "dsgvo",
+    "consentmanager",
+    "responsive video"
+  ],
   "scripts": {
     "build": "webpack",
     "build:prod": "webpack --mode production",

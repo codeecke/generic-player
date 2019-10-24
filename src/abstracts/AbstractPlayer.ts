@@ -8,8 +8,10 @@ export abstract class AbstractPlayer {
 
     static counter: number = 0;
     public readonly whenReady: Promise<void>;
+    protected loadingFailed: () => void = function () {};
+    protected loadingComplete: () => void = function () {};
 
-    constructor(protected element: HTMLElement) {
+    protected constructor(protected element: HTMLElement) {
         this.whenReady = new Promise((resolve, reject) => {
             this.loadingComplete = resolve;
             this.loadingFailed = reject;
@@ -27,9 +29,6 @@ export abstract class AbstractPlayer {
     abstract mute() : void;
     abstract unmute() : void;
     abstract getElement(): Promise<HTMLElement> | null;
-
-    protected loadingFailed: () => void = function () {};
-    protected loadingComplete: () => void = function () {};
 
     protected getId(): string {
         if (!this.element.id) {

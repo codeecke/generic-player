@@ -25,11 +25,8 @@ let config = {
                         loader: 'file-loader',
                         options: {
                             name: '[name].css',
-                            outputPath: 'assets/css/',
-                            publicPath: '/assets/css/',
-                            postTransformPublicPath: (path) => {
-                                return `document.write('<link rel="stylesheet" type="text/css" href=${path} />');`;
-                            }
+                            outputPath: 'css/',
+                            publicPath: '/css/'
                         }
                     },
                     {
@@ -51,9 +48,8 @@ let config = {
     resolve: {
         extensions: ['.tsx', '.ts', '.js'],
         alias: {
-            Assets: path.resolve(__dirname, 'assets'),
-            Base: path.resolve(__dirname, 'src/Base'),
-            Components: path.resolve(__dirname, 'src/Components')
+            scss: path.resolve(__dirname, 'src/scss'),
+            players: path.resolve(__dirname, 'src/players')
         }
     },
 
