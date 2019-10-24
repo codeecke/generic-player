@@ -41,7 +41,6 @@ class DailyMotion extends AbstractPlayer {
 
     static validate(element: HTMLElement) {
         if (element instanceof HTMLVideoElement) {
-            console.log(element.src, DailyMotion.validator.test(element.src));
             return DailyMotion.validator.test(element.src);
         }
         return false;
