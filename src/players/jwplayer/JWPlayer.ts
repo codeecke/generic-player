@@ -42,7 +42,7 @@ class JWPlayer extends AbstractPlayer {
         if (element instanceof HTMLVideoElement) {
             const
                 url: string = element.src,
-                validator = /https\:\/\/cdn\.jwplayer\.com\/v2\/playlists\/(?<playlist_id>[0-9a-zA-Z]+)(\?format=[0-9a-zA-Z]+)?$/;
+                validator = /https\:\/\/cdn\.jwplayer\.com\/v2\/playlists\/([0-9a-zA-Z]+)(\?format=[0-9a-zA-Z]+)?$/;
             return validator.test(url);
         }
         return false;

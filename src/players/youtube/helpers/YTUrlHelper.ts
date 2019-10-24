@@ -1,10 +1,15 @@
 export class YTUrlHelper {
 
     private validators: { [key: string]: RegExp } = {
-        default: /^https?:\/\/(www\.)?youtube.com\/watch\?v\=(?<video_id>[A-Za-z0-9\-_]+)$/,
-        playlist: /^https?\:\/\/(www.)?(youtube\.com|youtu.be)\/watch\?v=(?<video_id>[A-Za-z0-9\-_]+)&list=(?<playlist_id>[A-Za-z0-9\-_]+)$/,
-        shortUrl: /https?:\/\/youtu\.be\/(?<video_id>[A-Za-z0-9\-_]+)$/
-    }
+        default: /^https?:\/\/(www\.)?(youtube\.com|youtu.be)\/watch\?v\=([A-Za-z0-9\-_]+)$/,
+        playlist: /^https?\:\/\/(www.)?(youtube\.com|youtu.be)\/watch\?v=([A-Za-z0-9\-_]+)&list=([A-Za-z0-9\-_]+)$/,
+        shortUrl: /https?:\/\/youtu\.be\/([A-Za-z0-9\-_]+)$/
+    };
+    private videoIdPositions: {[key: string]: number} = {
+        default: 3,
+        playlist: 3,
+        shortUrl: 1
+    };
 
     constructor(private url: string) {
     }
@@ -19,14 +24,19 @@ export class YTUrlHelper {
 
     get videoId(): string {
         const result = this.getValidationResult();
-        return result.groups.video_id;
+        if(result) {
+            const position = this.videoIdPositions[result.validatorName];
+            console.log(result, this.url, result.match[position]);
+            return result.match[position];
+        }
+        return '';
     }
 
-    private getValidationResult(): any {
-        const validators: RegExp[] = Object.values(this.validators);
-        for (const validator of validators) {
+    private getValidationResult(): {match: any, validatorName: string} | null {
+        for (const validatorName in this.validators) {
+            const validator = this.validators[validatorName];
             if (validator.test(this.url)) {
-                return validator.exec(this.url);
+                return {match: validator.exec(this.url), validatorName};
             }
         }
         return null;
