@@ -88,5 +88,14 @@ export class Youtube extends AbstractPlayer {
         });
     }
 
+    getCurrentTime(): Promise<number> {
+        console.log('Youtube.getCurrentTime() is currently not supported');
+        return Promise.resolve(0);
+    }
+
+    setCurrentTime(time: number): void {
+        console.log('Youtube.setCurrentTime(time) is currently not supported');
+    }
+
 
 }

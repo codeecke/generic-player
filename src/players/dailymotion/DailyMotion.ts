@@ -89,4 +89,13 @@ class DailyMotion extends AbstractPlayer {
         });
     }
 
+    getCurrentTime(): Promise<number> {
+        console.log('DailyMotion.getCurrentTime() is currently not supported');
+        return Promise.resolve(0);
+    }
+
+    setCurrentTime(time: number): void {
+        console.log('DailyMotion.setCurrentTime(time) is currently not supported');
+    }
+
 }
