@@ -1,0 +1,23 @@
+# ChangeLog
+
+## [Unreleased]
+
+### bugfixes
+* support for ie11
+
+
+## [0.9.6] - 2019-10-21
+
+### supported players
+* Youtube
+* Vimeo
+* HTML5
+* JW Player
+* dailymotion
+
+### api methods for all players
+* play
+* pause
+* stop
+* mute
+* unmute
