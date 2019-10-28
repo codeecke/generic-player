@@ -38,42 +38,42 @@ export class PlayerManager {
     }
 
     public play() {
-        if(this.player) {
+        if (this.player) {
             this.player.play();
-        } else if(this.isHtmlVideoTag()) {
+        } else if (this.isHtmlVideoTag()) {
             this.getHtmlVideoTag().play();
         }
     }
 
     public pause() {
-        if(this.player) {
+        if (this.player) {
             this.player.pause();
-        } else if(this.isHtmlVideoTag()) {
+        } else if (this.isHtmlVideoTag()) {
             this.getHtmlVideoTag().pause();
         }
     }
 
     public stop() {
-        if(this.player) {
+        if (this.player) {
             this.player.stop();
-        } else if(this.isHtmlVideoTag()) {
+        } else if (this.isHtmlVideoTag()) {
             this.getHtmlVideoTag().pause();
         }
     }
 
 
     public mute() {
-        if(this.player) {
+        if (this.player) {
             this.player.mute();
-        } else if(this.isHtmlVideoTag()) {
+        } else if (this.isHtmlVideoTag()) {
             this.getHtmlVideoTag().muted = true;
         }
     }
 
     public unmute() {
-        if(this.player) {
+        if (this.player) {
             this.player.unmute();
-        } else if(this.isHtmlVideoTag()) {
+        } else if (this.isHtmlVideoTag()) {
             this.getHtmlVideoTag().muted = false;
         }
     }
@@ -85,5 +85,24 @@ export class PlayerManager {
             }
             return this.originalElement;
         });
+    }
+
+    public getCurrentTime(): Promise<number> {
+        return this.whenReady().then(() => {
+            if (this.player) {
+                return this.player.getCurrentTime();
+            } else if (this.isHtmlVideoTag()) {
+                return (this.originalElement as HTMLVideoElement).currentTime;
+            }
+            return 0;
+        });
+    }
+
+    public setCurrentTime(seconds: number) {
+        if (this.player) {
+            this.player.setCurrentTime(seconds);
+        } else if (this.isHtmlVideoTag()) {
+            (this.originalElement as HTMLVideoElement).currentTime = seconds;
+        }
     }
 }

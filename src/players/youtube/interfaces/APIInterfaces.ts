@@ -14,4 +14,6 @@ export interface YoutubePlayerInstanceInterface {
     unMute(): void;
     setSize(width: number, height: number): object;
     getIframe(): HTMLIFrameElement;
+    getCurrentTime(): number;
+    seekTo(seconds: number, allowSeekAhead: boolean) : void;
 }

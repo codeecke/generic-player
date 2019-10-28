@@ -89,4 +89,15 @@ class DailyMotion extends AbstractPlayer {
         });
     }
 
+    getCurrentTime(): Promise<number> {
+        return this.player.then(player => player.currentTime);
+    }
+
+    setCurrentTime(time: number): void {
+        this.player = this.player.then(player => {
+            player.seek(time);
+            return player;
+        });
+    }
+
 }

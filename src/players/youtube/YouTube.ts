@@ -38,8 +38,8 @@ export class Youtube extends AbstractPlayer {
         };
     }
 
-    public static validate(element: HTMLElement) : boolean {
-        const url: string | null = element.getAttribute('src');
+    public static validate(element: HTMLElement): boolean {
+        const url: string | null = element.hasOwnProperty('src') ? element.getAttribute('src') : null;
         if (url && element.tagName.toLowerCase() === 'video') {
             const urlHelper = new YTUrlHelper(url);
             return urlHelper.isValid;
@@ -84,6 +84,19 @@ export class Youtube extends AbstractPlayer {
     public unmute(): void {
         this.queue = this.queue.then(player => {
             player.unMute();
+            return player;
+        });
+    }
+
+    getCurrentTime(): Promise<number> {
+        return this.queue.then(player => {
+            return player.getCurrentTime();
+        });
+    }
+
+    setCurrentTime(seconds: number): void {
+        this.queue = this.queue.then(player => {
+            player.seekTo(seconds, true);
             return player;
         });
     }
