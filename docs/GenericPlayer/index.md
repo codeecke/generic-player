@@ -94,3 +94,35 @@ This method will unmute your video.
 const player = new GenericPlayer(document.getElementById('player'));
 player.unmute();
 ```
+
+
+
+### getCurrentTime()
+
+Return the current playback position in seconds as a promise of number.
+
+``` javascript
+const videoTag = document.qetElementById('player'),
+      position = document.getElementById('position'),
+      player = new GenericPlayer(videoTag);
+
+setInterval(() => {
+  player.getCurrentTime(time => {
+    position.innerHtml = time.toString()
+  })
+}, 500);
+````
+
+
+
+### setCurrentTime(seconds)
+
+Changes the current playback position.
+
+```javascript
+const videoTag = document.qetElementById('player'),
+      button = document.getElementById('button'),
+      player = new GenericPlayer(videoTag);
+
+// Set the playback position to 30s after click on a button
+button.addEventListener('click', player.setCurrentTime(30));
