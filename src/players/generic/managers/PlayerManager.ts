@@ -96,11 +96,11 @@ export class PlayerManager {
         });
     }
 
-    public setCurrentTime(time: number) {
+    public setCurrentTime(seconds: number) {
         if (this.player) {
-            this.player.setCurrentTime(time);
+            this.player.setCurrentTime(seconds);
         } else if (this.isHtmlVideoTag()) {
-            (this.originalElement as HTMLVideoElement).currentTime = time;
+            (this.originalElement as HTMLVideoElement).currentTime = seconds;
         }
     }
 }

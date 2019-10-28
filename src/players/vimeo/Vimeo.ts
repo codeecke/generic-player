@@ -70,7 +70,7 @@ export class Vimeo extends AbstractPlayer {
         return Promise.resolve(0);
     }
 
-    setCurrentTime(time: number): void {
-        console.log('Vimeo.setCurrentTime(time) is currently not supported');
+    setCurrentTime(seconds: number): void {
+        console.log('Vimeo.setCurrentTime(seconds) is currently not supported');
     }
 }

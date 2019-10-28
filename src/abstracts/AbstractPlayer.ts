@@ -30,7 +30,7 @@ export abstract class AbstractPlayer {
     abstract unmute() : void;
     abstract getElement(): Promise<HTMLElement> | null;
     abstract getCurrentTime() : Promise<number>;
-    abstract setCurrentTime(time: number) : void;
+    abstract setCurrentTime(seconds: number) : void;
 
     protected getId(): string {
         if (!this.element.id) {
