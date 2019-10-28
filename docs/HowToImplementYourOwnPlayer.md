@@ -42,6 +42,15 @@ class YourPlayer {
   unmute() {
     // unmutes the video
   }
+  
+  getCurrentTime() {
+    // returns the current playback position 
+    // in seconds as a Promise<number>
+  }
+  
+  setCurrentTime(seconds) {
+    // changes the current playback position 
+  }
 }
 
 // register your player-class for using in GenericPlayer
