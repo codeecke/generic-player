@@ -6,6 +6,24 @@ At the moment there is only one player with a configurable value - die JWPlayer.
 
 ## properties
 
+### consent
+
+This property allows you to activate and customize the consent-manager.
+
+#### example
+```scss
+@import "~@codeecke/generic-player/src/scss/ConsentManager";
+```
+
+```javascript
+const videoTag = document.qetElementById('player'),
+      player = new GenericPlayer(videoTag);
+
+player.config.consent.enabled = true;
+player.config.consent.info = 'Here you can define a new content.';
+player.config.consent.accept = 'Here you can define the label for the accept-button';
+```
+
 ### jwplayer.player
 
 The value helps you to define your "Cloud-Hosted Player Library".

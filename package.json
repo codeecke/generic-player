@@ -5,6 +5,13 @@
   "license": "MIT",
   "main": "dist/player.js",
   "types": "dist/types/player.d.ts",
+  "bugs": {
+    "url": "https://github.com/codeecke/generic-player/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/codeecke/generic-player"
+  },
   "keywords": [
     "youtube",
     "vimeo",
