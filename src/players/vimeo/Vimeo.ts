@@ -64,4 +64,13 @@ export class Vimeo extends AbstractPlayer {
     unmute(): void {
         this.player.setMuted(false);
     }
+
+    getCurrentTime(): Promise<number> {
+        console.log('Vimeo.getCurrentTime() is currently not supported');
+        return Promise.resolve(0);
+    }
+
+    setCurrentTime(time: number): void {
+        console.log('Vimeo.setCurrentTime(time) is currently not supported');
+    }
 }

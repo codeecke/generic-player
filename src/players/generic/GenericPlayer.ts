@@ -94,5 +94,18 @@ export class GenericPlayer {
         });
     }
 
+    getCurrentTime() : Promise<number> {
+        return this.playerManager.then(playerManager => {
+            return playerManager.getCurrentTime();
+        });
+    }
+
+    setCurrentTime(time: number) : void {
+        this.playerManager = this.playerManager.then(playerManager => {
+            playerManager.setCurrentTime(time);
+            return playerManager;
+        });
+    }
+
 
 }
