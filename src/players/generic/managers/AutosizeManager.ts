@@ -1,5 +1,3 @@
-import {GenericPlayer} from "../GenericPlayer";
-
 export class AutosizeManager {
     private enabledValue: boolean = false;
     private ratioValue: number = 16 / 9;

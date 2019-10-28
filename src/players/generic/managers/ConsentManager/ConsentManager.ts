@@ -13,7 +13,7 @@ export class ConsentManager {
     constructor(private element: HTMLElement, player: GenericPlayer) {
         this.parent = this.element.parentElement;
         this.dialog = this.getElement();
-        if (!ConsentManagerState.isAccepted && GenericPlayer.config.consentManager.enabled) {
+        if (!ConsentManagerState.isAccepted && GenericPlayer.config.consent.enabled) {
             this.showConsentDialog();
             this.autosize = new AutosizeManager(this);
             this.autosize.enabled = true;
@@ -53,10 +53,10 @@ export class ConsentManager {
             acceptButton: HTMLElement | null = result.querySelector('[data-generic-player-consent-accept]');
 
         if (infoContainer) {
-            infoContainer.innerHTML = GenericPlayer.config.consentManager.content.info;
+            infoContainer.innerHTML = GenericPlayer.config.consent.content.info;
         }
         if (acceptButton) {
-            acceptButton.innerHTML = GenericPlayer.config.consentManager.content.accept;
+            acceptButton.innerHTML = GenericPlayer.config.consent.content.accept;
             acceptButton.addEventListener('click', this.accept.bind(this));
         }
 
@@ -88,7 +88,7 @@ export class ConsentManager {
     }
 
     onAccept(callback: ConsentManagerStateWatcher) {
-        if (ConsentManagerState.isAccepted || !GenericPlayer.config.consentManager.enabled) {
+        if (ConsentManagerState.isAccepted || !GenericPlayer.config.consent.enabled) {
             callback(true);
         }
         ConsentManagerState.watch(callback);
