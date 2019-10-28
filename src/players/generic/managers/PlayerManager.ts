@@ -91,6 +91,8 @@ export class PlayerManager {
         return this.whenReady().then(() => {
             if (this.player) {
                 return this.player.getCurrentTime();
+            } else if (this.isHtmlVideoTag()) {
+                return (this.originalElement as HTMLVideoElement).currentTime;
             }
             return 0;
         });

@@ -26,7 +26,6 @@ export class YTUrlHelper {
         const result = this.getValidationResult();
         if(result) {
             const position = this.videoIdPositions[result.validatorName];
-            console.log(result, this.url, result.match[position]);
             return result.match[position];
         }
         return '';

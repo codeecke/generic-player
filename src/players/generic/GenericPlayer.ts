@@ -24,10 +24,10 @@ export class GenericPlayer {
                 setTimeout(() => {
 
 
-                    if (this.element.dataset['src'] && this.element instanceof HTMLVideoElement) {
+                    if (this.element instanceof HTMLVideoElement && this.element.dataset['src']) {
                         this.element.src = this.element.dataset['src'] as string;
                     }
-                    if (this.element.dataset['poster'] && this.element instanceof HTMLVideoElement) {
+                    if (this.element instanceof HTMLVideoElement && this.element.dataset['poster']) {
                         this.element.poster = this.element.dataset['poster'] as string;
                     }
                     resolve(new PlayerManager(this.element));
