@@ -87,11 +87,15 @@ class JWPlayer extends AbstractPlayer {
     }
 
     getCurrentTime(): Promise<number> {
-        console.log('JWPlayer.getCurrentTime() is currently not supported');
+        if(this.player) {
+            return this.player.then(jwplayer => jwplayer.getPosition());
+        }
         return Promise.resolve(0);
     }
 
-    setCurrentTime(time: number): void {
-        console.log('JWPlayer.setCurrentTime(time) is currently not supported');
+    setCurrentTime(seconds: number): void {
+        if(this.player) {
+            this.player.then(jwplayer => jwplayer.seek(seconds));
+        }
     }
 }

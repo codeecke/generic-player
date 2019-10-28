@@ -7,4 +7,6 @@ export declare interface JWPlayerPlayer {
     stop(): void;
     setMute(state: boolean): void;
     getContainer(): HTMLDivElement;
+    getPosition(): number;
+    seek(seconds: number): void;
 }
