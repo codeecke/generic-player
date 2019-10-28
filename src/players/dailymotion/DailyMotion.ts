@@ -13,7 +13,11 @@ class DailyMotion extends AbstractPlayer {
         super(element);
         this.player = this.loadAPI()
             .then(() => this.initializePlayer())
-            .catch(() => console.error('Error by loading dailymotion-api'));
+            .catch(() => console.error('Error by loading dailymotion-api'))
+            .then(player => {
+                this.loadingComplete();
+                return player
+            });
     }
 
     private loadAPI(): Promise<void> {

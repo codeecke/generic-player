@@ -5,6 +5,9 @@
 ### bugfixes
 * support for ie11
 
+### new feature
+* consent-manager to get conform with GDPR
+
 
 ## [0.9.6] - 2019-10-21
 
