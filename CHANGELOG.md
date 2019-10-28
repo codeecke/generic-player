@@ -7,6 +7,7 @@
 
 ### new feature
 * consent-manager to get conform with GDPR
+* setCurrentTime(time) and getCurrentTime() to get and set the current position into the timeline of the video
 
 
 ## [0.9.6] - 2019-10-21

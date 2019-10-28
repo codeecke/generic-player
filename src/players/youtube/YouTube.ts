@@ -38,7 +38,7 @@ export class Youtube extends AbstractPlayer {
         };
     }
 
-    public static validate(element: HTMLElement) : boolean {
+    public static validate(element: HTMLElement): boolean {
         const url: string | null = element.getAttribute('src');
         if (url && element.tagName.toLowerCase() === 'video') {
             const urlHelper = new YTUrlHelper(url);
@@ -89,12 +89,16 @@ export class Youtube extends AbstractPlayer {
     }
 
     getCurrentTime(): Promise<number> {
-        console.log('Youtube.getCurrentTime() is currently not supported');
-        return Promise.resolve(0);
+        return this.queue.then(player => {
+            return player.getCurrentTime();
+        });
     }
 
-    setCurrentTime(time: number): void {
-        console.log('Youtube.setCurrentTime(time) is currently not supported');
+    setCurrentTime(seconds: number): void {
+        this.queue = this.queue.then(player => {
+            player.seekTo(seconds, true);
+            return player;
+        });
     }
 
 

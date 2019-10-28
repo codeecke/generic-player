@@ -100,9 +100,9 @@ export class GenericPlayer {
         });
     }
 
-    setCurrentTime(time: number) : void {
+    setCurrentTime(seconds: number) : void {
         this.playerManager = this.playerManager.then(playerManager => {
-            playerManager.setCurrentTime(time);
+            playerManager.setCurrentTime(seconds);
             return playerManager;
         });
     }
