@@ -34,8 +34,8 @@ export class Youtube extends AbstractPlayer {
         player.addEventListener('onStateChange', (event:{data: number}) => {
             switch (event.data) {
                 case 0:
-                    this.dispatchEvent('stop');
                     this.dispatchEvent('ended');
+                    this.dispatchEvent('stop');
                     break;
                 case 1:
                     this.dispatchEvent('playing');
