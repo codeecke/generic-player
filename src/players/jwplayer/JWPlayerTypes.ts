@@ -9,4 +9,5 @@ export declare interface JWPlayerPlayer {
     getContainer(): HTMLDivElement;
     getPosition(): number;
     seek(seconds: number): void;
+    on(eventName: string, listener: Function): void;
 }
