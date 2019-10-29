@@ -24,7 +24,9 @@ class JWPlayer extends AbstractPlayer {
             });
             return player;
         });
+        this.player.then(player => this.registerEvents(player))
         this.player.then(() => this.loadingComplete());
+        this.player.then(() => this.dispatchEvent('ready'));
     }
 
     private loadPlayerAPI(): Promise<jwplayerType> {
@@ -37,6 +39,19 @@ class JWPlayer extends AbstractPlayer {
             script.addEventListener('error', () => reject(jwplayer));
             document.body.appendChild(script);
         });
+    }
+
+    private registerEvents(player: JWPlayerPlayer) : JWPlayerPlayer {
+        player.on('play', () => this.dispatchEvent('playing'));
+        player.on('pause', () => this.dispatchEvent('pause'));
+        player.on('complete', () => this.dispatchEvent('ended'));
+        player.on('complete', () => this.dispatchEvent('stop'));
+        const originalStop = player.stop.bind(player);
+        player.stop = () => {
+            originalStop();
+            this.dispatchEvent('stop');
+        };
+        return player;
     }
 
     static validate(element: HTMLElement): boolean {
