@@ -12,7 +12,9 @@ export class Youtube extends AbstractPlayer {
     constructor(videoElement: HTMLElement) {
         super(videoElement);
         this.queue = this.initializePlayer().then((player) => {
+            this.registerEvents(player);
             this.loadingComplete();
+            this.dispatchEvent('ready', this);
             return player;
         });
     }
@@ -25,6 +27,23 @@ export class Youtube extends AbstractPlayer {
                     events: {'onReady': () => resolve(player)}
                 });
             });
+        });
+    }
+
+    private registerEvents(player: YoutubePlayerInstanceInterface) {
+        player.addEventListener('onStateChange', (event:{data: number}) => {
+            switch (event.data) {
+                case 0:
+                    this.dispatchEvent('stop');
+                    this.dispatchEvent('ended');
+                    break;
+                case 1:
+                    this.dispatchEvent('playing');
+                    break;
+                case 2:
+                    this.dispatchEvent('pause');
+                    break;
+            }
         });
     }
 

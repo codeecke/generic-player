@@ -16,4 +16,5 @@ export interface YoutubePlayerInstanceInterface {
     getIframe(): HTMLIFrameElement;
     getCurrentTime(): number;
     seekTo(seconds: number, allowSeekAhead: boolean) : void;
+    addEventListener(eventName: string, listener: Function): void;
 }
