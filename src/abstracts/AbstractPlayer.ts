@@ -1,10 +1,12 @@
+import {EventDispatcher} from "./EventDispatcher";
+
 export interface PlayerConstructorInterface {
     new(videoElement: HTMLElement): AbstractPlayer;
 
     validate(element: HTMLElement): boolean;
 }
 
-export abstract class AbstractPlayer {
+export abstract class AbstractPlayer extends EventDispatcher {
 
     static counter: number = 0;
     public readonly whenReady: Promise<void>;
@@ -12,6 +14,7 @@ export abstract class AbstractPlayer {
     protected loadingComplete: () => void = function () {};
 
     protected constructor(protected element: HTMLElement) {
+        super();
         this.whenReady = new Promise((resolve, reject) => {
             this.loadingComplete = resolve;
             this.loadingFailed = reject;

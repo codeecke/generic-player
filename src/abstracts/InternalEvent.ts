@@ -1,4 +1,4 @@
-export abstract class Event {
+export abstract class InternalEvent {
     listeners: Function[] = [];
 
     addListener(listener: Function) {

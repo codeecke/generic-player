@@ -105,4 +105,12 @@ export class PlayerManager {
             (this.originalElement as HTMLVideoElement).currentTime = seconds;
         }
     }
+
+    public addEventListener(eventName: string, callback: Function) {
+        if(this.player) {
+            this.player.addEventListener(eventName, callback);
+        } else if (this.isHtmlVideoTag()) {
+            console.log('Events for HTML-Player are currently not supported');
+        }
+    }
 }
