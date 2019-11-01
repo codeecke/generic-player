@@ -73,31 +73,47 @@ class JWPlayer extends AbstractPlayer {
 
     mute(): void {
         if(this.player) {
-            this.player.then(jwplayer => jwplayer.setMute(true));
+            this.player = this.player.then(jwplayer => {
+                jwplayer.setMute(true);
+                return jwplayer;
+            });
         }
     }
 
     pause(): void {
         if(this.player) {
-            this.player.then(jwplayer => jwplayer.pause());
+            this.player = this.player.then(jwplayer => {
+                jwplayer.pause();
+                return jwplayer;
+            });
         }
     }
 
     play(): void {
         if(this.player) {
-            this.player.then(jwplayer => jwplayer.play());
+            this.player = this.player.then(jwplayer => {
+                jwplayer.play();
+                return jwplayer;
+            });
         }
     }
 
     stop(): void {
         if(this.player) {
-            this.player.then(jwplayer => jwplayer.stop());
+            this.player = this.player.then(jwplayer => {
+                jwplayer.stop();
+                this.dispatchEvent('stop');
+                return jwplayer;
+            });
         }
     }
 
     unmute(): void {
         if(this.player) {
-            this.player.then(jwplayer => jwplayer.setMute(false));
+            this.player = this.player.then(jwplayer => {
+                jwplayer.setMute(false);
+                return jwplayer;
+            });
         }
     }
 
@@ -110,7 +126,10 @@ class JWPlayer extends AbstractPlayer {
 
     setCurrentTime(seconds: number): void {
         if(this.player) {
-            this.player.then(jwplayer => jwplayer.seek(seconds));
+            this.player = this.player.then(jwplayer => {
+                jwplayer.seek(seconds);
+                return jwplayer;
+            });
         }
     }
 }
