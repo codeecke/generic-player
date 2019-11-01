@@ -98,6 +98,7 @@ class DailyMotion extends AbstractPlayer {
     stop(): void {
         this.player = this.player.then(player => {
             player.pause();
+            this.dispatchEvent('stop');
             return player;
         });
     }

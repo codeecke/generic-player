@@ -88,6 +88,7 @@ export class Youtube extends AbstractPlayer {
     public stop(): void {
         this.queue = this.queue.then(player => {
             player.stopVideo();
+            this.dispatchEvent('stop');
             return player;
         });
 
