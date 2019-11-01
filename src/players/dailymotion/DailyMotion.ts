@@ -7,6 +7,7 @@ declare var DM: { player: any, addEventListener: any};
 class DailyMotion extends AbstractPlayer {
 
     private player: Promise<any>;
+    private isPaused : boolean = false;
     static readonly validator: RegExp = /^https?\:\/\/(www\.)?dailymotion\.com\/video\/([a-zA-Z0-9\-]+)(\?playlist=[a-zA-Z0-9\-]+)?$/;
 
     constructor(element: HTMLElement) {
@@ -16,8 +17,10 @@ class DailyMotion extends AbstractPlayer {
             .catch(() => console.error('Error by loading dailymotion-api'))
             .then(player => {
                 this.loadingComplete();
+                this.dispatchEvent('ready');
                 return player
             });
+        this.initializeEvents();
     }
 
     private loadAPI(): Promise<void> {
@@ -28,6 +31,23 @@ class DailyMotion extends AbstractPlayer {
             script.addEventListener('error', () => reject());
             document.body.appendChild(script);
         });
+    }
+
+    private initializeEvents() {
+        this.player.then(player => {
+            player.addEventListener('play', () => {
+                this.dispatchEvent('playing');
+                this.isPaused = false;
+            });
+            player.addEventListener('pause', () => {
+                if(!this.isPaused) {
+                    this.dispatchEvent('pause');
+                    this.isPaused = true;
+                }
+            });
+            player.addEventListener('end', () => this.dispatchEvent('ended'));
+            player.addEventListener('end', () => this.dispatchEvent('stop'));
+        })
     }
 
     private initializePlayer() {
