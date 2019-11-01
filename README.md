@@ -55,4 +55,4 @@ player.mute();
 player.play();
 ````
 
-For more informations look into the [documentation](https://github.com/codeecke/generic-player/blob/master/docs/index.md)
+For more informations look into the [documentation](https://github.com/codeecke/generic-player/wiki)
