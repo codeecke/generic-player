@@ -24,7 +24,9 @@ class JWPlayer extends AbstractPlayer {
             });
             return player;
         });
-        this.player.then(() => this.loadingComplete());
+        this.player
+            .then(player => this.registerEvents(player))
+            .then(() => this.dispatchEvent('ready'));
     }
 
     private loadPlayerAPI(): Promise<jwplayerType> {
@@ -37,6 +39,19 @@ class JWPlayer extends AbstractPlayer {
             script.addEventListener('error', () => reject(jwplayer));
             document.body.appendChild(script);
         });
+    }
+
+    private registerEvents(player: JWPlayerPlayer) : JWPlayerPlayer {
+        player.on('play', () => this.dispatchEvent('play'));
+        player.on('pause', () => this.dispatchEvent('pause'));
+        player.on('complete', () => this.dispatchEvent('ended'));
+        player.on('complete', () => this.dispatchEvent('stop'));
+        const originalStop = player.stop.bind(player);
+        player.stop = () => {
+            originalStop();
+            this.dispatchEvent('stop');
+        };
+        return player;
     }
 
     static validate(element: HTMLElement): boolean {
@@ -58,31 +73,47 @@ class JWPlayer extends AbstractPlayer {
 
     mute(): void {
         if(this.player) {
-            this.player.then(jwplayer => jwplayer.setMute(true));
+            this.player = this.player.then(jwplayer => {
+                jwplayer.setMute(true);
+                return jwplayer;
+            });
         }
     }
 
     pause(): void {
         if(this.player) {
-            this.player.then(jwplayer => jwplayer.pause());
+            this.player = this.player.then(jwplayer => {
+                jwplayer.pause();
+                return jwplayer;
+            });
         }
     }
 
     play(): void {
         if(this.player) {
-            this.player.then(jwplayer => jwplayer.play());
+            this.player = this.player.then(jwplayer => {
+                jwplayer.play();
+                return jwplayer;
+            });
         }
     }
 
     stop(): void {
         if(this.player) {
-            this.player.then(jwplayer => jwplayer.stop());
+            this.player = this.player.then(jwplayer => {
+                jwplayer.stop();
+                this.dispatchEvent('stop');
+                return jwplayer;
+            });
         }
     }
 
     unmute(): void {
         if(this.player) {
-            this.player.then(jwplayer => jwplayer.setMute(false));
+            this.player = this.player.then(jwplayer => {
+                jwplayer.setMute(false);
+                return jwplayer;
+            });
         }
     }
 
@@ -95,7 +126,10 @@ class JWPlayer extends AbstractPlayer {
 
     setCurrentTime(seconds: number): void {
         if(this.player) {
-            this.player.then(jwplayer => jwplayer.seek(seconds));
+            this.player = this.player.then(jwplayer => {
+                jwplayer.seek(seconds);
+                return jwplayer;
+            });
         }
     }
 }

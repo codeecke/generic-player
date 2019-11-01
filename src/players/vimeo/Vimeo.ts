@@ -23,8 +23,11 @@ export class Vimeo extends AbstractPlayer {
         }
 
         this.player = new VimeoPlayer(this.iframe);
-        this.player.on('loaded', this.loadingComplete);
-        this.player.on('error', this.loadingFailed);
+        this.player.on('loaded', () => this.dispatchEvent('ready'));
+        this.player.on('play', () => this.dispatchEvent('play'));
+        this.player.on('pause', () => this.dispatchEvent('pause'));
+        this.player.on('ended', () => this.dispatchEvent('ended'));
+        this.player.on('ended', () => this.dispatchEvent('stop'));
 
     }
 
@@ -55,6 +58,7 @@ export class Vimeo extends AbstractPlayer {
     stop(): void {
         this.player.pause();
         this.player.setCurrentTime(0);
+        this.dispatchEvent('stop');
     }
 
     mute(): void {
