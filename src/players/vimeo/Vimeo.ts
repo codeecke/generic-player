@@ -26,7 +26,7 @@ export class Vimeo extends AbstractPlayer {
         this.player.on('loaded', this.loadingComplete);
         this.player.on('error', this.loadingFailed);
         this.player.on('loaded', () => this.dispatchEvent('ready'));
-        this.player.on('play', () => this.dispatchEvent('playing'));
+        this.player.on('play', () => this.dispatchEvent('play'));
         this.player.on('pause', () => this.dispatchEvent('pause'));
         this.player.on('ended', () => this.dispatchEvent('ended'));
         this.player.on('ended', () => this.dispatchEvent('stop'));

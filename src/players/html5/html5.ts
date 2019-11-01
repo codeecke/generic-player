@@ -9,7 +9,7 @@ class Html5Player extends AbstractPlayer {
         console.log('player implemented');
         this.loadingComplete();
         this.element.addEventListener('canplay', () => this.dispatchEvent('ready'));
-        this.element.addEventListener('play', () => this.dispatchEvent('playing'));
+        this.element.addEventListener('play', () => this.dispatchEvent('play'));
         this.element.addEventListener('pause', () => this.dispatchEvent('pause'));
         this.element.addEventListener('ended', () => this.dispatchEvent('ended'));
         this.element.addEventListener('ended', () => this.dispatchEvent('stop'));

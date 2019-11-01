@@ -38,7 +38,7 @@ export class Youtube extends AbstractPlayer {
                     this.dispatchEvent('stop');
                     break;
                 case 1:
-                    this.dispatchEvent('playing');
+                    this.dispatchEvent('play');
                     break;
                 case 2:
                     this.dispatchEvent('pause');
