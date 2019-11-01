@@ -23,8 +23,6 @@ export class Vimeo extends AbstractPlayer {
         }
 
         this.player = new VimeoPlayer(this.iframe);
-        this.player.on('loaded', this.loadingComplete);
-        this.player.on('error', this.loadingFailed);
         this.player.on('loaded', () => this.dispatchEvent('ready'));
         this.player.on('play', () => this.dispatchEvent('play'));
         this.player.on('pause', () => this.dispatchEvent('pause'));

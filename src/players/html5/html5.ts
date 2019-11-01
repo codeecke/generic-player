@@ -7,7 +7,6 @@ class Html5Player extends AbstractPlayer {
     constructor(element: HTMLElement) {
         super(element);
         this.element.addEventListener('canplay', () => {
-            this.loadingComplete();
             this.dispatchEvent('ready');
         });
         this.element.addEventListener('play', () => this.dispatchEvent('play'));

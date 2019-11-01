@@ -24,9 +24,9 @@ class JWPlayer extends AbstractPlayer {
             });
             return player;
         });
-        this.player.then(player => this.registerEvents(player))
-        this.player.then(() => this.loadingComplete());
-        this.player.then(() => this.dispatchEvent('ready'));
+        this.player
+            .then(player => this.registerEvents(player))
+            .then(() => this.dispatchEvent('ready'));
     }
 
     private loadPlayerAPI(): Promise<jwplayerType> {
