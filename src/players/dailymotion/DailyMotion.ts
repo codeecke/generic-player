@@ -36,7 +36,7 @@ class DailyMotion extends AbstractPlayer {
     private initializeEvents() {
         this.player.then(player => {
             player.addEventListener('play', () => {
-                this.dispatchEvent('playing');
+                this.dispatchEvent('play');
                 this.isPaused = false;
             });
             player.addEventListener('pause', () => {

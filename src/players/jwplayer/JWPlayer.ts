@@ -42,7 +42,7 @@ class JWPlayer extends AbstractPlayer {
     }
 
     private registerEvents(player: JWPlayerPlayer) : JWPlayerPlayer {
-        player.on('play', () => this.dispatchEvent('playing'));
+        player.on('play', () => this.dispatchEvent('play'));
         player.on('pause', () => this.dispatchEvent('pause'));
         player.on('complete', () => this.dispatchEvent('ended'));
         player.on('complete', () => this.dispatchEvent('stop'));
