@@ -13,7 +13,6 @@ export class Youtube extends AbstractPlayer {
         super(videoElement);
         this.queue = this.initializePlayer().then((player) => {
             this.registerEvents(player);
-            this.loadingComplete();
             this.dispatchEvent('ready');
             return player;
         });

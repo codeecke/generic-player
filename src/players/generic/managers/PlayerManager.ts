@@ -21,11 +21,12 @@ export class PlayerManager {
     }
 
     public whenReady(): Promise<PlayerManager> {
-        if (!this.player) {
-            return Promise.resolve(this);
-        }
-        return this.player.whenReady.then(() => {
-            return this
+        return new Promise(resolve => {
+            if (this.player) {
+                this.player.addEventListener('ready', () => resolve(this));
+            } else {
+                resolve(this);
+            }
         });
     }
 
@@ -85,7 +86,7 @@ export class PlayerManager {
     }
 
     public addEventListener(eventName: string, callback: Function) {
-        if(this.player) {
+        if (this.player) {
             this.player.addEventListener(eventName, callback);
         }
     }
