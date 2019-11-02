@@ -113,4 +113,52 @@ export class GenericPlayer {
             return playerManager;
         })
     }
+
+    enterFullscreen() {
+        this.playerManager.then(playerManager => {
+            playerManager.getElement().then(el => {
+
+                try {
+                    if (el.requestFullscreen) {
+                        el.requestFullscreen();
+                        // @ts-ignore
+                    } else if (el.mozRequestFullScreen) { /* Firefox */
+                        // @ts-ignore
+                        el.mozRequestFullScreen();
+                        // @ts-ignore
+                    } else if (el.webkitRequestFullscreen) { /* Chrome, Safari and Opera */
+                        // @ts-ignore
+                        el.webkitRequestFullscreen();
+                        // @ts-ignore
+                    } else if (el.msRequestFullscreen) { /* IE/Edge */
+                        // @ts-ignore
+                        el.msRequestFullscreen();
+                    }
+                } catch(e) {}
+            })
+        });
+    }
+
+    exitFullscreen() {
+        this.playerManager.then(playerManager => {
+            playerManager.getElement().then(el => {
+
+                if (document.exitFullscreen) {
+                    document.exitFullscreen();
+                    // @ts-ignore
+                } else if (document.mozCancelFullScreen) { /* Firefox */
+                    // @ts-ignore
+                    document.mozCancelFullScreen();
+                    // @ts-ignore
+                } else if (document.webkitExitFullscreen) { /* Chrome, Safari and Opera */
+                    // @ts-ignore
+                    document.webkitExitFullscreen();
+                    // @ts-ignore
+                } else if (document.msExitFullscreen) { /* IE/Edge */
+                    // @ts-ignore
+                    document.msExitFullscreen();
+                }
+            })
+        });
+    }
 }
