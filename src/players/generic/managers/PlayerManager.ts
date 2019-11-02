@@ -5,11 +5,19 @@ export class PlayerManager {
 
     protected player: AbstractPlayer | null = null;
     protected readonly originalElement: HTMLElement;
+    protected readonly whenReady : Promise<PlayerManager>
 
     constructor(element: HTMLElement) {
         this.originalElement = element;
         this.player = this.findValidPlayer();
         this.initializeLoop();
+        this.whenReady = new Promise(resolve => {
+            if (this.player) {
+                this.player.addEventListener('ready', () => resolve(this));
+            } else {
+                resolve(this);
+            }
+        });
     }
 
     protected findValidPlayer(): AbstractPlayer | null {
@@ -26,16 +34,6 @@ export class PlayerManager {
             this.setCurrentTime(0);
             this.play();
 
-        });
-    }
-
-    public whenReady(): Promise<PlayerManager> {
-        return new Promise(resolve => {
-            if (this.player) {
-                this.player.addEventListener('ready', () => resolve(this));
-            } else {
-                resolve(this);
-            }
         });
     }
 
@@ -71,7 +69,7 @@ export class PlayerManager {
     }
 
     public getElement(): Promise<HTMLElement> {
-        return this.whenReady().then(() => {
+        return this.whenReady.then(() => {
             if (this.player) {
                 return this.player.getElement() || this.originalElement;
             }
@@ -80,7 +78,7 @@ export class PlayerManager {
     }
 
     public getCurrentTime(): Promise<number> {
-        return this.whenReady().then(() => {
+        return this.whenReady.then(() => {
             if (this.player) {
                 return this.player.getCurrentTime();
             }

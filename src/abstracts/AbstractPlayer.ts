@@ -11,19 +11,12 @@ export abstract class AbstractPlayer extends EventDispatcher {
     static counter: number = 0;
 
     abstract play(): void;
-
     abstract pause(): void;
-
     abstract stop(): void;
-
     abstract mute(): void;
-
     abstract unmute(): void;
-
     abstract getElement(): Promise<HTMLElement> | null;
-
     abstract getCurrentTime(): Promise<number>;
-
     abstract setCurrentTime(seconds: number): void;
 
     protected constructor(protected element: HTMLElement) {
@@ -43,19 +36,25 @@ export abstract class AbstractPlayer extends EventDispatcher {
         return this.element.id;
     }
 
-    private isOptionActivated(optionName: string, defaultResult: boolean = false) : boolean {
+    private isOptionActivated(optionName: string, defaultResult: boolean = false): boolean {
+        const isValueActive = (value: string | undefined | null) => value === '' || value === '1';
+
         if (this.element.hasAttribute(optionName)) {
-            const value: string | null = this.element.getAttribute(optionName);
-            return value === '' || value === '1';
+            return isValueActive(
+                this.element.getAttribute(optionName)
+            );
         }
+
         if (optionName in this.element.dataset) {
-            const value: string | undefined = this.element.dataset[optionName];
-            return value === '' || value === '1';
+            return isValueActive(
+                this.element.dataset[optionName]
+            );
         }
+
         return defaultResult;
     }
 
-    private isOptionDefined(optionName: string) : boolean {
+    private isOptionDefined(optionName: string): boolean {
         return optionName in this.element.dataset || this.element.hasAttribute(optionName);
     }
 
