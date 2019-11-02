@@ -1,13 +1,13 @@
 import {Player} from "../../decorators/Player";
 import {AbstractPlayer} from "../../abstracts/AbstractPlayer";
 
-declare var DM: { player: any, addEventListener: any};
+declare var DM: { player: any, addEventListener: any };
 
 @Player()
 class DailyMotion extends AbstractPlayer {
 
     private player: Promise<any>;
-    private isPaused : boolean = false;
+    private isPaused: boolean = false;
     static readonly validator: RegExp = /^https?\:\/\/(www\.)?dailymotion\.com\/video\/([a-zA-Z0-9\-]+)(\?playlist=[a-zA-Z0-9\-]+)?$/;
 
     constructor(element: HTMLElement) {
@@ -39,13 +39,13 @@ class DailyMotion extends AbstractPlayer {
                 this.isPaused = false;
             });
             player.addEventListener('pause', () => {
-                if(!this.isPaused) {
+                if (!this.isPaused) {
                     this.dispatchEvent('pause');
                     this.isPaused = true;
                 }
             });
-            player.addEventListener('end', () => this.dispatchEvent('ended'));
-            player.addEventListener('end', () => this.dispatchEvent('stop'));
+            player.addEventListener('video_end', () => this.dispatchEvent('ended'));
+            player.addEventListener('video_end', () => this.dispatchEvent('stop'));
         })
     }
 
@@ -53,7 +53,16 @@ class DailyMotion extends AbstractPlayer {
         return new Promise((resolve, reject) => {
             const parts = DailyMotion.validator.exec((this.element as HTMLVideoElement).src);
             if (parts) {
-                const player = DM.player(this.element, {video: parts[2]});
+                const player = DM.player(
+                    this.element,
+                    {
+                        video: parts[2],
+                        params: {
+                            'queue-enable': false,
+                            'queue-autoplay-next': false
+                        }
+                    }
+                );
                 player.addEventListener('apiready', () => resolve(player));
             } else {
                 reject();

@@ -9,6 +9,7 @@ export class PlayerManager {
     constructor(element: HTMLElement) {
         this.originalElement = element;
         this.player = this.findValidPlayer();
+        this.initializeLoop();
     }
 
     protected findValidPlayer(): AbstractPlayer | null {
@@ -18,6 +19,14 @@ export class PlayerManager {
             }
         }
         return null;
+    }
+
+    protected initializeLoop() {
+        this.addEventListener('ended', () => {
+            this.setCurrentTime(0);
+            this.play();
+
+        });
     }
 
     public whenReady(): Promise<PlayerManager> {
