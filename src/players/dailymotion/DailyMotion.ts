@@ -63,6 +63,9 @@ class DailyMotion extends AbstractPlayer {
                         }
                     }
                 );
+                if (!this.isFullscreenAllowed()) {
+                    player.removeAttribute('allowfullscreen');
+                }
                 player.addEventListener('apiready', () => resolve(player));
             } else {
                 reject();

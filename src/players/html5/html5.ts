@@ -13,6 +13,12 @@ class Html5Player extends AbstractPlayer {
         this.element.addEventListener('pause', () => this.dispatchEvent('pause'));
         this.element.addEventListener('ended', () => this.dispatchEvent('ended'));
         this.element.addEventListener('ended', () => this.dispatchEvent('stop'));
+        if(this.isFullscreenAllowmentDefined() && !this.isFullscreenAllowed()) {
+            console.warn(
+                'The api of html-videos doesn\'t allow to disable the fullscreen-button separately. ' +
+                'You can use another video-plattform or disable controls completely.'
+            );
+        }
     }
 
     static validate(element: HTMLElement) : boolean {

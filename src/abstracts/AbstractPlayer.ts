@@ -36,5 +36,17 @@ export abstract class AbstractPlayer extends EventDispatcher {
         return this.element.id;
     }
 
+    protected isFullscreenAllowed() : boolean{
+        if(this.isFullscreenAllowmentDefined()) {
+            const value = this.element.dataset['fullscreen'];
+            return value === '' || value === '1';
+        }
+        return false;
+    }
+
+    protected isFullscreenAllowmentDefined() : boolean {
+        return 'fullscreen' in this.element.dataset
+    }
+
 
 }
