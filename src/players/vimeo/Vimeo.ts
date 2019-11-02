@@ -13,8 +13,10 @@ export class Vimeo extends AbstractPlayer {
     constructor(element: HTMLElement) {
         super(element);
 
+        const url = `https://player.vimeo.com/video/${this.getVideoId()}?controls=${this.areControlsAllowed() ? '1' : '0'}`;
+
         this.iframe = document.createElement('iframe');
-        this.iframe.setAttribute('src', `https://player.vimeo.com/video/${this.getVideoId()}?controls=0`);
+        this.iframe.setAttribute('src', url);
         this.iframe.setAttribute('frameBorder', '0');
         this.iframe.setAttribute('transparent', '1');
         if(this.isFullscreenAllowed()) {
