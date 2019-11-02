@@ -10,4 +10,6 @@ export declare interface JWPlayerPlayer {
     getPosition(): number;
     seek(seconds: number): void;
     on(eventName: string, listener: Function): void;
+    removeButton(id:string): void;
+    addButton(img:string, tooltip:string, callback:Function, id:string, btnClass:string):void;
 }

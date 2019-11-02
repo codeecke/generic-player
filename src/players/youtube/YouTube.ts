@@ -52,7 +52,10 @@ export class Youtube extends AbstractPlayer {
             urlHelper = new YTUrlHelper(url);
 
         return {
-            videoId: urlHelper.videoId
+            videoId: urlHelper.videoId,
+            playerVars: {
+                fs: this.isFullscreenAllowed()
+            }
         };
     }
 
