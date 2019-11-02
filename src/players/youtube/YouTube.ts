@@ -54,7 +54,9 @@ export class Youtube extends AbstractPlayer {
         return {
             videoId: urlHelper.videoId,
             playerVars: {
-                fs: this.isFullscreenAllowed()
+                fs: this.isFullscreenAllowed() ? '1' : '0',
+                controls : this.areControlsAllowed() ? '1' : '0',
+                rel: '0'
             }
         };
     }

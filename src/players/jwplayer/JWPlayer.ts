@@ -36,7 +36,8 @@ class JWPlayer extends AbstractPlayer {
                 this.dispatchEvent('ready');
                 return player;
             })
-            .then(player => this.initializeFullscreenButton(player));
+            .then(player => this.initializeFullscreenButton(player))
+            .then(player => this.initializeControls(player));
     }
 
     private resolveSpecialLinks() {
@@ -80,6 +81,11 @@ class JWPlayer extends AbstractPlayer {
     }
 
     private initializeFullscreenButton(player : JWPlayerPlayer) : JWPlayerPlayer {
+        player.setControls(this.areControlsAllowed());
+        return player;
+    }
+
+    private initializeControls(player : JWPlayerPlayer) : JWPlayerPlayer {
         const fullscreenButton: HTMLElement | null = player.getContainer().querySelector('.jw-icon-fullscreen');
         if (!this.isFullscreenAllowed() && fullscreenButton && fullscreenButton.parentElement) {
             fullscreenButton.parentElement.removeChild(fullscreenButton);

@@ -15,11 +15,12 @@ class DailyMotion extends AbstractPlayer {
         this.player = this.loadAPI()
             .then(() => this.initializePlayer())
             .catch(() => console.error('Error by loading dailymotion-api'))
+            .then(player => this.initializeEvents(player))
+            .then(player => this.initializeControls(player))
             .then(player => {
                 this.dispatchEvent('ready');
                 return player
             });
-        this.initializeEvents();
     }
 
     private loadAPI(): Promise<void> {
@@ -32,21 +33,26 @@ class DailyMotion extends AbstractPlayer {
         });
     }
 
-    private initializeEvents() {
-        this.player.then(player => {
-            player.addEventListener('play', () => {
-                this.dispatchEvent('play');
-                this.isPaused = false;
-            });
-            player.addEventListener('pause', () => {
-                if (!this.isPaused) {
-                    this.dispatchEvent('pause');
-                    this.isPaused = true;
-                }
-            });
-            player.addEventListener('video_end', () => this.dispatchEvent('ended'));
-            player.addEventListener('video_end', () => this.dispatchEvent('stop'));
-        })
+    private initializeEvents(player: any) {
+
+        player.addEventListener('play', () => {
+            this.dispatchEvent('play');
+            this.isPaused = false;
+        });
+        player.addEventListener('pause', () => {
+            if (!this.isPaused) {
+                this.dispatchEvent('pause');
+                this.isPaused = true;
+            }
+        });
+        player.addEventListener('video_end', () => this.dispatchEvent('ended'));
+        player.addEventListener('video_end', () => this.dispatchEvent('stop'));
+        return player
+    }
+
+    private initializeControls(player: any) {
+        player.setControls(this.areControlsAllowed());
+        return player;
     }
 
     private initializePlayer() {
