@@ -3,6 +3,7 @@ import {Player} from "../../decorators/Player";
 import {JWPlayerConfiguration} from "./JWPlayerConfiguration";
 import {GenericPlayer} from "../generic/GenericPlayer";
 import {jwplayer, JWPlayerPlayer, jwplayerType} from "./JWPlayerTypes";
+import {SpecialValidators} from "./SpecialValidators";
 
 @Player()
 class JWPlayer extends AbstractPlayer {
@@ -19,6 +20,7 @@ class JWPlayer extends AbstractPlayer {
 
         this.player = this.loadPlayerAPI().then(jwplayer => {
             const player = jwplayer(this.getId());
+            this.resolveSpecialLinks();
             player.setup({
                 playlist: this.element.getAttribute('src')
             });
@@ -27,6 +29,21 @@ class JWPlayer extends AbstractPlayer {
         this.player
             .then(player => this.registerEvents(player))
             .then(() => this.dispatchEvent('ready'));
+    }
+
+    private resolveSpecialLinks() {
+        const src : string = this.element.getAttribute('src') as string;
+        if(SpecialValidators.media.test(src)) {
+            const
+                result = SpecialValidators.media.exec(src),
+                mediaId = result ? result[1] : '';
+            this.element.setAttribute('src', 'https://cdn.jwplayer.com/v2/media/' + mediaId);
+        } else if(SpecialValidators.playlist.test(src)) {
+            const
+                result = SpecialValidators.playlist.exec(src),
+                playlistId = result ? result[1] : '';
+            this.element.setAttribute('src', 'https://cdn.jwplayer.com/v2/playlists/' + playlistId);
+        }
     }
 
     private loadPlayerAPI(): Promise<jwplayerType> {
@@ -59,7 +76,7 @@ class JWPlayer extends AbstractPlayer {
             const
                 url: string = element.src,
                 validator = /https\:\/\/cdn\.jwplayer\.com\/v2\/(playlists|media)\/([0-9a-zA-Z]+)(\?format=[0-9a-zA-Z]+)?$/;
-            return validator.test(url);
+            return validator.test(url) || SpecialValidators.media.test(url) || SpecialValidators.playlist.test(url);
         }
         return false;
     }
