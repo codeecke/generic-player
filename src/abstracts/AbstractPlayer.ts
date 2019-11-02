@@ -11,13 +11,20 @@ export abstract class AbstractPlayer extends EventDispatcher {
     static counter: number = 0;
 
     abstract play(): void;
+
     abstract pause(): void;
+
     abstract stop(): void;
-    abstract mute() : void;
-    abstract unmute() : void;
+
+    abstract mute(): void;
+
+    abstract unmute(): void;
+
     abstract getElement(): Promise<HTMLElement> | null;
-    abstract getCurrentTime() : Promise<number>;
-    abstract setCurrentTime(seconds: number) : void;
+
+    abstract getCurrentTime(): Promise<number>;
+
+    abstract setCurrentTime(seconds: number): void;
 
     protected constructor(protected element: HTMLElement) {
         super();
@@ -36,16 +43,32 @@ export abstract class AbstractPlayer extends EventDispatcher {
         return this.element.id;
     }
 
-    protected isFullscreenAllowed() : boolean{
-        if(this.isFullscreenAllowmentDefined()) {
-            const value = this.element.dataset['fullscreen'];
+    private isOptionActivated(optionName: string, defaultResult: boolean = false) : boolean {
+        if (this.element.hasAttribute(optionName)) {
+            const value: string | null = this.element.getAttribute(optionName);
             return value === '' || value === '1';
         }
-        return false;
+        if (optionName in this.element.dataset) {
+            const value: string | undefined = this.element.dataset[optionName];
+            return value === '' || value === '1';
+        }
+        return defaultResult;
     }
 
-    protected isFullscreenAllowmentDefined() : boolean {
-        return 'fullscreen' in this.element.dataset
+    private isOptionDefined(optionName: string) : boolean {
+        return optionName in this.element.dataset || this.element.hasAttribute(optionName);
+    }
+
+    protected isFullscreenAllowed(): boolean {
+        return this.isOptionActivated('fullscreen', true);
+    }
+
+    protected isFullscreenAllowmentDefined(): boolean {
+        return this.isOptionDefined('fullscreen');
+    }
+
+    protected areControlsAllowed(): boolean {
+        return this.isOptionActivated('controls');
     }
 
 

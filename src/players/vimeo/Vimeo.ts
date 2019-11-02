@@ -14,16 +14,18 @@ export class Vimeo extends AbstractPlayer {
         super(element);
 
         this.iframe = document.createElement('iframe');
-        this.iframe.setAttribute('src', `https://player.vimeo.com/video/${this.getVideoId()}`);
+        this.iframe.setAttribute('src', `https://player.vimeo.com/video/${this.getVideoId()}?controls=0`);
         this.iframe.setAttribute('frameBorder', '0');
         this.iframe.setAttribute('transparent', '1');
         if(this.isFullscreenAllowed()) {
             this.iframe.setAttribute('allowfullscreen','1');
         }
 
+
         if (element.parentElement) {
             element.parentElement.replaceChild(this.iframe, element);
         }
+
 
         this.player = new VimeoPlayer(this.iframe);
         this.player.on('loaded', () => this.dispatchEvent('ready'));
