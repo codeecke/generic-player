@@ -27,28 +27,26 @@ export class ConsentManager {
         }
     }
 
-    private getTemplate(): HTMLTemplateElement {
-        if (this.templateId) {
-            const template = document.getElementById(this.templateId);
-            if (template instanceof HTMLTemplateElement) {
-                return template;
-            }
-            console.warn(`No template-tag with id "${this.templateId}" found`);
-        }
-        const template: HTMLTemplateElement = document.createElement('template');
-        template.innerHTML = `
-            <div class="generic-player-consent-manager__wrapper">
-                <div class="generic-player-consent-manager__info" data-generic-player-consent-info></div>
-                <button class="generic-player-consent-manager__accept" data-generic-player-consent-accept></button>
-            </div>
-        `;
-        return template;
+    private getTemplate(): HTMLElement {
+        const
+            wrapper = document.createElement('div'),
+            info = document.createElement('div'),
+            accept = document.createElement('button');
+
+        wrapper.classList.add('generic-player-consent-manager__wrapper');
+        info.classList.add('generic-player-consent-manager__info');
+        info.dataset.genericPlayerConsentInfo = '';
+        accept.classList.add('generic-player-consent-manager__accept');
+        accept.dataset.genericPlayerConsentAccept = '';
+
+        wrapper.appendChild(info);
+        wrapper.appendChild(accept);
+        return wrapper;
     }
 
     getElement(): Promise<HTMLElement> {
         const
-            template = this.getTemplate(),
-            result: HTMLElement = (template.content.cloneNode(true) as HTMLElement),
+            result: HTMLElement = this.getTemplate(),
             infoContainer: HTMLElement | null = result.querySelector('[data-generic-player-consent-info]'),
             acceptButton: HTMLElement | null = result.querySelector('[data-generic-player-consent-accept]');
 

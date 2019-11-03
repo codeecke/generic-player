@@ -1,6 +1,6 @@
 {
   "name": "@codeecke/generic-player",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "GenericPlayer is a lightweight and easy-to-implement multi-platform-mediaplayer",
   "license": "MIT",
   "main": "dist/player.js",
