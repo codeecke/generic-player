@@ -1,10 +1,10 @@
-import {Event} from '../../../abstracts/Event';
+import {InternalEvent} from '../../../abstracts/InternalEvent';
 
-class YouTubeIframeAPIReadyEvent extends Event {
+class YouTubeIframeAPIReadyEvent extends InternalEvent {
 }
 
 try {
-    (window as any).onYouTubeIframeAPIReady = function (event: Event) {
+    (window as any).onYouTubeIframeAPIReady = function (event: InternalEvent) {
         onYouTubeIframeAPIReady.dispatch();
     };
 } catch (e) {

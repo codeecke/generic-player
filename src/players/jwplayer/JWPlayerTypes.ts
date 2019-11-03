@@ -7,4 +7,10 @@ export declare interface JWPlayerPlayer {
     stop(): void;
     setMute(state: boolean): void;
     getContainer(): HTMLDivElement;
+    getPosition(): number;
+    seek(seconds: number): void;
+    on(eventName: string, listener: Function): void;
+    removeButton(id:string): void;
+    addButton(img:string, tooltip:string, callback:Function, id:string, btnClass:string):void;
+    setControls(enabled: boolean): void;
 }

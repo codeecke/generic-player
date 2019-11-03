@@ -12,7 +12,8 @@ export class Youtube extends AbstractPlayer {
     constructor(videoElement: HTMLElement) {
         super(videoElement);
         this.queue = this.initializePlayer().then((player) => {
-            this.loadingComplete();
+            this.registerEvents(player);
+            this.dispatchEvent('ready');
             return player;
         });
     }
@@ -28,17 +29,39 @@ export class Youtube extends AbstractPlayer {
         });
     }
 
+    private registerEvents(player: YoutubePlayerInstanceInterface) {
+        player.addEventListener('onStateChange', (event:{data: number}) => {
+            switch (event.data) {
+                case 0:
+                    this.dispatchEvent('ended');
+                    this.dispatchEvent('stop');
+                    break;
+                case 1:
+                    this.dispatchEvent('play');
+                    break;
+                case 2:
+                    this.dispatchEvent('pause');
+                    break;
+            }
+        });
+    }
+
     private getOptions(): object {
         const
             url: string = (this.element.getAttribute('src') as string),
             urlHelper = new YTUrlHelper(url);
 
         return {
-            videoId: urlHelper.videoId
+            videoId: urlHelper.videoId,
+            playerVars: {
+                fs: this.isFullscreenAllowed() ? '1' : '0',
+                controls : this.areControlsAllowed() ? '1' : '0',
+                rel: '0'
+            }
         };
     }
 
-    public static validate(element: HTMLElement) : boolean {
+    public static validate(element: HTMLElement): boolean {
         const url: string | null = element.getAttribute('src');
         if (url && element.tagName.toLowerCase() === 'video') {
             const urlHelper = new YTUrlHelper(url);
@@ -69,6 +92,7 @@ export class Youtube extends AbstractPlayer {
     public stop(): void {
         this.queue = this.queue.then(player => {
             player.stopVideo();
+            this.dispatchEvent('stop');
             return player;
         });
 
@@ -84,6 +108,19 @@ export class Youtube extends AbstractPlayer {
     public unmute(): void {
         this.queue = this.queue.then(player => {
             player.unMute();
+            return player;
+        });
+    }
+
+    getCurrentTime(): Promise<number> {
+        return this.queue.then(player => {
+            return player.getCurrentTime();
+        });
+    }
+
+    setCurrentTime(seconds: number): void {
+        this.queue = this.queue.then(player => {
+            player.seekTo(seconds, true);
             return player;
         });
     }

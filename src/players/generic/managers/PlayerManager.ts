@@ -2,15 +2,25 @@ import {AbstractPlayer} from "../../../abstracts/AbstractPlayer";
 import {playerRegistry} from "../../../registries/PlayerRegistry";
 
 export class PlayerManager {
-    protected readonly player: AbstractPlayer | null;
+
+    protected player: AbstractPlayer | null = null;
     protected readonly originalElement: HTMLElement;
+    protected readonly whenReady : Promise<PlayerManager>
 
     constructor(element: HTMLElement) {
         this.originalElement = element;
         this.player = this.findValidPlayer();
+        this.initializeLoop();
+        this.whenReady = new Promise(resolve => {
+            if (this.player) {
+                this.player.addEventListener('ready', () => resolve(this));
+            } else {
+                resolve(this);
+            }
+        });
     }
 
-    private findValidPlayer(): AbstractPlayer | null {
+    protected findValidPlayer(): AbstractPlayer | null {
         for (const Player of playerRegistry.fetchAll()) {
             if (Player.validate(this.originalElement)) {
                 return new Player(this.originalElement);
@@ -19,69 +29,72 @@ export class PlayerManager {
         return null;
     }
 
-    private isHtmlVideoTag() {
-        return this.originalElement instanceof HTMLVideoElement;
-    }
+    protected initializeLoop() {
+        this.addEventListener('ended', () => {
+            this.setCurrentTime(0);
+            this.play();
 
-    private getHtmlVideoTag(): HTMLVideoElement {
-        return (this.originalElement as HTMLVideoElement);
-    }
-
-    public whenReady(): Promise<PlayerManager> {
-        if (!this.player) {
-            return Promise.resolve(this);
-        }
-        return this.player.whenReady.then(() => {
-            return this
         });
     }
 
     public play() {
-        if(this.player) {
+        if (this.player) {
             this.player.play();
-        } else if(this.isHtmlVideoTag()) {
-            this.getHtmlVideoTag().play();
         }
     }
 
     public pause() {
-        if(this.player) {
+        if (this.player) {
             this.player.pause();
-        } else if(this.isHtmlVideoTag()) {
-            this.getHtmlVideoTag().pause();
         }
     }
 
     public stop() {
-        if(this.player) {
+        if (this.player) {
             this.player.stop();
-        } else if(this.isHtmlVideoTag()) {
-            this.getHtmlVideoTag().pause();
         }
     }
 
 
     public mute() {
-        if(this.player) {
+        if (this.player) {
             this.player.mute();
-        } else if(this.isHtmlVideoTag()) {
-            this.getHtmlVideoTag().muted = true;
         }
     }
 
     public unmute() {
-        if(this.player) {
+        if (this.player) {
             this.player.unmute();
-        } else if(this.isHtmlVideoTag()) {
-            this.getHtmlVideoTag().muted = false;
         }
     }
 
     public getElement(): Promise<HTMLElement> {
-        const fallback: Promise<HTMLElement> = Promise.resolve(this.originalElement);
+        return this.whenReady.then(() => {
+            if (this.player) {
+                return this.player.getElement() || this.originalElement;
+            }
+            return this.originalElement;
+        });
+    }
+
+    public getCurrentTime(): Promise<number> {
+        return this.whenReady.then(() => {
+            if (this.player) {
+                return this.player.getCurrentTime();
+            }
+            return 0;
+        });
+    }
+
+    public setCurrentTime(seconds: number) {
         if (this.player) {
-            return this.player.getElement() || fallback;
+            this.player.setCurrentTime(seconds);
         }
-        return fallback;
+    }
+
+    public addEventListener(eventName: string, callback: Function) {
+        if (this.player) {
+            this.player.addEventListener(eventName, callback);
+        }
     }
 }

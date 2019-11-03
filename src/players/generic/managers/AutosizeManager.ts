@@ -1,12 +1,9 @@
-import {GenericPlayer} from "../GenericPlayer";
-
 export class AutosizeManager {
     private enabledValue: boolean = false;
     private ratioValue: number = 16 / 9;
-    private readonly callback: () => void;
 
-    constructor(private player: GenericPlayer) {
-        this.callback = this.handle.bind(this);
+    constructor(private player: {getElement: () => Promise<HTMLElement>}) {
+        this.handle = this.handle.bind(this);
     }
 
     private handle() {
@@ -29,9 +26,9 @@ export class AutosizeManager {
 
     set enabled(value: boolean) {
         if (value && !this.enabledValue) {
-            window.addEventListener('resize', this.callback);
+            window.addEventListener('resize', this.handle);
         } else if (!value) {
-            window.removeEventListener('resize', this.callback);
+            window.removeEventListener('resize', this.handle);
         }
         this.enabledValue = value;
         this.handle();

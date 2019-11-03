@@ -1,10 +1,28 @@
 {
   "name": "@codeecke/generic-player",
-  "version": "0.9.6",
+  "version": "1.0.0",
   "description": "GenericPlayer is a lightweight and easy-to-implement multi-platform-mediaplayer",
   "license": "MIT",
   "main": "dist/player.js",
   "types": "dist/types/player.d.ts",
+  "bugs": {
+    "url": "https://github.com/codeecke/generic-player/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/codeecke/generic-player"
+  },
+  "keywords": [
+    "youtube",
+    "vimeo",
+    "jwplayer",
+    "dailymotion",
+    "video",
+    "player",
+    "dsgvo",
+    "consentmanager",
+    "responsive video"
+  ],
   "scripts": {
     "build": "webpack",
     "build:prod": "webpack --mode production",
@@ -14,6 +32,8 @@
   "devDependencies": {
     "babel-plugin-syntax-dynamic-import": "^6.18.0",
     "css-loader": "^3.2.0",
+    "extract-loader": "^3.1.0",
+    "file-loader": "^4.2.0",
     "html-webpack-plugin": "^3.2.0",
     "node-sass": "^4.12.0",
     "sass-loader": "^8.0.0",
@@ -22,9 +42,7 @@
     "typescript": "^3.6.4",
     "webpack": "^4.41.2",
     "webpack-cli": "^3.3.9",
-    "webpack-dev-server": "^3.8.2",
-    "extract-loader": "^3.1.0",
-    "file-loader": "^4.2.0"
+    "webpack-dev-server": "^3.8.2"
   },
   "dependencies": {
     "@vimeo/player": "^2.10.0"
