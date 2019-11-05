@@ -13,21 +13,13 @@ export class Vimeo extends AbstractPlayer {
     constructor(element: HTMLElement) {
         super(element);
 
-        const url = `https://player.vimeo.com/video/${this.getVideoId()}?controls=${this.areControlsAllowed() ? '1' : '0'}`;
-
-        this.iframe = document.createElement('iframe');
-        this.iframe.setAttribute('src', url);
-        this.iframe.setAttribute('frameBorder', '0');
-        this.iframe.setAttribute('transparent', '1');
-        if(this.isFullscreenAllowed()) {
-            this.iframe.setAttribute('allowfullscreen','1');
-        }
-
+        this.iframe = this.createIFrame(
+            `https://player.vimeo.com/video/${this.getVideoId()}?controls=${this.areControlsAllowed() ? '1' : '0'}`
+        );
 
         if (element.parentElement) {
             element.parentElement.replaceChild(this.iframe, element);
         }
-
 
         this.player = new VimeoPlayer(this.iframe);
         this.player.on('loaded', () => this.dispatchEvent('ready'));
@@ -38,9 +30,20 @@ export class Vimeo extends AbstractPlayer {
 
     }
 
+    private createIFrame(url: string): HTMLIFrameElement {
+        const iframe: HTMLIFrameElement = document.createElement('iframe');
+        iframe.setAttribute('src', url);
+        iframe.setAttribute('frameBorder', '0');
+        iframe.setAttribute('transparent', '1');
+        if (this.isFullscreenAllowed()) {
+            iframe.setAttribute('allowfullscreen', '1');
+        }
+        return iframe;
+    }
+
     private getVideoId(): string {
         const result = validationPattern.exec(this.element.getAttribute('src') as string);
-        if(result) {
+        if (result) {
             return result[2];
         }
         return '';
@@ -50,37 +53,37 @@ export class Vimeo extends AbstractPlayer {
         return ElementValidator.validate(element);
     }
 
-    getElement(): Promise<HTMLElement> {
+    public getElement(): Promise<HTMLElement> {
         return Promise.resolve(this.iframe);
     }
 
-    play(): void {
+    public play(): void {
         this.player.play();
     }
 
-    pause(): void {
+    public pause(): void {
         this.player.pause();
     }
 
-    stop(): void {
+    public stop(): void {
         this.player.pause();
         this.player.setCurrentTime(0);
         this.dispatchEvent('stop');
     }
 
-    mute(): void {
+    public mute(): void {
         this.player.setMuted(true);
     }
 
-    unmute(): void {
+    public unmute(): void {
         this.player.setMuted(false);
     }
 
-    getCurrentTime(): Promise<number> {
+    public getCurrentTime(): Promise<number> {
         return Promise.resolve(this.player.getCurrentTime());
     }
 
-    setCurrentTime(seconds: number): void {
+    public setCurrentTime(seconds: number): void {
         this.player.setCurrentTime(seconds);
     }
 }

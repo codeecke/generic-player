@@ -1,10 +1,11 @@
 {
   "name": "@codeecke/generic-player",
-  "version": "1.0.1",
+  "version": "1.0.4",
   "description": "GenericPlayer is a lightweight and easy-to-implement multi-platform-mediaplayer",
   "license": "MIT",
   "main": "dist/player.js",
   "types": "dist/types/player.d.ts",
+  "author": "Michael Hammer",
   "bugs": {
     "url": "https://github.com/codeecke/generic-player/issues"
   },
