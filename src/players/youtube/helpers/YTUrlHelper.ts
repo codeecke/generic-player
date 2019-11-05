@@ -11,12 +11,7 @@ export class YTUrlHelper {
         shortUrl: 1
     };
 
-    constructor(private url: string) {
-    }
-
-    get isPlaylist(): boolean {
-        return this.validators.playlist.test(this.url);
-    }
+    constructor(private url: string) {}
 
     get isValid(): boolean {
         return !!this.getValidationResult();

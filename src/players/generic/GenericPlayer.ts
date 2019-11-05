@@ -6,11 +6,28 @@ import {ConfigurationManager} from "./managers/ConfigurationManager";
 import {PlayerConstructorInterface} from "../../abstracts/AbstractPlayer";
 import {playerRegistry} from "../../registries/PlayerRegistry";
 import {ConsentManager} from "./managers/ConsentManager/ConsentManager";
+import {DOMContentLoadingState} from "./managers/DOMContentLoadingState";
+
+DOMContentLoadingState.register();
 
 export class GenericPlayer {
     public readonly autosize: AutosizeManager = new AutosizeManager(this);
     static readonly config = new ConfigurationManager();
     private playerManager: Promise<PlayerManager>;
+
+    static registerPlayer(player: PlayerConstructorInterface) {
+        playerRegistry.register(player);
+    }
+
+    static autoload() {
+        if(DOMContentLoadingState.isLoaded) {
+            document.body.querySelectorAll('video').forEach(videoTag => {
+                new GenericPlayer(videoTag);
+            });
+        } else {
+            DOMContentLoadingState.watch(this.autoload.bind(this));
+        }
+    }
 
     constructor(private element: HTMLElement) {
         this.playerManager = this.createPlayerManager();
@@ -46,11 +63,6 @@ export class GenericPlayer {
                 elementManager.controlPlayerByAttributes(playerManager);
             }
         });
-    }
-
-
-    static registerPlayer(player: PlayerConstructorInterface) {
-        playerRegistry.register(player);
     }
 
     public getElement(): Promise<HTMLElement> {

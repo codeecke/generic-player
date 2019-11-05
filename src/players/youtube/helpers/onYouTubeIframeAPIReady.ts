@@ -4,7 +4,7 @@ class YouTubeIframeAPIReadyEvent extends InternalEvent {
 }
 
 try {
-    (window as any).onYouTubeIframeAPIReady = function (event: InternalEvent) {
+    (window as any).onYouTubeIframeAPIReady = function () {
         onYouTubeIframeAPIReady.dispatch();
     };
 } catch (e) {

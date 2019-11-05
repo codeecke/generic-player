@@ -44,7 +44,7 @@ export class ConsentManager {
         return wrapper;
     }
 
-    getElement(): Promise<HTMLElement> {
+    public getElement(): Promise<HTMLElement> {
         const
             result: HTMLElement = this.getTemplate(),
             infoContainer: HTMLElement | null = result.querySelector('[data-generic-player-consent-info]'),
@@ -85,7 +85,7 @@ export class ConsentManager {
         ConsentManagerState.isAccepted = true;
     }
 
-    onAccept(callback: ConsentManagerStateWatcher) {
+    public onAccept(callback: ConsentManagerStateWatcher) {
         if (ConsentManagerState.isAccepted || !GenericPlayer.config.consent.enabled) {
             callback(true);
         }

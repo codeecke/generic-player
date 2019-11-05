@@ -112,13 +112,13 @@ export class Youtube extends AbstractPlayer {
         });
     }
 
-    getCurrentTime(): Promise<number> {
+    public getCurrentTime(): Promise<number> {
         return this.queue.then(player => {
             return player.getCurrentTime();
         });
     }
 
-    setCurrentTime(seconds: number): void {
+    public setCurrentTime(seconds: number): void {
         this.queue = this.queue.then(player => {
             player.seekTo(seconds, true);
             return player;

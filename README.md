@@ -27,10 +27,11 @@ yarn add @codeecke/generic-player
 
 ### automatic mode
 
-I had implemented an autoloader. If you want to use it, you just have to import like this:
+I have implement an autoloader. If you want to use it, you do it like this:
 
 ```javascript
-import '@codeecke/generic-player/dist/autoload';
+import {GenericPlayer} from '@codeecke/generic-player';
+GenericPlayer.autoload();
 ```
 
 Now you you can use videos from different sources in your html-code like this:
