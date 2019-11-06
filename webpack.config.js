@@ -2,7 +2,8 @@ const
     path = require('path'),
     packageInfo = require('./package.json'),
     webpack = require('webpack'),
-    mode = process.argv[3];
+    mode = process.argv[3],
+    CopyPlugin = require('copy-webpack-plugin');
 
 let config = {
 
@@ -66,7 +67,11 @@ let config = {
                     'Repository: ' + packageInfo.repository.url + '\n' +
                     'Copyright ' + (new Date()).getFullYear() + ' by ' + packageInfo.author + '\n' +
                     'all rights reserved.',
-            })
+            }),
+            new CopyPlugin([{
+                from: path.resolve(__dirname, './src/scss'),
+                to: path.resolve(__dirname, './dist/scss')
+            }])
         ],
 
         output: {

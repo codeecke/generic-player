@@ -10,7 +10,9 @@ export class PlayerManager {
     constructor(element: HTMLElement) {
         this.originalElement = element;
         this.player = this.findValidPlayer();
-        this.initializeLoop();
+        if(element.hasAttribute('loop') || 'loop' in element.dataset) {
+            this.initializeLoop();
+        }
         this.whenReady = new Promise(resolve => {
             if (this.player) {
                 this.player.addEventListener('ready', () => resolve(this));
@@ -33,7 +35,6 @@ export class PlayerManager {
         this.addEventListener('ended', () => {
             this.setCurrentTime(0);
             this.play();
-
         });
     }
 
