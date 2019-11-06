@@ -53,8 +53,8 @@ export class Vimeo extends AbstractPlayer {
         return ElementValidator.validate(element);
     }
 
-    public getElement(): Promise<HTMLElement> {
-        return Promise.resolve(this.iframe);
+    public async getElement(): Promise<HTMLElement> {
+        return this.iframe;
     }
 
     public play(): void {
@@ -79,8 +79,8 @@ export class Vimeo extends AbstractPlayer {
         this.player.setMuted(false);
     }
 
-    public getCurrentTime(): Promise<number> {
-        return Promise.resolve(this.player.getCurrentTime());
+    public async getCurrentTime(): Promise<number> {
+        return await this.player.getCurrentTime()
     }
 
     public setCurrentTime(seconds: number): void {

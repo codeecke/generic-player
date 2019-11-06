@@ -11,6 +11,8 @@ __Currently supported platforms:__
 * dailymotion
 * standard html-videos
 
+
+
 ## How to install
 
 ```bash
@@ -22,6 +24,8 @@ or
 ```bash
 yarn add @codeecke/generic-player
 ```
+
+
 
 ## How to use
 
@@ -42,6 +46,8 @@ Now you you can use videos from different sources in your html-code like this:
 
 The GenericPlayer will automatically replace this video-tag with the correct platform-player (youtube in this case)
 
+
+
 ### script-mode
 
 Of course you can use this GenericPlayer in your script.
@@ -55,5 +61,17 @@ const videoTag = document.getElementById('player'),
 player.mute();
 player.play();
 ````
-
 For more informations look into the [documentation](https://github.com/codeecke/generic-player/wiki)
+
+
+
+### The easiest way to insert videos with GDPR-consent-dialog
+
+```javascript
+import {GenericPlayer} from '@codeecke/generic-player';
+
+GenericPlayer.config.consent.enabled = true;
+GenericPlayer.config.consent.content.info = 'Your privacy policy';
+GenericPlayer.config.consent.content.accept = 'Your label for the accept-button';
+GenericPlayer.autoload();
+```

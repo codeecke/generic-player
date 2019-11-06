@@ -103,11 +103,11 @@ class JWPlayer extends AbstractPlayer {
         return false;
     }
 
-    getElement(): Promise<HTMLElement> {
+    async getElement(): Promise<HTMLElement> {
         if (this.player) {
             return this.player.then(jwplayer => jwplayer.getContainer());
         }
-        return Promise.resolve(this.element);
+        return this.element;
     }
 
     mute(): void {

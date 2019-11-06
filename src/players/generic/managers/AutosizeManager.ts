@@ -10,9 +10,9 @@ export class AutosizeManager {
         this.player.getElement().then(element => {
             if (element.style && this.enabled) {
                 element.style.width = '100%';
-                setTimeout(() => {
+                Promise.resolve().then(() => {
                     element.style.height = `${element.offsetWidth / this.ratio}px`;
-                }, 1);
+                });
             } else if (element.style) {
                 delete element.style.width;
                 delete element.style.height;
