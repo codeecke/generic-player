@@ -70,8 +70,10 @@ For more informations look into the [documentation](https://github.com/codeecke/
 #### HTML
 
 ````html
-<video src="https://youtu.be/aqz-KE-bpKQ"></video>
+<video data-src="https://youtu.be/aqz-KE-bpKQ"></video>
 ````
+
+It's important to use `data-src`instead of `src`. Otherwise the browser will try to load this video automatically.
 
 #### SCSS
 
@@ -84,8 +86,12 @@ For more informations look into the [documentation](https://github.com/codeecke/
 ```javascript
 import {GenericPlayer} from '@codeecke/generic-player';
 
+// configure the consent-message
+// @see https://github.com/codeecke/generic-player/wiki/ConfigurationManager#consent
 GenericPlayer.config.consent.enabled = true;
 GenericPlayer.config.consent.content.info = 'Your privacy policy';
 GenericPlayer.config.consent.content.accept = 'Your label for the accept-button';
+
+// starts the automatic parsing of video-tags
 GenericPlayer.autoload();
 ```
