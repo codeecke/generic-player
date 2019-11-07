@@ -67,6 +67,20 @@ For more informations look into the [documentation](https://github.com/codeecke/
 
 ### The easiest way to insert videos with GDPR-consent-dialog
 
+#### HTML
+
+````html
+<video src="https://youtu.be/aqz-KE-bpKQ"></video>
+````
+
+#### SCSS
+
+```scss
+@import "~@codeecke/generic-player/dist/scss/ConsentManager";
+```
+
+#### JavaScript
+
 ```javascript
 import {GenericPlayer} from '@codeecke/generic-player';
 
