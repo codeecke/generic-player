@@ -1,0 +1,8 @@
+src
+node_modules
+docs
+RoadMap.md
+tsconfig.json
+webpack.config.js
+yarn.error.log
+.nvmrc

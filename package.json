@@ -1,6 +1,6 @@
 {
-  "name": "@codeecke/generic-player-test",
-  "version": "0.0.1",
+  "name": "@codeecke/generic-player",
+  "version": "1.0.7",
   "description": "GenericPlayer is a lightweight and easy-to-implement multi-platform-mediaplayer",
   "license": "MIT",
   "main": "dist/player.js",
@@ -51,7 +51,6 @@
     "@vimeo/player": "^2.10.0"
   },
   "files": [
-    "dist/*",
-    "!src"
+    "dist"
   ]
 }
