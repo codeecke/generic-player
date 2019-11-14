@@ -1,9 +1,14 @@
+import {GenericPlayer} from "../../GenericPlayer";
+import {AutosizeConfiguration} from "./AutosizeConfiguration";
+
 export class AutosizeManager {
     private enabledValue: boolean = false;
     private ratioValue: number = 16 / 9;
 
-    constructor(private player: {getElement: () => Promise<HTMLElement>}) {
+    constructor(private player: {autosize: AutosizeConfiguration, getElement: () => Promise<HTMLElement>}) {
         this.handle = this.handle.bind(this);
+        this.enabled = GenericPlayer.config.autosize.enabled;
+        this.ratio = GenericPlayer.config.autosize.ratio;
     }
 
     private handle() {

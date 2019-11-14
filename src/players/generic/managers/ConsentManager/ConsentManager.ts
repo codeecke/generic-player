@@ -1,23 +1,18 @@
 import {ConsentManagerState, ConsentManagerStateWatcher} from "./ConsentManagerState";
 import {GenericPlayer} from "../../GenericPlayer";
 import 'scss/ConsentManager.scss'
-import {AutosizeManager} from "../AutosizeManager";
 
 export class ConsentManager {
 
     public templateId: string = '';
     private readonly dialog: Promise<HTMLElement>;
     private readonly parent: Node | null;
-    private autosize: AutosizeManager | null = null;
 
     constructor(private element: HTMLElement, player: GenericPlayer) {
         this.parent = this.element.parentElement;
         this.dialog = this.getElement();
         if (!ConsentManagerState.isAccepted && GenericPlayer.config.consent.enabled) {
             this.showConsentDialog();
-            this.autosize = new AutosizeManager(this);
-            this.autosize.enabled = true;
-            this.autosize.ratio = player.autosize.ratio;
 
             ConsentManagerState.watch((state: boolean) => {
                 if (state) {

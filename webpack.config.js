@@ -8,7 +8,10 @@ const
 let config = {
 
         entry: {
-            'player': path.resolve(__dirname, './src/player.ts')
+            'player': [
+                'intersection-observer',
+                path.resolve(__dirname, './src/player.ts')
+            ]
         },
 
         mode: 'production',

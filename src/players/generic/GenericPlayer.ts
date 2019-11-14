@@ -1,5 +1,5 @@
 import '../players';
-import {AutosizeManager} from "./managers/AutosizeManager";
+import {AutosizeManager} from "./managers/AutosizeManager/AutosizeManager";
 import {PlayerManager} from "./managers/PlayerManager";
 import {ElementManager} from "./managers/ElementManager";
 import {ConfigurationManager} from "./managers/ConfigurationManager";
@@ -7,12 +7,15 @@ import {PlayerConstructorInterface} from "../../abstracts/AbstractPlayer";
 import {playerRegistry} from "../../registries/PlayerRegistry";
 import {ConsentManager} from "./managers/ConsentManager/ConsentManager";
 import {DOMContentLoadingState} from "./managers/DOMContentLoadingState";
+import {AutopauseManager} from "./managers/AutopauseManager/AutopauseManager";
 
 DOMContentLoadingState.register();
 
 export class GenericPlayer {
-    public readonly autosize: AutosizeManager = new AutosizeManager(this);
+
     static readonly config = new ConfigurationManager();
+    public readonly autosize: AutosizeManager;
+    public readonly autopause: AutopauseManager;
     private playerManager: Promise<PlayerManager>;
 
     static registerPlayer(player: PlayerConstructorInterface) {
@@ -20,8 +23,9 @@ export class GenericPlayer {
     }
 
     static autoload() {
-        if(DOMContentLoadingState.isLoaded) {
-            document.body.querySelectorAll('video').forEach(videoTag => {
+        if (DOMContentLoadingState.isLoaded) {
+            const videoTags = document.body.querySelectorAll('video');
+            [].slice.call(videoTags).forEach(videoTag => {
                 new GenericPlayer(videoTag);
             });
         } else {
@@ -31,7 +35,13 @@ export class GenericPlayer {
 
     constructor(private element: HTMLElement) {
         this.playerManager = this.createPlayerManager();
+        this.autosize = new AutosizeManager(this);
+        this.autopause = new AutopauseManager(this, this.playerManager);
         this.copyProperties();
+    }
+
+    get isPlaying(): boolean {
+        return this.autopause.isPlaying;
     }
 
     private createPlayerManager(): Promise<PlayerManager> {
@@ -39,8 +49,6 @@ export class GenericPlayer {
             const consentManager = new ConsentManager(this.element, this);
             consentManager.onAccept(() => {
                 setTimeout(() => {
-
-
                     if (this.element instanceof HTMLVideoElement && this.element.dataset['src']) {
                         this.element.src = this.element.dataset['src'] as string;
                     }
@@ -106,13 +114,13 @@ export class GenericPlayer {
         });
     }
 
-    getCurrentTime() : Promise<number> {
+    getCurrentTime(): Promise<number> {
         return this.playerManager.then(playerManager => {
             return playerManager.getCurrentTime();
         });
     }
 
-    setCurrentTime(seconds: number) : void {
+    setCurrentTime(seconds: number): void {
         this.playerManager = this.playerManager.then(playerManager => {
             playerManager.setCurrentTime(seconds);
             return playerManager;
@@ -146,7 +154,8 @@ export class GenericPlayer {
                         // @ts-ignore
                         el.msRequestFullscreen();
                     }
-                } catch(e) {}
+                } catch (e) {
+                }
             })
         });
     }
