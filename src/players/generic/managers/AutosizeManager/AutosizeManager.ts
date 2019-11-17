@@ -6,12 +6,12 @@ export class AutosizeManager {
     private ratioValue: number = 16 / 9;
 
     constructor(private player: {autosize: AutosizeConfiguration, getElement: () => Promise<HTMLElement>}) {
-        this.handle = this.handle.bind(this);
+        this.update = this.update.bind(this);
         this.enabled = GenericPlayer.config.autosize.enabled;
         this.ratio = GenericPlayer.config.autosize.ratio;
     }
 
-    private handle() {
+    public update() {
         this.player.getElement().then(element => {
             if (element.style && this.enabled) {
                 element.style.width = '100%';
@@ -31,12 +31,12 @@ export class AutosizeManager {
 
     set enabled(value: boolean) {
         if (value && !this.enabledValue) {
-            window.addEventListener('resize', this.handle);
+            window.addEventListener('resize', this.update);
         } else if (!value) {
-            window.removeEventListener('resize', this.handle);
+            window.removeEventListener('resize', this.update);
         }
         this.enabledValue = value;
-        this.handle();
+        this.update();
     }
 
     get ratio(): number {
@@ -45,6 +45,6 @@ export class AutosizeManager {
 
     set ratio(value: number) {
         this.ratioValue = value;
-        this.handle();
+        this.update();
     }
 }

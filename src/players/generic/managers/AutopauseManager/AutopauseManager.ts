@@ -5,14 +5,17 @@ export class AutopauseManager {
     private enabledValue: boolean = false;
     private thresholdValue: number = 0;
     private visibilityObserver: IntersectionObserver | undefined;
+    private element: HTMLElement | undefined;
     private _isPlaying: boolean = false;
-    private _isPausedAutomatically: boolean = false;
+    private _isPausedAutomatically: boolean = true;
+    private lastEntities: any[] = [];
 
     constructor(private player: GenericPlayer, private playerManager: Promise<PlayerManager>) {
         this.threshold = GenericPlayer.config.autopause.threshold;
         this.enabled = GenericPlayer.config.autopause.enabled;
         player.addEventListener('play', () => {
             this._isPlaying = true;
+            this.replyLastEvent();
         });
         player.addEventListener('pause', () => {
             this._isPlaying = false;
@@ -25,19 +28,33 @@ export class AutopauseManager {
         });
     }
 
+    private replyLastEvent() {
+        this.updateVisibilityState(
+            this.lastEntities
+        );
+    }
+
     private updateVisibilityState(entries: any) {
-        console.log(entries);
+        this.lastEntities = entries;
         if (this.enabled) {
             const
-                isVisible = entries[0].intersectionRatio >= this.threshold,
+                isVisible = this.isVisible,
                 isPlaying = this.isPlaying,
-                isPausedAutomatically = this._isPausedAutomatically;
+                wasAutomaticallyPaused = this.wasAutomaticallyPaused;
 
-            if (isVisible && !isPlaying && isPausedAutomatically) {
+            console.log({
+                isVisible,
+                isPlaying,
+                wasAutomaticallyPaused
+            });
+
+            if (isVisible && !isPlaying && wasAutomaticallyPaused) {
                 this.player.play();
+                console.log('autopause.play()');
                 this._isPausedAutomatically = false;
             } else if (!isVisible && isPlaying) {
                 this.player.pause();
+                console.log('autopause.pause()');
                 this._isPausedAutomatically = true;
             }
         }
@@ -55,16 +72,16 @@ export class AutopauseManager {
             threshold: this.threshold
         });
         this.playerManager.then(async playerManager => {
-            const element = await playerManager.getElement();
-            if(this.visibilityObserver) {
-                this.visibilityObserver.observe(element);
+            this.element = await playerManager.getElement();
+            if (this.visibilityObserver) {
+                this.visibilityObserver.observe(this.element);
             }
         });
     }
 
     private restartVisibilityObserver() {
         this.stopVisibilityObserver();
-        if(this.enabled) {
+        if (this.enabled) {
             this.startVisibilityObserver();
         }
     }
@@ -88,5 +105,16 @@ export class AutopauseManager {
 
     get isPlaying(): boolean {
         return this._isPlaying;
+    }
+
+    get isVisible(): boolean {
+        if (this.lastEntities.length) {
+            return this.lastEntities[0].intersectionRatio > this.threshold
+        }
+        return false;
+    }
+
+    get wasAutomaticallyPaused() {
+        return this._isPausedAutomatically;
     }
 }

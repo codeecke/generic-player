@@ -11,6 +11,10 @@ let config = {
             'player': [
                 'intersection-observer',
                 path.resolve(__dirname, './src/player.ts')
+            ],
+            'cdn': [
+                'intersection-observer',
+                path.resolve(__dirname, './src/cdn.ts')
             ]
         },
 

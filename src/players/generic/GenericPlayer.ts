@@ -68,7 +68,7 @@ export class GenericPlayer {
             if (this.element instanceof HTMLVideoElement) {
                 this.autosize.enabled = true;
                 this.autosize.ratio = 16 / 9;
-                elementManager.controlPlayerByAttributes(playerManager);
+                elementManager.controlPlayerByAttributes(this);
             }
         });
     }

@@ -53,6 +53,7 @@ export class Youtube extends AbstractPlayer {
 
         return {
             videoId: urlHelper.videoId,
+            host: 'https://www.youtube-nocookie.com',
             playerVars: {
                 fs: this.isFullscreenAllowed() ? '1' : '0',
                 controls : this.areControlsAllowed() ? '1' : '0',
