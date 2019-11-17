@@ -1,16 +1,20 @@
 import {GenericPlayer} from "../../GenericPlayer";
 import {PlayerManager} from "../PlayerManager";
+import {EventDispatcher} from "../../../../abstracts/EventDispatcher";
 
-export class AutopauseManager {
+export class AutopauseManager extends EventDispatcher {
     private enabledValue: boolean = false;
     private thresholdValue: number = 0;
     private visibilityObserver: IntersectionObserver | undefined;
     private element: HTMLElement | undefined;
     private _isPlaying: boolean = false;
-    private _isPausedAutomatically: boolean = true;
+    private _isPausedAutomatically: boolean = false;
     private lastEntities: any[] = [];
+    private knownVisibility : boolean = false;
 
     constructor(private player: GenericPlayer, private playerManager: Promise<PlayerManager>) {
+        super();
+
         this.threshold = GenericPlayer.config.autopause.threshold;
         this.enabled = GenericPlayer.config.autopause.enabled;
         player.addEventListener('play', () => {
@@ -26,6 +30,12 @@ export class AutopauseManager {
         player.addEventListener('ended', () => {
             this._isPlaying = false;
         });
+        this.addEventListener('visible', () => {
+            this.knownVisibility = true;
+        });
+        this.addEventListener('hidden', () => {
+            this.knownVisibility = false;
+        });
     }
 
     private replyLastEvent() {
@@ -36,28 +46,30 @@ export class AutopauseManager {
 
     private updateVisibilityState(entries: any) {
         this.lastEntities = entries;
-        if (this.enabled) {
-            const
-                isVisible = this.isVisible,
-                isPlaying = this.isPlaying,
-                wasAutomaticallyPaused = this.wasAutomaticallyPaused;
 
-            console.log({
-                isVisible,
-                isPlaying,
-                wasAutomaticallyPaused
-            });
+        const
+            isVisible = this.isVisible,
+            isPlaying = this.isPlaying,
+            wasAutomaticallyPaused = this.wasAutomaticallyPaused;
 
-            if (isVisible && !isPlaying && wasAutomaticallyPaused) {
-                this.player.play();
-                console.log('autopause.play()');
-                this._isPausedAutomatically = false;
-            } else if (!isVisible && isPlaying) {
-                this.player.pause();
-                console.log('autopause.pause()');
-                this._isPausedAutomatically = true;
+        if(isVisible !== this.knownVisibility) {
+            if (isVisible) {
+                this.dispatchEvent('visible');
+            } else {
+                this.dispatchEvent('hidden');
             }
         }
+
+
+        if (isVisible && !isPlaying && wasAutomaticallyPaused && this.enabled) {
+            this.player.play();
+            this._isPausedAutomatically = false;
+
+        } else if (!isVisible && isPlaying && this.enabled) {
+            this.player.pause();
+            this._isPausedAutomatically = true;
+        }
+
     }
 
     private stopVisibilityObserver() {
@@ -69,6 +81,7 @@ export class AutopauseManager {
     private startVisibilityObserver() {
         this.visibilityObserver = new IntersectionObserver((entries) => this.updateVisibilityState(entries), {
             root: null,
+            rootMargin: "0px 0px 0px 0px",
             threshold: this.threshold
         });
         this.playerManager.then(async playerManager => {

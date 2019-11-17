@@ -1,6 +1,6 @@
 {
-  "name": "@codeecke/generic-player",
-  "version": "1.0.7",
+  "name": "@openlib/generic-player",
+  "version": "1.1.0-preview",
   "description": "GenericPlayer is a lightweight and easy-to-implement multi-platform-mediaplayer",
   "license": "MIT",
   "main": "dist/player.js",

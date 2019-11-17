@@ -128,10 +128,28 @@ export class GenericPlayer {
     }
 
     addEventListener(eventName: string, callback: Function) {
-        this.playerManager = this.playerManager.then(playerManager => {
-            playerManager.addEventListener(eventName, callback);
-            return playerManager;
-        })
+        const
+            playerManagerEvents: string[] = [
+                'ready',
+                'play',
+                'pause',
+                'stop',
+                'ended'
+            ],
+            autopauseEvents: string[] = [
+                'visible',
+                'hidden'
+            ];
+        if(playerManagerEvents.indexOf(eventName) !== -1) {
+            this.playerManager = this.playerManager.then(playerManager => {
+                playerManager.addEventListener(eventName, callback);
+                return playerManager;
+            })
+        }
+
+        if(autopauseEvents.indexOf(eventName) !== -1) {
+            this.autopause.addEventListener(eventName, callback);
+        }
     }
 
     enterFullscreen() {
