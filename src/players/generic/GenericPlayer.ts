@@ -8,6 +8,7 @@ import {playerRegistry} from "../../registries/PlayerRegistry";
 import {ConsentManager} from "./managers/ConsentManager/ConsentManager";
 import {DOMContentLoadingState} from "./managers/DOMContentLoadingState";
 import {AutopauseManager} from "./managers/AutopauseManager/AutopauseManager";
+import {VisibilityObserver} from "./managers/VisibilityObserver";
 
 DOMContentLoadingState.register();
 
@@ -17,6 +18,8 @@ export class GenericPlayer {
     public readonly autosize: AutosizeManager;
     public readonly autopause: AutopauseManager;
     private playerManager: Promise<PlayerManager>;
+    public readonly visibilityObserver: VisibilityObserver;
+    private _isPlaying: boolean = false;
 
     static registerPlayer(player: PlayerConstructorInterface) {
         playerRegistry.register(player);
@@ -35,13 +38,24 @@ export class GenericPlayer {
 
     constructor(private element: HTMLElement) {
         this.playerManager = this.createPlayerManager();
+        this.visibilityObserver = new VisibilityObserver(element, 0);
+        this.addEventListener('play', () => this._isPlaying = true);
+        this.addEventListener(['pause', 'stop', 'ended'], () => this._isPlaying = false);
+        this.addEventListener('visible', () => console.log('visible'));
+        this.addEventListener('hidden', () => console.log('hidden'));
+        this.addEventListener('play', () => console.log('play'));
         this.autosize = new AutosizeManager(this);
-        this.autopause = new AutopauseManager(this, this.playerManager);
+        this.autopause = new AutopauseManager(this);
+        this.getElement().then(element => this.visibilityObserver.element = element);
         this.copyProperties();
     }
 
     get isPlaying(): boolean {
-        return this.autopause.isPlaying;
+        return this._isPlaying;
+    }
+
+    get isVisible(): boolean {
+        return this.visibilityObserver.isVisible;
     }
 
     private createPlayerManager(): Promise<PlayerManager> {
@@ -127,7 +141,11 @@ export class GenericPlayer {
         });
     }
 
-    addEventListener(eventName: string, callback: Function) {
+    addEventListener(eventName: string | string[], callback: Function) {
+        if(Array.isArray(eventName)) {
+            eventName.forEach(event => this.addEventListener(event, callback));
+            return;
+        }
         const
             playerManagerEvents: string[] = [
                 'ready',
@@ -136,7 +154,7 @@ export class GenericPlayer {
                 'stop',
                 'ended'
             ],
-            autopauseEvents: string[] = [
+            isibilityEvents: string[] = [
                 'visible',
                 'hidden'
             ];
@@ -147,8 +165,8 @@ export class GenericPlayer {
             })
         }
 
-        if(autopauseEvents.indexOf(eventName) !== -1) {
-            this.autopause.addEventListener(eventName, callback);
+        if(isibilityEvents.indexOf(eventName) !== -1) {
+            this.visibilityObserver.addEventListener(eventName, callback);
         }
     }
 

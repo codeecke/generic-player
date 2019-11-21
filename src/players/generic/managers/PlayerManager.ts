@@ -5,7 +5,7 @@ export class PlayerManager {
 
     protected player: AbstractPlayer | null = null;
     protected readonly originalElement: HTMLElement;
-    protected readonly whenReady : Promise<PlayerManager>
+    protected readonly whenReady : Promise<PlayerManager>;
 
     constructor(element: HTMLElement) {
         this.originalElement = element;

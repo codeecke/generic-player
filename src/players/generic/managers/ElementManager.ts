@@ -37,6 +37,7 @@ export class ElementManager {
     }
 
     public controlPlayerByAttributes(player: GenericPlayer) {
+        const autopause = player.autopause.enabled && !player.isVisible;
 
         if ((this.originalElement as HTMLVideoElement).muted) {
             player.mute();
@@ -44,6 +45,10 @@ export class ElementManager {
         if ((this.originalElement as HTMLVideoElement).autoplay) {
             player.mute();
             player.play();
+            if(autopause) {
+                player.autopause.wasAutomaticallyPaused = true;
+                player.pause();
+            }
         }
 
     }
