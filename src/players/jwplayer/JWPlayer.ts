@@ -8,7 +8,7 @@ import {SpecialValidators} from "./SpecialValidators";
 @Player()
 class JWPlayer extends AbstractPlayer {
 
-    private config: JWPlayerConfiguration = GenericPlayer.config.jwPlayer;
+    private config: JWPlayerConfiguration = GenericPlayer.preset.jwPlayer;
     private player: Promise<JWPlayerPlayer> | null = null;
 
     constructor(element: HTMLElement) {

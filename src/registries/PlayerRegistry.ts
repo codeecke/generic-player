@@ -1,4 +1,4 @@
-import {PlayerConstructorInterface} from '../abstracts/AbstractPlayer';
+import {PlayerConstructorInterface} from "../interfaces/PlayerConstructorInterface";
 
 export class PlayerRegistry {
     private players: PlayerConstructorInterface[] = [];

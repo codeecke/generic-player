@@ -1,4 +1,5 @@
 import {PlayerManager} from "./PlayerManager";
+import {GenericPlayer} from "../GenericPlayer";
 
 export class ElementManager {
     constructor(private readonly element: Promise<HTMLElement>, private originalElement: HTMLElement) {
@@ -35,8 +36,7 @@ export class ElementManager {
         this.copyDataAttributes();
     }
 
-    public controlPlayerByAttributes(player: PlayerManager) {
-
+    public controlPlayerByAttributes(player: GenericPlayer) {
         if ((this.originalElement as HTMLVideoElement).muted) {
             player.mute();
         }

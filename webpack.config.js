@@ -8,7 +8,14 @@ const
 let config = {
 
         entry: {
-            'player': path.resolve(__dirname, './src/player.ts')
+            'player': [
+                'intersection-observer',
+                path.resolve(__dirname, './src/player.ts')
+            ],
+            'cdn': [
+                'intersection-observer',
+                path.resolve(__dirname, './src/cdn.ts')
+            ]
         },
 
         mode: 'production',
@@ -48,11 +55,7 @@ let config = {
         performance: {hints: false},
 
         resolve: {
-            extensions: ['.tsx', '.ts', '.js'],
-            alias: {
-                scss: path.resolve(__dirname, 'src/scss'),
-                players: path.resolve(__dirname, 'src/players')
-            }
+            extensions: ['.tsx', '.ts', '.js']
         },
 
         devServer: {
@@ -68,12 +71,13 @@ let config = {
                     'Copyright ' + (new Date()).getFullYear() + ' by ' + packageInfo.author + '\n' +
                     'all rights reserved.',
             }),
-            new CopyPlugin([
-                {
-                    from: path.resolve(__dirname, './src/scss'),
-                    to: path.resolve(__dirname, './dist/scss')
-                }
-            ])
+            new CopyPlugin([{
+                from: path.resolve(__dirname, './src/scss'),
+                to: path.resolve(__dirname, './dist/scss')
+            }]),
+            new webpack.DefinePlugin({
+                __VERSION__: JSON.stringify(packageInfo.version)
+            })
         ],
 
         output: {

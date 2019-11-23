@@ -1,11 +1,5 @@
 import {EventDispatcher} from "./EventDispatcher";
 
-export interface PlayerConstructorInterface {
-    new(videoElement: HTMLElement): AbstractPlayer;
-
-    validate(element: HTMLElement): boolean;
-}
-
 export abstract class AbstractPlayer extends EventDispatcher {
 
     static counter: number = 0;
