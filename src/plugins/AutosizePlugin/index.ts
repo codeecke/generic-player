@@ -7,7 +7,7 @@ import {PluginConfigurationType} from "../../abstracts/plugin/PluginConfiguratio
     enabled: true,
     ratio: 16/9
 })
-class AutoSizePlugin implements PluginInterface {
+class AutosizePlugin implements PluginInterface {
 
     private _enabled: boolean = false;
     private _ratio: number = 16 / 9;
@@ -16,7 +16,6 @@ class AutoSizePlugin implements PluginInterface {
     constructor(private config: PluginConfigurationType) {}
 
     apply(player: GenericPlayer): void {
-        console.log('autosize.enabled', this.config.enabled);
         this.player = player;
         this.update = this.update.bind(this);
         if(this.config.hasOwnProperty('enabled')) {
@@ -30,8 +29,6 @@ class AutoSizePlugin implements PluginInterface {
     public async update() {
         if (this.player) {
             const element = await this.player.getElement();
-
-            console.trace(this.enabled);
 
             if (element.style && this.enabled) {
                 element.style.width = '100%';

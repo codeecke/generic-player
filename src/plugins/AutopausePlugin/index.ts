@@ -9,14 +9,13 @@ import {Plugin} from '../../decorators/Plugin';
 })
 export class Index extends EventDispatcher implements PluginInterface {
     private enabledValue: boolean = false;
-    public wasAutomaticallyPaused: boolean = false;
+    private wasAutomaticallyPaused: boolean = false;
     private player: GenericPlayer | undefined;
     private isPlaying: boolean = false;
 
     constructor(config: PluginConfigurationType) {
         super();
-
-        this.enabled = config.enabled || true;
+        this.enabled = config.hasOwnProperty('enabled') ? config.enabled : true;
     }
 
     apply(player: GenericPlayer): void {
@@ -40,14 +39,19 @@ export class Index extends EventDispatcher implements PluginInterface {
     initializeAntiAutoplay() {
         if (this.player) {
             this.player.hook.play.before('autopause:play', ({resolve, reject}) => {
+                const oldPlayingValue = this.isPlaying;
                 this.isPlaying = true;
                 this.update({
-                    play: resolve,
+                    play: () => {
+                        this.isPlaying = oldPlayingValue;
+                        resolve();
+                    },
                     pause: () => {
                         this.isPlaying = false;
                         reject('autopause');
                     }
                 });
+                this.isPlaying = oldPlayingValue;
                 resolve();
             });
         }
@@ -79,7 +83,7 @@ export class Index extends EventDispatcher implements PluginInterface {
         }
         const
             isVisible = this.player.isVisible || false,
-            isPlaying = this.player.isPlaying || this.isPlaying,
+            isPlaying = this.isPlaying,
             wasAutomaticallyPaused = this.wasAutomaticallyPaused;
 
         if (this.enabled && isVisible && !isPlaying && wasAutomaticallyPaused) {
