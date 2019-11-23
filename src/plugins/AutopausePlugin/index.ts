@@ -33,6 +33,12 @@ export class Index extends EventDispatcher implements PluginInterface {
             this.player.addEventListener(['pause', 'stop', 'ended'], () => {
                 this.isPlaying = false;
             });
+            this.player.hook.pause.after('autopause', ({resolve}) => {
+                if(!this.isPlaying) {
+                    this.wasAutomaticallyPaused = false;
+                }
+                resolve();
+            })
         }
     }
 
@@ -61,20 +67,24 @@ export class Index extends EventDispatcher implements PluginInterface {
         if(this.player){
             this.player.addEventListener(
                 ['play', 'visible', 'hidden'],
-                () => this.update({
-                    play: () => {
-                        if(this.player) {
-                            this.player.play();
-                        }
-                    },
-                    pause: () => {
-                        if(this.player) {
-                            this.player.pause();
-                        }
-                    }
-                })
+                () => this.defaultUpdate()
             );
         }
+    }
+
+    private defaultUpdate() {
+        this.update({
+            play: () => {
+                if(this.player) {
+                    this.player.play();
+                }
+            },
+            pause: () => {
+                if(this.player) {
+                    this.player.pause();
+                }
+            }
+        });
     }
 
     private update({play, pause}: { play: (() => void), pause: (() => void) }) {
@@ -103,6 +113,7 @@ export class Index extends EventDispatcher implements PluginInterface {
 
     set enabled(val: boolean) {
         this.enabledValue = val;
+        this.defaultUpdate();
     }
 
 }

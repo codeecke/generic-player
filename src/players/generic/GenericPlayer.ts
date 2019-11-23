@@ -4,7 +4,7 @@ import {PlayerManager} from "./managers/PlayerManager";
 import {ElementManager} from "./managers/ElementManager";
 import {playerRegistry} from "../../registries/PlayerRegistry";
 import {DOMContentLoadingState} from "./managers/DOMContentLoadingState";
-import {pluginConfiguration, pluginRegistry} from "../../registries/PluginRegistry";
+import {pluginDefaultConfiguration, pluginRegistry} from "../../registries/PluginRegistry";
 import {PluginConfigurationType} from "../../abstracts/plugin/PluginConfigurationType";
 import {PluginConstructorInterface} from "../../abstracts/plugin/PluginConstructorInterface";
 import {PlayerConstructorInterface} from "../../interfaces/PlayerConstructorInterface";
@@ -18,11 +18,11 @@ DOMContentLoadingState.register();
 
 export class GenericPlayer extends EventDispatcher {
     [x: string]: any; // allows plugins to modify this Object
-    // @ts-ignore
+    // @ts-ignore __VERSION__ comes from webpack
     static readonly version: string = __VERSION__;
     static readonly preset: PluginConfigurationType = {
         jwPlayer: new JWPlayerConfiguration(),
-        ...pluginConfiguration
+        ...pluginDefaultConfiguration
     };
     public readonly plugins: { [key: string]: PluginInterface } = {};
     public readonly hook: HookList = new HookList();

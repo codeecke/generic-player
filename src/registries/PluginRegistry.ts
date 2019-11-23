@@ -1,14 +1,17 @@
 import {PluginConstructorInterface} from "../abstracts/plugin/PluginConstructorInterface";
-import {GenericPlayer} from "../players/generic/GenericPlayer";
 import {PluginConfigurationType} from "../abstracts/plugin/PluginConfigurationType";
 
-export const pluginConfiguration: {[key: string]: any} = {};
+export const pluginDefaultConfiguration: { [key: string]: any } = {};
 
 export class PluginRegistry {
     private plugins: { [key: string]: PluginConstructorInterface } = {};
 
-    public register(pluginName: string, plugin: PluginConstructorInterface, defaultConfiguration: PluginConfigurationType = {}) {
-        pluginConfiguration[pluginName] = defaultConfiguration;
+    public register(
+        pluginName: string,
+        plugin: PluginConstructorInterface,
+        defaultConfiguration: PluginConfigurationType = {}
+    ) {
+        pluginDefaultConfiguration[pluginName] = defaultConfiguration;
         this.plugins[pluginName] = plugin;
     }
 
@@ -16,4 +19,5 @@ export class PluginRegistry {
         return this.plugins;
     }
 }
+
 export const pluginRegistry = new PluginRegistry();

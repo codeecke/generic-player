@@ -12,7 +12,7 @@ export class Index implements PluginInterface{
     private readonly setGlobals: boolean;
 
     constructor(private readonly config: PluginConfigurationType) {
-        this.setGlobals = config.setGlobal || true;
+        this.setGlobals = config.hasOwnProperty('setGlobal') ? config.setGlobal : true;
     }
 
     apply(player: GenericPlayer): void {

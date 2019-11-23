@@ -64,7 +64,6 @@ export class PlayerManager {
     }
 
     public unmute() {
-        console.log('unmute', this.player);
         if (this.player) {
             this.player.unmute();
         }
