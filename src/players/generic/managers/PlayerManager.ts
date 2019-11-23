@@ -4,7 +4,7 @@ import {playerRegistry} from "../../../registries/PlayerRegistry";
 export class PlayerManager {
 
     protected player: AbstractPlayer | null = null;
-    protected readonly originalElement: HTMLElement;
+    public readonly originalElement: HTMLElement;
     protected readonly whenReady : Promise<PlayerManager>;
 
     constructor(element: HTMLElement) {
@@ -64,6 +64,7 @@ export class PlayerManager {
     }
 
     public unmute() {
+        console.log('unmute', this.player);
         if (this.player) {
             this.player.unmute();
         }

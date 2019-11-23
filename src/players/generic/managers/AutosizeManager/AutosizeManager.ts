@@ -1,14 +1,14 @@
 import {GenericPlayer} from "../../GenericPlayer";
-import {AutosizeConfiguration} from "./AutosizeConfiguration";
+import {PluginConfigurationType} from "../../../../abstracts/plugin/PluginConfigurationType";
 
 export class AutosizeManager {
     private enabledValue: boolean = false;
     private ratioValue: number = 16 / 9;
 
-    constructor(private player: {autosize: AutosizeConfiguration, getElement: () => Promise<HTMLElement>}) {
+    constructor(private player: GenericPlayer, config: PluginConfigurationType) {
         this.update = this.update.bind(this);
-        this.enabled = GenericPlayer.config.autosize.enabled;
-        this.ratio = GenericPlayer.config.autosize.ratio;
+        this.enabled = config.enabled || true;
+        this.ratio = config.ratio || 16 / 9;
     }
 
     public update() {

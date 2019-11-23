@@ -8,9 +8,12 @@ export abstract class EventDispatcher {
         this.listeners[eventName].push(listener);
     }
 
-    dispatchEvent(eventName: string, data: any = undefined) {
+    protected dispatchEvent(eventName: string, data: any = undefined) {
         if (this.listeners[eventName]) {
             this.listeners[eventName].forEach(listener => listener(data));
+        }
+        if(this.listeners['all']) {
+            this.listeners['all'].forEach(listener => listener(data, eventName));
         }
     }
 }

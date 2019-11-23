@@ -1,5 +1,5 @@
-import {playerRegistry} from '../registries/PlayerRegistry';
-import {PlayerConstructorInterface} from '../abstracts/AbstractPlayer';
+import {PlayerConstructorInterface} from "../interfaces/PlayerConstructorInterface";
+import {playerRegistry} from "../registries/PlayerRegistry";
 
 export function Player() {
     return (playerClass: PlayerConstructorInterface) => {

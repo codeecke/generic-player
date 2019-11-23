@@ -1,28 +1,39 @@
 import '../players';
+import '../../plugins';
 import {AutosizeManager} from "./managers/AutosizeManager/AutosizeManager";
 import {PlayerManager} from "./managers/PlayerManager";
 import {ElementManager} from "./managers/ElementManager";
-import {ConfigurationManager} from "./managers/ConfigurationManager";
-import {PlayerConstructorInterface} from "../../abstracts/AbstractPlayer";
 import {playerRegistry} from "../../registries/PlayerRegistry";
-import {ConsentManager} from "./managers/ConsentManager/ConsentManager";
 import {DOMContentLoadingState} from "./managers/DOMContentLoadingState";
-import {AutopauseManager} from "./managers/AutopauseManager/AutopauseManager";
-import {VisibilityObserver} from "./managers/VisibilityObserver";
+import {pluginRegistry} from "../../registries/PluginRegistry";
+import {PluginConfigurationType} from "../../abstracts/plugin/PluginConfigurationType";
+import {PluginConstructorInterface} from "../../abstracts/plugin/PluginConstructorInterface";
+import {PlayerConstructorInterface} from "../../interfaces/PlayerConstructorInterface";
+import {JWPlayerConfiguration} from "../jwplayer/JWPlayerConfiguration";
+import {EventDispatcher} from "../../abstracts/EventDispatcher";
+import {PluginInterface} from "../../interfaces/PluginInterface";
+import {HookList} from "./managers/HookList";
 
 DOMContentLoadingState.register();
 
-export class GenericPlayer {
 
-    static readonly config = new ConfigurationManager();
-    public readonly autosize: AutosizeManager;
-    public readonly autopause: AutopauseManager;
-    private playerManager: Promise<PlayerManager>;
-    public readonly visibilityObserver: VisibilityObserver;
-    private _isPlaying: boolean = false;
+export class GenericPlayer extends EventDispatcher {
+    [x: string]: any; // allows plugins to modify this Object
+    static readonly preset: PluginConfigurationType = {
+        jwPlayer: new JWPlayerConfiguration()
+    };
+    public readonly plugins: { [key: string]: PluginInterface } = {};
+    public autosize: AutosizeManager;
+    public readonly hook: HookList = new HookList();
+    private readonly config: PluginConfigurationType;
+    private readonly playerManager: Promise<PlayerManager>;
 
     static registerPlayer(player: PlayerConstructorInterface) {
         playerRegistry.register(player);
+    }
+
+    static registerPlugin(name: string, plugin: PluginConstructorInterface) {
+        pluginRegistry.register(name, plugin);
     }
 
     static autoload() {
@@ -36,138 +47,145 @@ export class GenericPlayer {
         }
     }
 
-    constructor(private element: HTMLElement) {
-        this.playerManager = this.createPlayerManager();
-        this.visibilityObserver = new VisibilityObserver(element, 0);
-        this.addEventListener('play', () => this._isPlaying = true);
-        this.addEventListener(['pause', 'stop', 'ended'], () => this._isPlaying = false);
-        this.addEventListener('visible', () => console.log('visible'));
-        this.addEventListener('hidden', () => console.log('hidden'));
-        this.addEventListener('play', () => console.log('play'));
-        this.autosize = new AutosizeManager(this);
-        this.autopause = new AutopauseManager(this);
-        this.getElement().then(element => this.visibilityObserver.element = element);
-        this.copyProperties();
+    constructor(private element: HTMLElement, pluginConfiguration: PluginConfigurationType = GenericPlayer.preset) {
+        super();
+        this.config = {
+            ...GenericPlayer.preset,
+            ...pluginConfiguration
+        };
+        this.playerManager = this.initialize();
+        this.autosize = new AutosizeManager(this, this.config['autosize'] || {});
     }
 
-    get isPlaying(): boolean {
-        return this._isPlaying;
-    }
-
-    get isVisible(): boolean {
-        return this.visibilityObserver.isVisible;
+    private async initialize(): Promise<PlayerManager> {
+        await this.applyRegisteredPlugins();
+        const playerManager = await this.createPlayerManager();
+        this.copyProperties(playerManager);
+        return playerManager;
     }
 
     private createPlayerManager(): Promise<PlayerManager> {
-        return new Promise<PlayerManager>(resolve => {
-            const consentManager = new ConsentManager(this.element, this);
-            consentManager.onAccept(() => {
-                setTimeout(() => {
-                    if (this.element instanceof HTMLVideoElement && this.element.dataset['src']) {
-                        this.element.src = this.element.dataset['src'] as string;
-                    }
-                    if (this.element instanceof HTMLVideoElement && this.element.dataset['poster']) {
-                        this.element.poster = this.element.dataset['poster'] as string;
-                    }
-                    resolve(new PlayerManager(this.element));
-                }, 100)
-            });
-        });
-    }
+        return this.hook.createPlayer.execute(() => {
+            let playerManager: PlayerManager;
 
-    private copyProperties() {
-        this.playerManager.then(playerManager => {
-            const elementManager = new ElementManager(playerManager.getElement(), this.element);
-            elementManager.copyStylingRelevantAttributes();
-            if (this.element instanceof HTMLVideoElement) {
-                this.autosize.enabled = true;
-                this.autosize.ratio = 16 / 9;
-                elementManager.controlPlayerByAttributes(this);
+            if (this.element instanceof HTMLVideoElement && this.element.dataset['src']) {
+                this.element.src = this.element.dataset['src'] as string;
             }
+            if (this.element instanceof HTMLVideoElement && this.element.dataset['poster']) {
+                this.element.poster = this.element.dataset['poster'] as string;
+            }
+            playerManager = new PlayerManager(this.element);
+            playerManager.addEventListener('all', (data: any, eventName: string) => {
+                this.dispatchEvent(eventName, data);
+            });
+            return playerManager
+        }, {element: this.element}, 'createPlayer');
+    }
+
+    private copyProperties(playerManager: PlayerManager) {
+        const
+            elementManager = new ElementManager(playerManager.getElement(), this.element);
+
+        elementManager.copyStylingRelevantAttributes();
+        if (this.element instanceof HTMLVideoElement) {
+            this.autosize.enabled = true;
+            this.autosize.ratio = 16 / 9;
+            elementManager.controlPlayerByAttributes(this);
+        }
+    }
+
+    private async applyRegisteredPlugins() {
+        const plugins = pluginRegistry.fetchAll();
+        Object.keys(plugins).forEach(pluginName => {
+            const
+                Plugin = plugins[pluginName],
+                pluginConfig = this.config[pluginName] || {};
+
+            this.addPlugin(pluginName, new Plugin(pluginConfig));
         });
     }
 
-    public getElement(): Promise<HTMLElement> {
-        return this.playerManager.then(playerManager => {
-            return playerManager.getElement();
-        });
+    addPlugin(name: string, plugin: PluginInterface) {
+        this.hook.addPlugin.execute(() => {
+            this.plugins[name] = plugin;
+            if (plugin instanceof EventDispatcher) {
+                plugin.addEventListener('all', (data: any, eventName: string) => this.dispatchEvent(eventName, data));
+            }
+            plugin.apply(this);
+        })
+    }
+
+    getElement(): Promise<HTMLElement> {
+        return this.playerManager.then(playerManager => playerManager.getElement());
     }
 
     play() {
-        this.playerManager = this.playerManager.then(playerManager => {
+        this.hook.play.execute(async () => {
+            const playerManager = await this.playerManager;
             playerManager.play();
             return playerManager;
         });
     }
 
     pause() {
-        this.playerManager = this.playerManager.then(playerManager => {
+        this.hook.pause.execute(async () => {
+            const playerManager = await this.playerManager;
             playerManager.pause();
             return playerManager;
         });
     }
 
     stop() {
-        this.playerManager = this.playerManager.then(playerManager => {
+        this.hook.stop.execute(async () => {
+            const playerManager = await this.playerManager;
+
             playerManager.stop();
             return playerManager;
         });
     }
 
     mute() {
-        this.playerManager = this.playerManager.then(playerManager => {
+        this.hook.mute.execute(async () => {
+            const playerManager = await this.playerManager;
+
             playerManager.mute();
             return playerManager;
         });
     }
 
     unmute() {
-        this.playerManager = this.playerManager.then(playerManager => {
+        this.hook.unmute.execute(async () => {
+            const playerManager = await this.playerManager;
+
             playerManager.unmute();
             return playerManager;
         });
     }
 
     getCurrentTime(): Promise<number> {
-        return this.playerManager.then(playerManager => {
-            return playerManager.getCurrentTime();
-        });
+        return this.hook.getCurrentTime.execute(
+            async () => (await this.playerManager).getCurrentTime()
+        );
     }
 
     setCurrentTime(seconds: number): void {
-        this.playerManager = this.playerManager.then(playerManager => {
+        this.hook.setCurrentTime.execute(async () => {
+            const playerManager = await this.playerManager;
+
             playerManager.setCurrentTime(seconds);
             return playerManager;
         });
     }
 
     addEventListener(eventName: string | string[], callback: Function) {
-        if(Array.isArray(eventName)) {
-            eventName.forEach(event => this.addEventListener(event, callback));
-            return;
-        }
-        const
-            playerManagerEvents: string[] = [
-                'ready',
-                'play',
-                'pause',
-                'stop',
-                'ended'
-            ],
-            isibilityEvents: string[] = [
-                'visible',
-                'hidden'
-            ];
-        if(playerManagerEvents.indexOf(eventName) !== -1) {
-            this.playerManager = this.playerManager.then(playerManager => {
-                playerManager.addEventListener(eventName, callback);
-                return playerManager;
-            })
-        }
+        this.hook.addEventListener.execute(() => {
+            if (Array.isArray(eventName)) {
+                eventName.forEach(event => super.addEventListener(event, callback));
+                return;
+            }
 
-        if(isibilityEvents.indexOf(eventName) !== -1) {
-            this.visibilityObserver.addEventListener(eventName, callback);
-        }
+            super.addEventListener(eventName, callback);
+        });
     }
 
     enterFullscreen() {

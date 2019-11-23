@@ -1,0 +1,1 @@
+export type PluginConfigurationType = {[key: string]: any};
