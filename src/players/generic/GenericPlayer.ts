@@ -1,11 +1,10 @@
 import '../players';
 import '../../plugins';
-import {AutosizeManager} from "./managers/AutosizeManager/AutosizeManager";
 import {PlayerManager} from "./managers/PlayerManager";
 import {ElementManager} from "./managers/ElementManager";
 import {playerRegistry} from "../../registries/PlayerRegistry";
 import {DOMContentLoadingState} from "./managers/DOMContentLoadingState";
-import {pluginRegistry} from "../../registries/PluginRegistry";
+import {pluginConfiguration, pluginRegistry} from "../../registries/PluginRegistry";
 import {PluginConfigurationType} from "../../abstracts/plugin/PluginConfigurationType";
 import {PluginConstructorInterface} from "../../abstracts/plugin/PluginConstructorInterface";
 import {PlayerConstructorInterface} from "../../interfaces/PlayerConstructorInterface";
@@ -22,10 +21,10 @@ export class GenericPlayer extends EventDispatcher {
     // @ts-ignore
     static readonly version: string = __VERSION__;
     static readonly preset: PluginConfigurationType = {
-        jwPlayer: new JWPlayerConfiguration()
+        jwPlayer: new JWPlayerConfiguration(),
+        ...pluginConfiguration
     };
     public readonly plugins: { [key: string]: PluginInterface } = {};
-    public autosize: AutosizeManager;
     public readonly hook: HookList = new HookList();
     private readonly config: PluginConfigurationType;
     private readonly playerManager: Promise<PlayerManager>;
@@ -56,7 +55,6 @@ export class GenericPlayer extends EventDispatcher {
             ...pluginConfiguration
         };
         this.playerManager = this.initialize();
-        this.autosize = new AutosizeManager(this, this.config['autosize'] || {});
     }
 
     private async initialize(): Promise<PlayerManager> {
@@ -90,20 +88,20 @@ export class GenericPlayer extends EventDispatcher {
 
         elementManager.copyStylingRelevantAttributes();
         if (this.element instanceof HTMLVideoElement) {
-            this.autosize.enabled = true;
-            this.autosize.ratio = 16 / 9;
             elementManager.controlPlayerByAttributes(this);
         }
     }
 
     private async applyRegisteredPlugins() {
-        const plugins = pluginRegistry.fetchAll();
-        Object.keys(plugins).forEach(pluginName => {
-            const
-                Plugin = plugins[pluginName],
-                pluginConfig = this.config[pluginName] || {};
+        await this.hook.applyRegisteredPlugins.execute(() => {
+            const plugins = pluginRegistry.fetchAll();
+            Object.keys(plugins).forEach(pluginName => {
+                const
+                    Plugin = plugins[pluginName],
+                    pluginConfig = this.config[pluginName] || {};
 
-            this.addPlugin(pluginName, new Plugin(pluginConfig));
+                this.addPlugin(pluginName, new Plugin(pluginConfig));
+            });
         });
     }
 

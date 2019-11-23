@@ -1,6 +1,7 @@
 import {Hook} from "./Hook";
 
 export class HookList {
+    public readonly applyRegisteredPlugins = new Hook();
     public readonly addPlugin = new Hook();
     public readonly createPlayer = new Hook();
     public readonly play = new Hook();

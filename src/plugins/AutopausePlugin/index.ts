@@ -4,7 +4,9 @@ import {PluginInterface} from "../../interfaces/PluginInterface";
 import {PluginConfigurationType} from "../../abstracts/plugin/PluginConfigurationType";
 import {Plugin} from '../../decorators/Plugin';
 
-@Plugin('autopause')
+@Plugin('autopause', {
+    enabled: true
+})
 export class Index extends EventDispatcher implements PluginInterface {
     private enabledValue: boolean = false;
     public wasAutomaticallyPaused: boolean = false;

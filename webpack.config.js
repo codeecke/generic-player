@@ -71,12 +71,10 @@ let config = {
                     'Copyright ' + (new Date()).getFullYear() + ' by ' + packageInfo.author + '\n' +
                     'all rights reserved.',
             }),
-            new CopyPlugin([
-                {
-                    from: path.resolve(__dirname, './src/scss'),
-                    to: path.resolve(__dirname, './dist/scss')
-                }
-            ]),
+            new CopyPlugin([{
+                from: path.resolve(__dirname, './src/scss'),
+                to: path.resolve(__dirname, './dist/scss')
+            }]),
             new webpack.DefinePlugin({
                 __VERSION__: JSON.stringify(packageInfo.version)
             })

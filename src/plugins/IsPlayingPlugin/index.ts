@@ -3,7 +3,9 @@ import {GenericPlayer} from "../../players/generic/GenericPlayer";
 import {Plugin} from "../../decorators/Plugin";
 import {PluginConfigurationType} from "../../abstracts/plugin/PluginConfigurationType";
 
-@Plugin('isPlaying')
+@Plugin('isPlaying', {
+    setGlobal: true
+})
 export class Index implements PluginInterface{
 
     isPlaying: boolean = false;

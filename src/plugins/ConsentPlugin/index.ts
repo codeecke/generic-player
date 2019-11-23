@@ -5,20 +5,25 @@ import {PluginConfigurationType} from "../../abstracts/plugin/PluginConfiguratio
 import {ConsentContentConfiguration} from "./ConsentContentConfiguration";
 import {consentAcceptState} from "./ConsentAcceptState";
 
-@Plugin('consent')
+@Plugin('consent', {
+    enabled: false,
+    content: new ConsentContentConfiguration()
+})
 export class Index implements PluginInterface {
 
     private resolve: (() => void) | undefined;
     private originalElement: HTMLElement | undefined;
     private consentElement: HTMLElement | undefined;
-    private content: ConsentContentConfiguration;
     private accepted: boolean = false;
     private readonly localStorageKey: string = 'GenericPlayer::consent_accepted';
 
+    public enabled: boolean;
     private readonly ttl: number;
+    private content: ConsentContentConfiguration;
 
     constructor(config: PluginConfigurationType) {
-        this.ttl = config.ttl | 365 * 86400;
+        this.enabled = !!config.enabled || false;
+        this.ttl = config.ttl || 365 * 86400;
         this.content = new ConsentContentConfiguration(config.content || {});
     }
 
@@ -27,7 +32,7 @@ export class Index implements PluginInterface {
             this.resolve = resolve;
             this.originalElement = data.element;
 
-            if(this.isAlreadyAccepted()) {
+            if(!this.enabled || this.isAlreadyAccepted()) {
                 resolve();
             } else {
                 this.createConsent();

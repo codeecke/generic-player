@@ -4,7 +4,12 @@ import {PluginInterface} from "../../interfaces/PluginInterface";
 import {PluginConfigurationType} from "../../abstracts/plugin/PluginConfigurationType";
 import {Plugin} from "../../decorators/Plugin";
 
-@Plugin('visibility')
+@Plugin('visibility', {
+    setGlobal: true,
+    visibleEvent: 'visible',
+    hiddenEvent: 'hidden',
+    threshold: 0.001
+})
 export class Index extends EventDispatcher implements PluginInterface {
     private element: HTMLElement | undefined;
     private thresholdValue: number = 0;
