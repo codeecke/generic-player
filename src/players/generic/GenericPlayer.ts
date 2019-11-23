@@ -12,6 +12,8 @@ import {JWPlayerConfiguration} from "../jwplayer/JWPlayerConfiguration";
 import {EventDispatcher} from "../../abstracts/EventDispatcher";
 import {PluginInterface} from "../../interfaces/PluginInterface";
 import {HookList} from "./Hooks/HookList";
+import {instanceRegistry} from "../../registries/InstanceRegistry";
+import Instance = WebAssembly.Instance;
 
 DOMContentLoadingState.register();
 
@@ -48,6 +50,23 @@ export class GenericPlayer extends EventDispatcher {
         }
     }
 
+    static async find(element: HTMLElement) : Promise<GenericPlayer> {
+        return new Promise(async (resolve, reject) => {
+            const instances = instanceRegistry.fetchAll();
+            for(const instance of instances) {
+                const instanceElement = await instance.getElement();
+                if(instanceElement === element) {
+                    resolve(instance);
+                }
+            }
+            reject('Instance not found');
+        });
+    }
+
+    static all() {
+        return instanceRegistry.fetchAll();
+    }
+
     constructor(private element: HTMLElement, pluginConfiguration: PluginConfigurationType = GenericPlayer.preset) {
         super();
         this.config = {
@@ -55,6 +74,7 @@ export class GenericPlayer extends EventDispatcher {
             ...pluginConfiguration
         };
         this.playerManager = this.initialize();
+        instanceRegistry.register(this);
     }
 
     private async initialize(): Promise<PlayerManager> {
