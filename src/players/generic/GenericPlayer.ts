@@ -12,13 +12,15 @@ import {PlayerConstructorInterface} from "../../interfaces/PlayerConstructorInte
 import {JWPlayerConfiguration} from "../jwplayer/JWPlayerConfiguration";
 import {EventDispatcher} from "../../abstracts/EventDispatcher";
 import {PluginInterface} from "../../interfaces/PluginInterface";
-import {HookList} from "./managers/Hooks/HookList";
+import {HookList} from "./Hooks/HookList";
 
 DOMContentLoadingState.register();
 
 
 export class GenericPlayer extends EventDispatcher {
     [x: string]: any; // allows plugins to modify this Object
+    // @ts-ignore
+    static readonly version: string = __VERSION__;
     static readonly preset: PluginConfigurationType = {
         jwPlayer: new JWPlayerConfiguration()
     };
@@ -188,52 +190,5 @@ export class GenericPlayer extends EventDispatcher {
         });
     }
 
-    enterFullscreen() {
-        this.playerManager.then(playerManager => {
-            playerManager.getElement().then(el => {
 
-                try {
-                    if (el.requestFullscreen) {
-                        el.requestFullscreen();
-                        // @ts-ignore
-                    } else if (el.mozRequestFullScreen) { /* Firefox */
-                        // @ts-ignore
-                        el.mozRequestFullScreen();
-                        // @ts-ignore
-                    } else if (el.webkitRequestFullscreen) { /* Chrome, Safari and Opera */
-                        // @ts-ignore
-                        el.webkitRequestFullscreen();
-                        // @ts-ignore
-                    } else if (el.msRequestFullscreen) { /* IE/Edge */
-                        // @ts-ignore
-                        el.msRequestFullscreen();
-                    }
-                } catch (e) {
-                }
-            })
-        });
-    }
-
-    exitFullscreen() {
-        this.playerManager.then(playerManager => {
-            playerManager.getElement().then(el => {
-
-                if (document.exitFullscreen) {
-                    document.exitFullscreen();
-                    // @ts-ignore
-                } else if (document.mozCancelFullScreen) { /* Firefox */
-                    // @ts-ignore
-                    document.mozCancelFullScreen();
-                    // @ts-ignore
-                } else if (document.webkitExitFullscreen) { /* Chrome, Safari and Opera */
-                    // @ts-ignore
-                    document.webkitExitFullscreen();
-                    // @ts-ignore
-                } else if (document.msExitFullscreen) { /* IE/Edge */
-                    // @ts-ignore
-                    document.msExitFullscreen();
-                }
-            })
-        });
-    }
 }
