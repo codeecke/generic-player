@@ -5,19 +5,8 @@ import {PluginConfigurationType} from "../../abstracts/plugin/PluginConfiguratio
 import {ConsentContentConfiguration} from "./ConsentContentConfiguration";
 import {consentAcceptState} from "./ConsentAcceptState";
 
-/*
-{
-    "enabled": false,
-    "ttl": 31536000,
-    "content": {
-        "info": "If you accept playing videos, your browser will load them from external servers (ie. Youtube, Vimeo, dailymotion or others).",
-        "accept": "Accept"
-    }
-};
- */
-
 @Plugin('consent')
-export class ConsentPlugin implements PluginInterface {
+export class Index implements PluginInterface {
 
     private resolve: (() => void) | undefined;
     private originalElement: HTMLElement | undefined;

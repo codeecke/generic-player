@@ -1,11 +1,11 @@
-import {GenericPlayer} from "../players/generic/GenericPlayer";
-import {EventDispatcher} from "../abstracts/EventDispatcher";
-import {PluginInterface} from "../interfaces/PluginInterface";
-import {PluginConfigurationType} from "../abstracts/plugin/PluginConfigurationType";
-import {Plugin} from "../decorators/Plugin";
+import {GenericPlayer} from "../../players/generic/GenericPlayer";
+import {EventDispatcher} from "../../abstracts/EventDispatcher";
+import {PluginInterface} from "../../interfaces/PluginInterface";
+import {PluginConfigurationType} from "../../abstracts/plugin/PluginConfigurationType";
+import {Plugin} from "../../decorators/Plugin";
 
 @Plugin('visibility')
-export class VisibilityPlugin extends EventDispatcher implements PluginInterface {
+export class Index extends EventDispatcher implements PluginInterface {
     private element: HTMLElement | undefined;
     private thresholdValue: number = 0;
     private visibilityObserver: IntersectionObserver | undefined;

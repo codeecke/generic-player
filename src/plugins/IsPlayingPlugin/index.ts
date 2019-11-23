@@ -1,10 +1,10 @@
-import {PluginInterface} from "../interfaces/PluginInterface";
-import {GenericPlayer} from "../players/generic/GenericPlayer";
-import {Plugin} from "../decorators/Plugin";
-import {PluginConfigurationType} from "../abstracts/plugin/PluginConfigurationType";
+import {PluginInterface} from "../../interfaces/PluginInterface";
+import {GenericPlayer} from "../../players/generic/GenericPlayer";
+import {Plugin} from "../../decorators/Plugin";
+import {PluginConfigurationType} from "../../abstracts/plugin/PluginConfigurationType";
 
 @Plugin('isPlaying')
-export class IsPlayingPlugin implements PluginInterface{
+export class Index implements PluginInterface{
 
     isPlaying: boolean = false;
     private readonly setGlobals: boolean;

@@ -12,7 +12,7 @@ import {PlayerConstructorInterface} from "../../interfaces/PlayerConstructorInte
 import {JWPlayerConfiguration} from "../jwplayer/JWPlayerConfiguration";
 import {EventDispatcher} from "../../abstracts/EventDispatcher";
 import {PluginInterface} from "../../interfaces/PluginInterface";
-import {HookList} from "./managers/HookList";
+import {HookList} from "./managers/Hooks/HookList";
 
 DOMContentLoadingState.register();
 
