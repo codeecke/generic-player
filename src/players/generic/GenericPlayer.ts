@@ -13,9 +13,9 @@ import {EventDispatcher} from "../../abstracts/EventDispatcher";
 import {PluginInterface} from "../../interfaces/PluginInterface";
 import {HookList} from "./Hooks/HookList";
 import {instanceRegistry} from "../../registries/InstanceRegistry";
+import {InstanceSearch} from "./managers/InstanceSearch";
 
 DOMContentLoadingState.register();
-
 
 export class GenericPlayer extends EventDispatcher {
     [x: string]: any; // allows plugins to modify this Object
@@ -38,28 +38,46 @@ export class GenericPlayer extends EventDispatcher {
         pluginRegistry.register(name, plugin);
     }
 
-    static autoload() {
+    static async autoload(selector: string | ((element: HTMLElement) => PluginConfigurationType) | PluginConfigurationType = 'video', options: ((element: HTMLElement) => PluginConfigurationType) | PluginConfigurationType = {}) : Promise<GenericPlayer[]> {
+        const result: GenericPlayer[] = [];
+        if(typeof selector !== 'string') {
+            if(options === {}) {
+                options = selector;
+            }
+            selector = 'video';
+        }
+
+
         if (DOMContentLoadingState.isLoaded) {
-            const videoTags = document.body.querySelectorAll('video');
+            const videoTags = document.body.querySelectorAll(selector as string);
             [].slice.call(videoTags).forEach(videoTag => {
-                new GenericPlayer(videoTag);
+                if (options instanceof Function) {
+                    result.push(new GenericPlayer(videoTag, options(videoTag)));
+                } else {
+                    result.push(new GenericPlayer(videoTag, options));
+                }
             });
+            return result;
         } else {
-            DOMContentLoadingState.watch(this.autoload.bind(this));
+            return new Promise(resolve => {
+                DOMContentLoadingState.watch(() => {
+                    resolve(this.autoload(selector, options));
+                });
+            })
+
         }
     }
 
-    static async find(element: HTMLElement) : Promise<GenericPlayer> {
-        return new Promise(async (resolve, reject) => {
-            const instances = instanceRegistry.fetchAll();
-            for(const instance of instances) {
-                const instanceElement = await instance.getElement();
-                if(instanceElement === element) {
-                    resolve(instance);
-                }
-            }
-            reject('Instance not found');
-        });
+    static async find(selector: string): Promise<GenericPlayer[]> {
+        return  InstanceSearch.fromString(selector);
+    }
+
+    static async findByElement(element: HTMLElement) : Promise<GenericPlayer> {
+        const instance = await InstanceSearch.fromElement(element);
+        if(instance === null) {
+            return Promise.reject('No instance for element found');
+        }
+        return instance;
     }
 
     static all() {
@@ -114,6 +132,7 @@ export class GenericPlayer extends EventDispatcher {
     private async applyRegisteredPlugins() {
         await this.hook.applyRegisteredPlugins.execute(() => {
             const plugins = pluginRegistry.fetchAll();
+
             Object.keys(plugins).forEach(pluginName => {
                 const
                     Plugin = plugins[pluginName],
@@ -198,14 +217,13 @@ export class GenericPlayer extends EventDispatcher {
 
     addEventListener(eventName: string | string[], callback: Function) {
         this.hook.addEventListener.execute(() => {
-            if (Array.isArray(eventName)) {
-                eventName.forEach(event => super.addEventListener(event, callback));
-                return;
-            }
-
             super.addEventListener(eventName, callback);
         });
     }
 
-
+    removeEventListener(eventName: string | string[], callback: Function) {
+        this.hook.removeEventListener.execute(() => {
+            super.removeEventListener(eventName, callback);
+        });
+    }
 }

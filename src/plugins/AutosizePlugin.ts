@@ -1,7 +1,7 @@
-import {PluginInterface} from "../../interfaces/PluginInterface";
-import {Plugin} from "../../decorators/Plugin";
-import {GenericPlayer} from "../../players/generic/GenericPlayer";
-import {PluginConfigurationType} from "../../abstracts/plugin/PluginConfigurationType";
+import {PluginInterface} from "../interfaces/PluginInterface";
+import {Plugin} from "../decorators/Plugin";
+import {GenericPlayer} from "../players/generic/GenericPlayer";
+import {PluginConfigurationType} from "../abstracts/plugin/PluginConfigurationType";
 
 @Plugin('autosize', {
     enabled: true,

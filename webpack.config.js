@@ -9,7 +9,7 @@ let config = {
 
         entry: {
             'player': [
-                'intersection-observer',
+                // 'intersection-observer',
                 path.resolve(__dirname, './src/player.ts')
             ],
             'cdn': [
@@ -26,28 +26,6 @@ let config = {
                     test: /\.tsx?$/,
                     use: 'ts-loader',
                     exclude: /node_modules/
-                },
-                {
-                    test: /.scss$/,
-                    use: [
-                        {
-                            loader: 'file-loader',
-                            options: {
-                                name: '[name].css',
-                                outputPath: 'css/',
-                                publicPath: '/css/'
-                            }
-                        },
-                        {
-                            loader: 'extract-loader'
-                        },
-                        {
-                            loader: 'css-loader'
-                        },
-                        {
-                            loader: 'sass-loader'
-                        }
-                    ]
                 }
             ]
         },
@@ -71,10 +49,6 @@ let config = {
                     'Copyright ' + (new Date()).getFullYear() + ' by ' + packageInfo.author + '\n' +
                     'all rights reserved.',
             }),
-            new CopyPlugin([{
-                from: path.resolve(__dirname, './src/scss'),
-                to: path.resolve(__dirname, './dist/scss')
-            }]),
             new webpack.DefinePlugin({
                 __VERSION__: JSON.stringify(packageInfo.version)
             })
