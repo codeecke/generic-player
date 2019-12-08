@@ -25,7 +25,7 @@ export abstract class AbstractPlayer extends EventDispatcher {
     protected getId(): string {
         if (!this.element.id) {
             AbstractPlayer.counter++;
-            this.element.setAttribute('id', `generic-player-${AbstractPlayer.counter}`);
+            this.element.setAttribute('id', `zulu-player-${AbstractPlayer.counter}`);
         }
         return this.element.id;
     }

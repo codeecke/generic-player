@@ -1,20 +1,20 @@
 import {AbstractPlayer} from "../../abstracts/AbstractPlayer";
 import {Player} from "../../decorators/Player";
 import {JWPlayerConfiguration} from "./JWPlayerConfiguration";
-import {GenericPlayer} from "../generic/GenericPlayer";
+import {ZuluPlayer} from "../zuluplayer/ZuluPlayer";
 import {jwplayer, JWPlayerPlayer, jwplayerType} from "./JWPlayerTypes";
 import {SpecialValidators} from "./SpecialValidators";
 
 @Player()
 class JWPlayer extends AbstractPlayer {
 
-    private config: JWPlayerConfiguration = GenericPlayer.preset.jwPlayer;
+    private config: JWPlayerConfiguration = ZuluPlayer.preset.jwPlayer;
     private player: Promise<JWPlayerPlayer> | null = null;
 
     constructor(element: HTMLElement) {
         super(element);
         if (this.config.player === '') {
-            console.warn('JWPlayer needs to configure the player-api. Please set `GenericPlayer.config.jwPlayer.player`');
+            console.warn('JWPlayer needs to configure the player-api. Please set `ZuluPlayer.config.jwPlayer.player`');
             return;
         }
         this.player = this.loadPlayerAPI()

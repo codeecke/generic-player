@@ -1,17 +1,18 @@
 {
-  "name": "@openlib/generic-player",
-  "version": "1.1.0-preview",
-  "description": "GenericPlayer is a lightweight and easy-to-implement multi-platform-mediaplayer",
+  "name": "@zuluplayer/player",
+  "version": "1.1.0",
+  "description": "OpenPlayer is an intelligent javascript-library for easy implementation of videos from different platforms to your source-code.",
   "license": "MIT",
   "main": "dist/player.js",
   "types": "dist/types/player.d.ts",
   "author": "Michael Hammer",
+  "homepage": "https://www.zuluplayer.com/",
   "bugs": {
-    "url": "https://github.com/codeecke/generic-player/issues"
+    "url": "https://github.com/zuluplayer/player/issues"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/codeecke/generic-player"
+    "url": "https://github.com/zuluplayer/player"
   },
   "keywords": [
     "youtube",
@@ -20,9 +21,6 @@
     "dailymotion",
     "video",
     "player",
-    "dsgvo",
-    "rgpd",
-    "consentmanager",
     "responsive video"
   ],
   "scripts": {

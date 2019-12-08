@@ -17,7 +17,7 @@ import {InstanceSearch} from "./managers/InstanceSearch";
 
 DOMContentLoadingState.register();
 
-export class GenericPlayer extends EventDispatcher {
+export class ZuluPlayer extends EventDispatcher {
     [x: string]: any; // allows plugins to modify this Object
     // @ts-ignore __VERSION__ comes from webpack
     static readonly version: string = __VERSION__;
@@ -38,10 +38,20 @@ export class GenericPlayer extends EventDispatcher {
         pluginRegistry.register(name, plugin);
     }
 
-    static async autoload(selector: string | ((element: HTMLElement) => PluginConfigurationType) | PluginConfigurationType = 'video', options: ((element: HTMLElement) => PluginConfigurationType) | PluginConfigurationType = {}) : Promise<GenericPlayer[]> {
-        const result: GenericPlayer[] = [];
-        if(typeof selector !== 'string') {
-            if(options === {}) {
+    static async create(
+        selector: (
+            string |
+            ((element: HTMLElement) => PluginConfigurationType) |
+            PluginConfigurationType
+            ) = 'video',
+        options: ((
+            (element: HTMLElement) => PluginConfigurationType) |
+            PluginConfigurationType
+            ) = {}
+    ): Promise<ZuluPlayer[]> {
+        const result: ZuluPlayer[] = [];
+        if (typeof selector !== 'string') {
+            if (options === {}) {
                 options = selector;
             }
             selector = 'video';
@@ -52,29 +62,29 @@ export class GenericPlayer extends EventDispatcher {
             const videoTags = document.body.querySelectorAll(selector as string);
             [].slice.call(videoTags).forEach(videoTag => {
                 if (options instanceof Function) {
-                    result.push(new GenericPlayer(videoTag, options(videoTag)));
+                    result.push(new ZuluPlayer(videoTag, options(videoTag)));
                 } else {
-                    result.push(new GenericPlayer(videoTag, options));
+                    result.push(new ZuluPlayer(videoTag, options));
                 }
             });
             return result;
         } else {
             return new Promise(resolve => {
                 DOMContentLoadingState.watch(() => {
-                    resolve(this.autoload(selector, options));
+                    resolve(this.create(selector, options));
                 });
-            })
+            });
 
         }
     }
 
-    static async find(selector: string): Promise<GenericPlayer[]> {
-        return  InstanceSearch.fromString(selector);
+    static async find(selector: string): Promise<ZuluPlayer[]> {
+        return InstanceSearch.fromString(selector);
     }
 
-    static async findByElement(element: HTMLElement) : Promise<GenericPlayer> {
+    static async findByElement(element: HTMLElement): Promise<ZuluPlayer> {
         const instance = await InstanceSearch.fromElement(element);
-        if(instance === null) {
+        if (instance === null) {
             return Promise.reject('No instance for element found');
         }
         return instance;
@@ -84,10 +94,10 @@ export class GenericPlayer extends EventDispatcher {
         return instanceRegistry.fetchAll();
     }
 
-    constructor(private element: HTMLElement, pluginConfiguration: PluginConfigurationType = GenericPlayer.preset) {
+    constructor(private element: HTMLElement, pluginConfiguration: PluginConfigurationType = ZuluPlayer.preset) {
         super();
         this.config = {
-            ...GenericPlayer.preset,
+            ...ZuluPlayer.preset,
             ...pluginConfiguration
         };
         this.playerManager = this.initialize();
@@ -97,6 +107,7 @@ export class GenericPlayer extends EventDispatcher {
     private async initialize(): Promise<PlayerManager> {
         await this.applyRegisteredPlugins();
         const playerManager = await this.createPlayerManager();
+        console.log(playerManager);
         this.copyProperties(playerManager);
         return playerManager;
     }
@@ -138,7 +149,11 @@ export class GenericPlayer extends EventDispatcher {
                     Plugin = plugins[pluginName],
                     pluginConfig = this.config[pluginName] || {};
 
-                this.addPlugin(pluginName, new Plugin(pluginConfig));
+                if (Plugin.getInstance) {
+                    this.addPlugin(pluginName, Plugin.getInstance(pluginConfig));
+                } else {
+                    this.addPlugin(pluginName, new Plugin(pluginConfig));
+                }
             });
         });
     }
@@ -146,15 +161,16 @@ export class GenericPlayer extends EventDispatcher {
     addPlugin(name: string, plugin: PluginInterface) {
         this.hook.addPlugin.execute(() => {
             this.plugins[name] = plugin;
-            if (plugin instanceof EventDispatcher) {
+            if (plugin['addEventListener']) {
                 plugin.addEventListener('all', (data: any, eventName: string) => this.dispatchEvent(eventName, data));
             }
             plugin.apply(this);
         })
     }
 
-    getElement(): Promise<HTMLElement> {
-        return this.playerManager.then(playerManager => playerManager.getElement());
+    async getElement(): Promise<HTMLElement> {
+        const playerManager = await this.playerManager;
+        return playerManager.getElement();
     }
 
     play() {

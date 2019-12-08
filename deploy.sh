@@ -2,7 +2,10 @@
 
 # build assets
 rm -rf dist
-yarn build:prod
+if [ "$2" != "dev" ]
+then
+  yarn build:prod
+fi
 
 # deploying to cdn
 if [ "$1" == "cdn" ]
@@ -13,6 +16,12 @@ then
   localfile="./dist/cdn.js"
 
   echo "Copying: $localfile -> openlib@codeecke.de:$cdn_path/$cdn_filename"
+
+  if [ "$2" == "dev" ]
+  then
+    yarn build:dev
+    scp "$localfile.map" "openlib@codeecke.de:$cdn_path/$cdn_filename.map"
+  fi
 
   scp "$localfile" "openlib@codeecke.de:$cdn_path/$cdn_filename"
 fi

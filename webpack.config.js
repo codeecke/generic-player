@@ -45,6 +45,7 @@ let config = {
         plugins: [
             new webpack.BannerPlugin({
                 banner: packageInfo.name + ' v' + packageInfo.version + ' - ' + packageInfo.license + ' license\n' +
+                    'Websize: ' + packageInfo.homepage + '\n' +
                     'Repository: ' + packageInfo.repository.url + '\n' +
                     'Copyright ' + (new Date()).getFullYear() + ' by ' + packageInfo.author + '\n' +
                     'all rights reserved.',

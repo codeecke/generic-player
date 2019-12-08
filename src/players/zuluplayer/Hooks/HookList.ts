@@ -13,4 +13,5 @@ export class HookList {
     public readonly setCurrentTime = new Hook();
     public readonly addEventListener = new Hook();
     public readonly removeEventListener = new Hook();
+    public readonly getElement = new Hook();
 }

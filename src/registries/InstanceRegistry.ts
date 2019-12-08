@@ -1,9 +1,9 @@
-import {GenericPlayer} from "../players/generic/GenericPlayer";
+import {ZuluPlayer} from "../players/zuluplayer/ZuluPlayer";
 
 class InstanceRegistry {
-    private instances: GenericPlayer[] = [];
+    private instances: ZuluPlayer[] = [];
 
-    public register(instance: GenericPlayer) {
+    public register(instance: ZuluPlayer) {
         this.instances.push(instance);
     }
 

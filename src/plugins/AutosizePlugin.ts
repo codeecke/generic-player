@@ -1,6 +1,6 @@
 import {PluginInterface} from "../interfaces/PluginInterface";
 import {Plugin} from "../decorators/Plugin";
-import {GenericPlayer} from "../players/generic/GenericPlayer";
+import {ZuluPlayer} from "../players/zuluplayer/ZuluPlayer";
 import {PluginConfigurationType} from "../abstracts/plugin/PluginConfigurationType";
 
 @Plugin('autosize', {
@@ -11,11 +11,11 @@ class AutosizePlugin implements PluginInterface {
 
     private _enabled: boolean = false;
     private _ratio: number = 16 / 9;
-    private player: GenericPlayer | undefined;
+    private player: ZuluPlayer | undefined;
 
     constructor(private config: PluginConfigurationType) {}
 
-    apply(player: GenericPlayer): void {
+    apply(player: ZuluPlayer): void {
         this.player = player;
         this.update = this.update.bind(this);
         if(this.config.hasOwnProperty('enabled')) {
@@ -27,15 +27,23 @@ class AutosizePlugin implements PluginInterface {
     }
 
     public async update() {
+        if(!this.enabled) {
+            return ;
+        }
         if (this.player) {
-            const element = await this.player.getElement();
 
-            if (element.style && this.enabled) {
+           const element = await this.player.getElement();
+
+            if(!element) {
+                return;
+            }
+
+            if (element.hasOwnProperty('style')) {
                 element.style.width = '100%';
                 Promise.resolve().then(() => {
                     element.style.height = `${element.offsetWidth / this.ratio}px`;
                 });
-            } else if (element.style) {
+            } else if (element.hasOwnProperty('style')) {
                 delete element.style.width;
                 delete element.style.height;
             }

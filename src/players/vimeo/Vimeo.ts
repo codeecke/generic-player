@@ -36,7 +36,10 @@ export class Vimeo extends AbstractPlayer {
         iframe.setAttribute('frameBorder', '0');
         iframe.setAttribute('transparent', '1');
         if (this.isFullscreenAllowed()) {
+            iframe.setAttribute('allow', 'autoplay; fullscreen');
             iframe.setAttribute('allowfullscreen', '1');
+        } else {
+            iframe.setAttribute('allow', 'autoplay');
         }
         return iframe;
     }
