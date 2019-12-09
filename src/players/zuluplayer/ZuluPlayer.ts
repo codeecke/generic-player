@@ -38,6 +38,21 @@ export class ZuluPlayer extends EventDispatcher {
         pluginRegistry.register(name, plugin);
     }
 
+    static async autoload(
+        selector: (
+            string |
+            ((element: HTMLElement) => PluginConfigurationType) |
+            PluginConfigurationType
+            ) = 'video',
+        options: ((
+            (element: HTMLElement) => PluginConfigurationType) |
+            PluginConfigurationType
+            ) = {}
+    ) {
+        console.warn('ZuluPlayer.autoload() is deprecated. Please use ZuluPlayer.create()');
+        return this.create(selector, options);
+    }
+
     static async create(
         selector: (
             string |
@@ -107,7 +122,6 @@ export class ZuluPlayer extends EventDispatcher {
     private async initialize(): Promise<PlayerManager> {
         await this.applyRegisteredPlugins();
         const playerManager = await this.createPlayerManager();
-        console.log(playerManager);
         this.copyProperties(playerManager);
         return playerManager;
     }

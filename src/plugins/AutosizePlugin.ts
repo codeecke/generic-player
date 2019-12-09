@@ -27,23 +27,15 @@ class AutosizePlugin implements PluginInterface {
     }
 
     public async update() {
-        if(!this.enabled) {
-            return ;
-        }
         if (this.player) {
 
            const element = await this.player.getElement();
-
-            if(!element) {
-                return;
-            }
-
-            if (element.hasOwnProperty('style')) {
+            if (element.style && this.enabled) {
                 element.style.width = '100%';
                 Promise.resolve().then(() => {
                     element.style.height = `${element.offsetWidth / this.ratio}px`;
                 });
-            } else if (element.hasOwnProperty('style')) {
+            } else if (element.style) {
                 delete element.style.width;
                 delete element.style.height;
             }
