@@ -39,40 +39,18 @@ export class ZuluPlayer extends EventDispatcher {
     }
 
     static async autoload(
-        selector: (
-            string |
-            ((element: HTMLElement) => PluginConfigurationType) |
-            PluginConfigurationType
-            ) = 'video',
-        options: ((
-            (element: HTMLElement) => PluginConfigurationType) |
-            PluginConfigurationType
-            ) = {}
+        selector: string  = 'video',
+        options: (((element: HTMLElement) => PluginConfigurationType) | PluginConfigurationType) = {}
     ) {
         console.warn('ZuluPlayer.autoload() is deprecated. Please use ZuluPlayer.create()');
         return this.create(selector, options);
     }
 
     static async create(
-        selector: (
-            string |
-            ((element: HTMLElement) => PluginConfigurationType) |
-            PluginConfigurationType
-            ) = 'video',
-        options: ((
-            (element: HTMLElement) => PluginConfigurationType) |
-            PluginConfigurationType
-            ) = {}
+        selector: string  = 'video',
+        options: (((element: HTMLElement) => PluginConfigurationType) | PluginConfigurationType) = {}
     ): Promise<ZuluPlayer[]> {
         const result: ZuluPlayer[] = [];
-        if (typeof selector !== 'string') {
-            if (options === {}) {
-                options = selector;
-            }
-            selector = 'video';
-        }
-
-
         if (DOMContentLoadingState.isLoaded) {
             const videoTags = document.body.querySelectorAll(selector as string);
             [].slice.call(videoTags).forEach(videoTag => {
