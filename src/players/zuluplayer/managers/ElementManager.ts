@@ -5,14 +5,10 @@ export class ElementManager {
     }
 
     private async copyClassList() {
-        try {
-            const element = await this.element;
-            this.originalElement.classList.forEach(className => {
-                element.classList.add(className);
-            });
-        } catch (e) {
-            console.error('ERROR007', e);
-        }
+        const element = await this.element;
+        this.originalElement.classList.forEach(className => {
+            element.classList.add(className);
+        });
     }
 
     private async copyId() {

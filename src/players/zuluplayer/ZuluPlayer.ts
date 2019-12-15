@@ -38,6 +38,11 @@ export class ZuluPlayer extends EventDispatcher {
         pluginRegistry.register(name, plugin);
     }
 
+    /**
+     * @deprecated
+     * @param selector
+     * @param options
+     */
     static async autoload(
         selector: string  = 'video',
         options: (((element: HTMLElement) => PluginConfigurationType) | PluginConfigurationType) = {}

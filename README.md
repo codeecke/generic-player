@@ -34,7 +34,7 @@ or use the [cdn](http://cdn.zuluplayer.com/).
 
 ###JavaScript
 ```javascript
-ZuluPlayer.autoload();
+ZuluPlayer.create();
 ```
 
 

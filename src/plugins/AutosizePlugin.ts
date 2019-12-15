@@ -5,7 +5,7 @@ import {PluginConfigurationType} from "../abstracts/plugin/PluginConfigurationTy
 
 @Plugin('autosize', {
     enabled: true,
-    ratio: 16/9
+    ratio: 16 / 9
 })
 class AutosizePlugin implements PluginInterface {
 
@@ -13,12 +13,13 @@ class AutosizePlugin implements PluginInterface {
     private _ratio: number = 16 / 9;
     private player: ZuluPlayer | undefined;
 
-    constructor(private config: PluginConfigurationType) {}
+    constructor(private config: PluginConfigurationType) {
+    }
 
     apply(player: ZuluPlayer): void {
         this.player = player;
         this.update = this.update.bind(this);
-        if(this.config.hasOwnProperty('enabled')) {
+        if (this.config.hasOwnProperty('enabled')) {
             this.enabled = this.config.enabled;
         } else {
             this.enabled = true;
@@ -29,7 +30,7 @@ class AutosizePlugin implements PluginInterface {
     public async update() {
         if (this.player) {
 
-           const element = await this.player.getElement();
+            const element = await this.player.getElement();
             if (element.style && this.enabled) {
                 element.style.width = '100%';
                 Promise.resolve().then(() => {
