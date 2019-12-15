@@ -1,6 +1,4 @@
-<p>
-    <img src="https://brand.zuluplayer.com/images/logo/white-bg.svg" alt="ZuluPlayer" />
-</p>
+<img src="https://svgshare.com/i/Gon.svg" alt="ZuluPlayer" style="width: 100%; max-width: 400px" />
 
 ## What is ZuluPlayer?
 
@@ -25,14 +23,14 @@ or use the [cdn](http://cdn.zuluplayer.com/).
 
 
 
-##How to use
+## How to use
 
-###HTML
+### HTML
 ```html
 <video src="https://www.youtube.com/watch?v=aqz-KE-bpKQ"></video>
 ```
 
-###JavaScript
+### JavaScript
 ```javascript
 ZuluPlayer.create();
 ```
