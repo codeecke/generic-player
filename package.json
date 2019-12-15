@@ -1,17 +1,18 @@
 {
-  "name": "@openlib/generic-player",
-  "version": "1.1.0-preview",
-  "description": "GenericPlayer is a lightweight and easy-to-implement multi-platform-mediaplayer",
+  "name": "@zuluplayer/player",
+  "version": "1.1.0",
+  "description": "OpenPlayer is an intelligent javascript-library for easy implementation of videos from different platforms to your source-code.",
   "license": "MIT",
   "main": "dist/player.js",
   "types": "dist/types/player.d.ts",
   "author": "Michael Hammer",
+  "homepage": "https://www.zuluplayer.com/",
   "bugs": {
-    "url": "https://github.com/codeecke/generic-player/issues"
+    "url": "https://github.com/zuluplayer/player/issues"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/codeecke/generic-player"
+    "url": "https://github.com/zuluplayer/player"
   },
   "keywords": [
     "youtube",
@@ -20,9 +21,6 @@
     "dailymotion",
     "video",
     "player",
-    "dsgvo",
-    "rgpd",
-    "consentmanager",
     "responsive video"
   ],
   "scripts": {
@@ -34,16 +32,16 @@
   "devDependencies": {
     "@babel/polyfill": "^7.7.0",
     "babel-plugin-syntax-dynamic-import": "^6.18.0",
-    "copy-webpack-plugin": "^5.0.5",
-    "css-loader": "^3.2.0",
+    "copy-webpack-plugin": "^5.1.1",
+    "css-loader": "^3.3.2",
     "extract-loader": "^3.1.0",
-    "file-loader": "^4.2.0",
+    "file-loader": "^4.3.0",
     "html-webpack-plugin": "^3.2.0",
     "node-sass": "^4.13.0",
     "sass-loader": "^8.0.0",
-    "style-loader": "^1.0.0",
+    "style-loader": "^1.0.1",
     "ts-loader": "^6.2.1",
-    "typescript": "^3.7.2",
+    "typescript": "^3.7.3",
     "webpack": "^4.41.2",
     "webpack-cli": "^3.3.10",
     "webpack-dev-server": "^3.9.0"

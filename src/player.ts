@@ -1,3 +1,3 @@
-import {GenericPlayer} from './players/generic/GenericPlayer';
+import {ZuluPlayer} from './players/zuluplayer/ZuluPlayer';
 
-exports.GenericPlayer = GenericPlayer;
+exports.ZuluPlayer = ZuluPlayer;

@@ -1,8 +1,8 @@
 import {instanceRegistry} from "../../../registries/InstanceRegistry";
-import {GenericPlayer} from "../GenericPlayer";
+import {ZuluPlayer} from "../ZuluPlayer";
 
 export class InstanceSearch {
-    static async fromElement(element: HTMLElement) : Promise<GenericPlayer | null> {
+    static async fromElement(element: HTMLElement) : Promise<ZuluPlayer | null> {
         const instances = instanceRegistry.fetchAll();
         for (const instance of instances) {
             const instanceElement = await instance.getElement();
@@ -13,14 +13,14 @@ export class InstanceSearch {
         return null
     }
 
-    static async fromArray(elements: HTMLElement[]) : Promise<GenericPlayer[]> {
+    static async fromArray(elements: HTMLElement[]) : Promise<ZuluPlayer[]> {
         const
-            result: GenericPlayer[] = [],
-            instances: Promise<GenericPlayer | null>[] = elements.map(el => this.fromElement(el));
+            result: ZuluPlayer[] = [],
+            instances: Promise<ZuluPlayer | null>[] = elements.map(el => this.fromElement(el));
 
         for (const instancePromise of instances) {
             const instance = await instancePromise;
-            if(instance instanceof GenericPlayer) {
+            if(instance instanceof ZuluPlayer) {
                 result.push(instance);
             }
         }

@@ -1,6 +1,6 @@
-import {GenericPlayer} from "../players/generic/GenericPlayer";
+import {ZuluPlayer} from "../players/zuluplayer/ZuluPlayer";
 
 export interface PluginInterface {
     [x: string]: any;
-    apply(player: GenericPlayer) : void;
+    apply(player: ZuluPlayer) : void;
 }

@@ -30,7 +30,7 @@ export class Youtube extends AbstractPlayer {
     }
 
     private registerEvents(player: YoutubePlayerInstanceInterface) {
-        player.addEventListener('onStateChange', (event:{data: number}) => {
+        player.addEventListener('onStateChange', (event:any) => {
             switch (event.data) {
                 case 0:
                     this.dispatchEvent('ended');

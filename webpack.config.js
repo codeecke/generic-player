@@ -9,7 +9,7 @@ let config = {
 
         entry: {
             'player': [
-                // 'intersection-observer',
+                'intersection-observer',
                 path.resolve(__dirname, './src/player.ts')
             ],
             'cdn': [
@@ -45,6 +45,7 @@ let config = {
         plugins: [
             new webpack.BannerPlugin({
                 banner: packageInfo.name + ' v' + packageInfo.version + ' - ' + packageInfo.license + ' license\n' +
+                    'Website: ' + packageInfo.homepage + '\n' +
                     'Repository: ' + packageInfo.repository.url + '\n' +
                     'Copyright ' + (new Date()).getFullYear() + ' by ' + packageInfo.author + '\n' +
                     'all rights reserved.',
@@ -66,6 +67,7 @@ let config = {
 
 if (mode === 'development') {
     config.devtool = 'source-map';
+    config.watch = true;
 }
 
 module.exports = config;

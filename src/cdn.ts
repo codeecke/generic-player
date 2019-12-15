@@ -1,4 +1,4 @@
-import {GenericPlayer} from './players/generic/GenericPlayer';
+import {ZuluPlayer} from './players/zuluplayer/ZuluPlayer';
 
 // @ts-ignore
-window.GenericPlayer = GenericPlayer;
+window.ZuluPlayer = ZuluPlayer;
