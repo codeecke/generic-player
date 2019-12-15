@@ -67,6 +67,7 @@ let config = {
 
 if (mode === 'development') {
     config.devtool = 'source-map';
+    config.watch = true;
 }
 
 module.exports = config;

@@ -1,5 +1,5 @@
 <p>
-    <img src="http://brand.zuluplayer.com/images/logo.svg" alt="ZuluPlayer" />
+    <img src="https://brand.zuluplayer.com/images/logo/white-bg.svg" alt="ZuluPlayer" />
 </p>
 
 ## What is ZuluPlayer?

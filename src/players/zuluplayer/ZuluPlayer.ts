@@ -50,7 +50,7 @@ export class ZuluPlayer extends EventDispatcher {
         selector: string  = 'video',
         options: (((element: HTMLElement) => PluginConfigurationType) | PluginConfigurationType) = {}
     ): Promise<ZuluPlayer[]> {
-        const result: ZuluPlayer[] = [];
+        const result: ZuluPlayer[] = new Array<ZuluPlayer>();
         if (DOMContentLoadingState.isLoaded) {
             const videoTags = document.body.querySelectorAll(selector as string);
             [].slice.call(videoTags).forEach(videoTag => {
