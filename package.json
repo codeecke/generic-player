@@ -1,7 +1,7 @@
 {
   "name": "@zuluplayer/player",
   "version": "1.1.0",
-  "description": "OpenPlayer is an intelligent javascript-library for easy implementation of videos from different platforms to your source-code.",
+  "description": "ZuluPlayer is an intelligent javascript-library for easy implementation of videos from different platforms to your project.",
   "license": "MIT",
   "main": "dist/player.js",
   "types": "dist/types/player.d.ts",
@@ -47,8 +47,7 @@
     "webpack-dev-server": "^3.9.0"
   },
   "dependencies": {
-    "@vimeo/player": "^2.10.0",
-    "intersection-observer": "^0.7.0"
+    "@vimeo/player": "^2.10.0"
   },
   "files": [
     "dist"

@@ -6,7 +6,7 @@ ZuluPlayer is an intelligent javascript-library for easy implementation of video
 
 It’s no longer important where your videos are hosted. With ZuluPlayer you’ve got one single api to control videos from youtube, vimeo, dailymotion, jw-player and selfhosted html-videos.
 
-ZuluPlayer is [open-source](https://github.com/zuluplayer/player), has a [detailed documentation](http://www.zuluplayer.com/docs/) and can easily customized by [plugins](http://www.zuluplayer.com/#plugins) and player-implementations.
+ZuluPlayer is [open-source](https://github.com/zuluplayer/player), has a [detailed documentation](http://www.zuluplayer.com/docs/) and can easily customized by [plugins](http://www.zuluplayer.com/plugins) and player-implementations.
 
 
 
@@ -38,4 +38,4 @@ ZuluPlayer.create();
 
 
 ## Demos
-See the [demos](http://www.zuluplayer.com/demo.html).
+See the [demos](http://www.zuluplayer.com/demo).

@@ -2,18 +2,15 @@ const
     path = require('path'),
     packageInfo = require('./package.json'),
     webpack = require('webpack'),
-    mode = process.argv[3],
-    CopyPlugin = require('copy-webpack-plugin');
+    mode = process.argv[3];
 
 let config = {
 
         entry: {
             'player': [
-                'intersection-observer',
                 path.resolve(__dirname, './src/player.ts')
             ],
             'cdn': [
-                'intersection-observer',
                 path.resolve(__dirname, './src/cdn.ts')
             ]
         },
