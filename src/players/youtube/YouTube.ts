@@ -1,5 +1,5 @@
 import {Player} from '../../decorators/Player';
-import {AbstractPlayer} from '../../abstracts/AbstractPlayer';
+import {AbstractPlayer} from '../../sdk/classes/AbstractPlayer';
 import {APILoader} from './helpers/APILoader';
 import {YoutubePlayerInstanceInterface} from './interfaces/APIInterfaces';
 import {YTUrlHelper} from './helpers/YTUrlHelper';

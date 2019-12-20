@@ -1,6 +1,7 @@
 import {Hook} from "./Hook";
+import {HookListInterface} from "../../../sdk/interfaces/hooks/HookListInterface";
 
-export class HookList {
+export class HookList implements HookListInterface{
     public readonly applyRegisteredPlugins = new Hook();
     public readonly addPlugin = new Hook();
     public readonly createPlayer = new Hook();

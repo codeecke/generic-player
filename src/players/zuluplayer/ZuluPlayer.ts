@@ -5,19 +5,20 @@ import {ElementManager} from "./managers/ElementManager";
 import {playerRegistry} from "../../registries/PlayerRegistry";
 import {DOMContentLoadingState} from "./managers/DOMContentLoadingState";
 import {pluginDefaultConfiguration, pluginRegistry} from "../../registries/PluginRegistry";
-import {PluginConfigurationType} from "../../abstracts/plugin/PluginConfigurationType";
-import {PluginConstructorInterface} from "../../abstracts/plugin/PluginConstructorInterface";
-import {PlayerConstructorInterface} from "../../interfaces/PlayerConstructorInterface";
 import {JWPlayerConfiguration} from "../jwplayer/JWPlayerConfiguration";
-import {EventDispatcher} from "../../abstracts/EventDispatcher";
-import {PluginInterface} from "../../interfaces/PluginInterface";
 import {HookList} from "./Hooks/HookList";
 import {instanceRegistry} from "../../registries/InstanceRegistry";
 import {InstanceSearch} from "./managers/InstanceSearch";
+import { EventDispatcher } from '../../sdk/classes/EventDispatcher';
+import { PluginInterface } from '../../sdk/interfaces/plugin/PluginInterface';
+import {PlayerConstructorInterface} from "../../sdk/interfaces/player/PlayerConstructorInterface";
+import {PluginConstructorInterface} from "../../sdk/interfaces/plugin/PluginConstructorInterface";
+import {PluginConfigurationType} from "../../sdk/types/PluginConfigurationType";
+import {ZuluPlayerInterface} from "../../sdk/interfaces/ZuluPlayerInterface";
 
 DOMContentLoadingState.register();
 
-export class ZuluPlayer extends EventDispatcher {
+export class ZuluPlayer extends EventDispatcher implements ZuluPlayerInterface{
     [x: string]: any; // allows plugins to modify this Object
     // @ts-ignore __VERSION__ comes from webpack
     static readonly version: string = __VERSION__;
@@ -124,7 +125,7 @@ export class ZuluPlayer extends EventDispatcher {
                 this.dispatchEvent(eventName, data);
             });
             return playerManager
-        }, {element: this.element}, 'createPlayer');
+        }, {element: this.element});
     }
 
     private copyProperties(playerManager: PlayerManager) {

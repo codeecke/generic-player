@@ -1,7 +1,7 @@
-import {PluginInterface} from "../interfaces/PluginInterface";
 import {Plugin} from "../decorators/Plugin";
-import {ZuluPlayer} from "../players/zuluplayer/ZuluPlayer";
-import {PluginConfigurationType} from "../abstracts/plugin/PluginConfigurationType";
+import {PluginInterface} from "../sdk/interfaces/plugin/PluginInterface";
+import {PluginConfigurationType} from "../sdk/types/PluginConfigurationType";
+import {ZuluPlayerInterface} from "../sdk/interfaces/ZuluPlayerInterface";
 
 @Plugin('autosize', {
     enabled: true,
@@ -11,12 +11,12 @@ class AutosizePlugin implements PluginInterface {
 
     private _enabled: boolean = false;
     private _ratio: number = 16 / 9;
-    private player: ZuluPlayer | undefined;
+    private player: ZuluPlayerInterface | undefined;
 
     constructor(private config: PluginConfigurationType) {
     }
 
-    apply(player: ZuluPlayer): void {
+    apply(player: ZuluPlayerInterface): void {
         this.player = player;
         this.update = this.update.bind(this);
         if (this.config.hasOwnProperty('enabled')) {

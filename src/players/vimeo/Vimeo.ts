@@ -1,5 +1,5 @@
 import {Player} from '../../decorators/Player';
-import {AbstractPlayer} from '../../abstracts/AbstractPlayer';
+import {AbstractPlayer} from '../../sdk/classes/AbstractPlayer';
 import {ElementValidator, validationPattern} from "./ElementValidator";
 // @ts-ignore
 import VimeoPlayer from '@vimeo/player';

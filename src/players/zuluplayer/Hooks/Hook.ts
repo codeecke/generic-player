@@ -1,3 +1,6 @@
+import {CallStack} from "../../../sdk/classes/CallStack";
+import {HookInterface} from "../../../sdk/interfaces/hooks/HookInterface";
+
 type ListenerParameter = {
     resolve: () => void,
     reject: (reason: any) => void,
@@ -5,21 +8,21 @@ type ListenerParameter = {
 };
 type Listener = (data: ListenerParameter) => void;
 
-export class Hook {
-    private beforeListeners: {name: string, callback: Listener}[] = [];
-    private afteristeners: {name: string, callback: Listener}[] = [];
+export class Hook implements HookInterface {
+    private beforeListeners: CallStack = new CallStack();
+    private afteristeners: CallStack = new CallStack();
 
-    before(name: string, callback: Listener) {
-        this.beforeListeners.push({name, callback});
+    before(callback: Listener) {
+        this.beforeListeners.add(callback);
     }
 
-    after(name: string, callback: Listener) {
-        this.afteristeners.push({name, callback});
+    after(callback: Listener) {
+        this.afteristeners.add(callback);
     }
 
-    private executeListenerAsPromise(listener: {name: string, callback: Listener}, data: any) {
+    private executeListenerAsPromise(callback: Function, data: any) {
         return new Promise<any>((resolve, reject) => {
-            listener.callback({
+            callback({
                 resolve: () => resolve(data),
                 reject,
                 data
@@ -27,15 +30,15 @@ export class Hook {
         })
     }
 
-    async execute(callback: () => any | Promise<any>, data: { [key: string]: any } = {}, name: string = '<UNKOWN>'): Promise<any> {
+    async execute(callback: () => any, data: { [key: string]: any } = {}): Promise<any> {
         let promise = Promise.resolve(data);
-        this.beforeListeners.forEach(listener => {
-            promise = promise.then((data: any) => this.executeListenerAsPromise(listener, data))
+        this.beforeListeners.execute(data, (_cb) => {
+            promise = promise.then((data: any) => this.executeListenerAsPromise(_cb, data))
         });
         promise = promise.then(callback);
-        this.afteristeners.forEach(listener => {
-            promise = promise.then((data: any) => this.executeListenerAsPromise(listener, data))
+        this.afteristeners.execute(data, (_cb) => {
+            promise = promise.then((data: any) => this.executeListenerAsPromise(_cb, data))
         });
-        return promise.catch(reason => console.error('Rejected by hook. Reason:', reason));
+        return promise.catch(reason => console.warn('Rejected by hook. Reason:', reason));
     }
 }

@@ -1,4 +1,4 @@
-<img src="https://svgshare.com/i/Gon.svg" alt="ZuluPlayer" style="width: 100%; max-width: 400px" />
+![logo.svg](logo.svg)
 
 ## What is ZuluPlayer?
 

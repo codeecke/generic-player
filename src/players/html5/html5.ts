@@ -1,8 +1,9 @@
-import {AbstractPlayer} from "../../abstracts/AbstractPlayer";
+import {AbstractPlayer} from "../../sdk/classes/AbstractPlayer";
 import {Player} from "../../decorators/Player";
+import {PlayerInterface} from "../../sdk/interfaces/player/PlayerInterface";
 
 @Player()
-class Html5Player extends AbstractPlayer {
+class Html5Player extends AbstractPlayer implements PlayerInterface{
 
     constructor(element: HTMLElement) {
         super(element);

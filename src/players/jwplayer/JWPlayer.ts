@@ -1,4 +1,4 @@
-import {AbstractPlayer} from "../../abstracts/AbstractPlayer";
+import {AbstractPlayer} from "../../sdk/classes/AbstractPlayer";
 import {Player} from "../../decorators/Player";
 import {JWPlayerConfiguration} from "./JWPlayerConfiguration";
 import {ZuluPlayer} from "../zuluplayer/ZuluPlayer";

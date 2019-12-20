@@ -1,9 +1,9 @@
-import {AbstractPlayer} from "../../../abstracts/AbstractPlayer";
 import {playerRegistry} from "../../../registries/PlayerRegistry";
+import {PlayerInterface} from "../../../sdk/interfaces/player/PlayerInterface";
 
 export class PlayerManager {
 
-    protected player: AbstractPlayer | null = null;
+    protected player: PlayerInterface | null = null;
     public readonly originalElement: HTMLElement;
     protected readonly whenReady : Promise<PlayerManager>;
 
@@ -22,7 +22,7 @@ export class PlayerManager {
         });
     }
 
-    protected findValidPlayer(): AbstractPlayer | null {
+    protected findValidPlayer(): PlayerInterface | null {
         for (const Player of playerRegistry.fetchAll()) {
             if (Player.validate(this.originalElement)) {
                 return new Player(this.originalElement);

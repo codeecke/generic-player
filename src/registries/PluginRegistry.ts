@@ -1,5 +1,5 @@
-import {PluginConstructorInterface} from "../abstracts/plugin/PluginConstructorInterface";
-import {PluginConfigurationType} from "../abstracts/plugin/PluginConfigurationType";
+import {PluginConstructorInterface} from "../sdk/interfaces/plugin/PluginConstructorInterface";
+import {PluginConfigurationType} from "../sdk/types/PluginConfigurationType";
 
 export const pluginDefaultConfiguration: { [key: string]: any } = {};
 

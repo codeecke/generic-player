@@ -1,10 +1,12 @@
 import {Player} from "../../decorators/Player";
-import {AbstractPlayer} from "../../abstracts/AbstractPlayer";
+import {AbstractPlayer} from "../../sdk/classes/AbstractPlayer";
+import {PlayerInterface} from "../../sdk/interfaces/player/PlayerInterface";
 
 declare var DM: { player: any, addEventListener: any };
 
+// @ts-ignore
 @Player()
-class DailyMotion extends AbstractPlayer {
+class DailyMotion extends AbstractPlayer implements PlayerInterface{
 
     private player: Promise<any>;
     private isPaused: boolean = false;
