@@ -35,7 +35,15 @@ or use the [cdn](http://cdn.zuluplayer.com/).
 ZuluPlayer.create();
 ```
 
+## Currently supported browsers
 
+| browser                     | version |
+| --------------------------- | ------- |
+| Microsoft Internet Explorer | 11      |
+| Microsoft Edge              | 44+     |
+| Chrome                      | 79+     |
+| Firefox                     | 71+     |
+| Safari                      | 13+     |
 
 ## Demos
 See the [demos](http://www.zuluplayer.com/demo).
