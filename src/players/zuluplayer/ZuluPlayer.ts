@@ -121,8 +121,8 @@ export class ZuluPlayer extends EventDispatcher implements ZuluPlayerInterface{
                 this.element.poster = this.element.dataset['poster'] as string;
             }
             playerManager = new PlayerManager(this.element);
-            playerManager.addEventListener('all', (data: any, eventName: string) => {
-                this.dispatchEvent(eventName, data);
+            playerManager.addEventListener('all', (event: any) => {
+                this.dispatchEvent(event.eventName, event.data);
             });
             return playerManager
         }, {element: this.element});
@@ -160,7 +160,7 @@ export class ZuluPlayer extends EventDispatcher implements ZuluPlayerInterface{
         this.hook.addPlugin.execute(() => {
             this.plugins[name] = plugin;
             if (plugin['addEventListener']) {
-                plugin.addEventListener('all', (data: any, eventName: string) => this.dispatchEvent(eventName, data));
+                plugin.addEventListener('all', (event: any) => this.dispatchEvent(event.eventName, event.data));
             }
             plugin.apply(this);
         })
