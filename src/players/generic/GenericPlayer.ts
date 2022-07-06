@@ -119,6 +119,12 @@ export class GenericPlayer {
         });
     }
 
+    getDuration(): Promise<number> {
+        return this.playerManager.then(playerManager => {
+            return playerManager.getDuration();
+        })
+    }
+
     addEventListener(eventName: string, callback: Function) {
         this.playerManager = this.playerManager.then(playerManager => {
             playerManager.addEventListener(eventName, callback);

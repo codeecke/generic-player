@@ -137,5 +137,7 @@ class DailyMotion extends AbstractPlayer {
             return player;
         });
     }
-
+    getDuration(): Promise<number> {
+        return this.player.then(player => player.duration);
+    }
 }

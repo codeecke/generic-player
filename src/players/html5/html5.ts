@@ -59,4 +59,7 @@ class Html5Player extends AbstractPlayer {
         (this.element as HTMLVideoElement).muted = false;
     }
 
+    getDuration(): Promise<number> {
+        return Promise.resolve((this.element as HTMLVideoElement).duration);
+    }
 }

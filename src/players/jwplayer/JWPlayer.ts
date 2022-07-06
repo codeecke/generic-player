@@ -171,4 +171,11 @@ class JWPlayer extends AbstractPlayer {
             });
         }
     }
+
+    getDuration(): Promise<number> {
+        if (this.player) {
+            return this.player.then(jwplayer => jwplayer.getDuration());
+        }
+        return Promise.resolve(0);
+    }
 }

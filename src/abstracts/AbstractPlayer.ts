@@ -18,6 +18,7 @@ export abstract class AbstractPlayer extends EventDispatcher {
     abstract getElement(): Promise<HTMLElement> | null;
     abstract getCurrentTime(): Promise<number>;
     abstract setCurrentTime(seconds: number): void;
+    abstract getDuration(): Promise<number>;
 
     protected constructor(protected element: HTMLElement) {
         super();

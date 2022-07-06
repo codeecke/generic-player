@@ -80,10 +80,13 @@ export class Vimeo extends AbstractPlayer {
     }
 
     public async getCurrentTime(): Promise<number> {
-        return await this.player.getCurrentTime()
+        return await this.player.getCurrentTime();
     }
 
     public setCurrentTime(seconds: number): void {
         this.player.setCurrentTime(seconds);
+    }
+    public async getDuration(): Promise<number> {
+        return await this.player.getDuration();
     }
 }

@@ -17,4 +17,5 @@ export interface YoutubePlayerInstanceInterface {
     getCurrentTime(): number;
     seekTo(seconds: number, allowSeekAhead: boolean) : void;
     addEventListener(eventName: string, listener: Function): void;
+    getDuration(): number;
 }

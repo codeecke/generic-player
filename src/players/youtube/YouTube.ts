@@ -126,5 +126,9 @@ export class Youtube extends AbstractPlayer {
         });
     }
 
-
+    public getDuration(): Promise<number> {
+        return this.queue.then(player => {
+            return player.getDuration();
+        })
+    }
 }
