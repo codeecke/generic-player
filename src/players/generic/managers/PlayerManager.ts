@@ -93,6 +93,14 @@ export class PlayerManager {
         }
     }
 
+    public getDuration(): Promise<number> {
+        return this.whenReady.then(() => {
+            if (this.player) {
+                return this.player.getDuration();
+            }
+            return 0;
+        })
+    }
     public addEventListener(eventName: string, callback: Function) {
         if (this.player) {
             this.player.addEventListener(eventName, callback);

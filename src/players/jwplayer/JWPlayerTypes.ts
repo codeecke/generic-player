@@ -13,4 +13,5 @@ export declare interface JWPlayerPlayer {
     removeButton(id:string): void;
     addButton(img:string, tooltip:string, callback:Function, id:string, btnClass:string):void;
     setControls(enabled: boolean): void;
+    getDuration(): number;
 }
