@@ -4,8 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "prepare": "echo ''",
-    "test": "./test.sh",
+    "prepare": "ln ./scripts/test.sh .git/hooks/pre-commit",
+    "test": "./scripts/test.sh",
     "build": "tsc"
   },
   "jest": {
