@@ -1,0 +1,27 @@
+{
+  "name": "zuluplayer",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "prepare": "echo ''",
+    "test": "./test.sh",
+    "build": "tsc"
+  },
+  "jest": {
+    "preset": "ts-jest",
+    "testEnvironment": "node",
+    "collectCoverage": true,
+    "coverageReporters": ["html", "json"]
+  },
+  "author": "Michael Hammer",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/jest": "^29.5.1",
+    "cypress": "^12.12.0",
+    "http-server": "^14.1.1",
+    "jest": "^29.5.0",
+    "ts-jest": "^29.1.0",
+    "typescript": "^5.0.4"
+  }
+}
