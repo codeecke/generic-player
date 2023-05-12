@@ -6,19 +6,19 @@ export class Player implements IPlayer {
 
     constructor(public url: string) {}
 
-    play(): IPlayer {
+    async play(): Promise<IPlayer> {
         this.status = 'playing'
         return this;
     }
-    pause(): IPlayer {
+    async pause(): Promise<IPlayer> {
         this.status = 'paused'
         return this;
     }
-    mute(): IPlayer {
+    async mute(): Promise<IPlayer> {
         this.status = 'muted'
         return this;
     }
-    unmute(): IPlayer {
+    async unmute(): Promise<IPlayer> {
         this.status = 'unmuted'
         return this;
     }

@@ -6,16 +6,16 @@ export class UnknownPlayer implements IPlayer {
 
     constructor(private url: string){}
 
-    play(): IPlayer {
+    async play(): Promise<IPlayer> {
         throw new UnknownPlayerError(this.url)
     }
-    pause(): IPlayer {
+    async pause(): Promise<IPlayer> {
         throw new UnknownPlayerError(this.url)
     }
-    mute(): IPlayer {
+    async mute(): Promise<IPlayer> {
         throw new UnknownPlayerError(this.url)
     }
-    unmute(): IPlayer {
+    async unmute(): Promise<IPlayer> {
         throw new UnknownPlayerError(this.url)
     }
 

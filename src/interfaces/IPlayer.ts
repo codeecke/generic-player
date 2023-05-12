@@ -1,7 +1,7 @@
 export interface IPlayer {
     readonly type: string
-    play(): IPlayer
-    pause(): IPlayer
-    mute(): IPlayer
-    unmute(): IPlayer
+    play(): Promise<IPlayer>
+    pause(): Promise<IPlayer>
+    mute(): Promise<IPlayer>
+    unmute(): Promise<IPlayer>
 }

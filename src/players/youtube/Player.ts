@@ -7,16 +7,16 @@ export class Player implements IPlayer {
         
     }
     
-    play(): IPlayer {
+    async play(): Promise<IPlayer> {
         throw new Error("Method not implemented.");
     }
-    pause(): IPlayer {
+    async pause(): Promise<IPlayer> {
         throw new Error("Method not implemented.");
     }
-    mute(): IPlayer {
+    async mute(): Promise<IPlayer> {
         throw new Error("Method not implemented.");
     }
-    unmute(): IPlayer {
+    async unmute(): Promise<IPlayer> {
         throw new Error("Method not implemented.");
     }
 

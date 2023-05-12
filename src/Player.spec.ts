@@ -22,23 +22,23 @@ describe('valid ZuluPlayer', () => {
         expect((player.getPlayerInstance() as MockPlayer).status).toEqual('created')
     })
 
-    test('play', () => {
-        player.play()
+    test('play', async () => {
+        await player.play()
         expect((player.getPlayerInstance() as MockPlayer).status).toEqual('playing')
     })
 
-    test('pause', () => {
-        player.pause()
+    test('pause', async () => {
+        await player.pause()
         expect((player.getPlayerInstance() as MockPlayer).status).toEqual('paused')
     })
 
-    test('mute', () => {
-        player.mute()
+    test('mute', async () => {
+        await player.mute()
         expect((player.getPlayerInstance() as MockPlayer).status).toEqual('muted')
     })
 
-    test('unmute', () => {
-        player.unmute()
+    test('unmute', async () => {
+        await player.unmute()
         expect((player.getPlayerInstance() as MockPlayer).status).toEqual('unmuted')
     })
 })
@@ -50,21 +50,24 @@ describe('invalid ZuluPlayer', () => {
     test('initialization', () => {
         expect(player.getPlayerInstance()).toBeInstanceOf(UnknownPlayer)
     })
-
-    test('play', () => {
-        expect(() => player.play()).toThrow(UnknownPlayerError)
+    
+    test('play', async () => {
+        expect.assertions(1)
+        expect(async () => await player.play()).rejects.toThrow(UnknownPlayerError)
+    })
+    test('pause', async () => {
+        expect.assertions(1)
+        expect(async () => await player.pause()).rejects.toThrow(UnknownPlayerError)
     })
 
-    test('pause', () => {
-        expect(() => player.pause()).toThrow(UnknownPlayerError)
+    test('mute', async () => {
+        expect.assertions(1)
+        expect(async () => await player.mute()).rejects.toThrow(UnknownPlayerError)
     })
 
-    test('mute', () => {
-        expect(() => player.mute()).toThrow(UnknownPlayerError)
-    })
-
-    test('unmute', () => {
-        expect(() => player.unmute()).toThrow(UnknownPlayerError)
+    test('unmute', async () => {
+        expect.assertions(1)
+        expect(async () => await player.unmute()).rejects.toThrow(UnknownPlayerError)
     })
 
 })

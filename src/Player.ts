@@ -1,3 +1,5 @@
+import { AbstractPlugin } from "./abstracts/AbstractPlugin"
+import { PluginHandler } from "./abstracts/PluginHandler"
 import { PlayerInitializationError } from "./errors/PlayerInitializationError"
 import { IPlayer } from "./interfaces/IPlayer"
 import { IPlayerFactory } from "./interfaces/PlayerFactory"
@@ -7,15 +9,31 @@ import { PlayerRegistry } from "./registries/PlayerRegistry"
 export class Player implements IPlayer {
 
     public readonly type: string = 'ZuluPlayer'
+    private static readonly pluginHandler = new PluginHandler()
+    private readonly pluginHandler = new PluginHandler()
     private static knownPlayers = new PlayerRegistry()
     private player: IPlayer
 
     constructor(url: string) {
         this.player = new UnknownPlayer(url)
-        Player.knownPlayers.forEach(factory => {
+        Player.knownPlayers.forEach(async factory => {
             if(!factory.isValid(url)) return;
+            await this.firePlugin('initialize')
             this.player = factory.create(url);
         })
+    }
+
+    static registerGlobalPlugin(plugin: AbstractPlugin) {
+        Player.pluginHandler.register(plugin)
+    }
+
+    registerPlugin(plugin: AbstractPlugin) {
+        this.pluginHandler.register(plugin)
+    }
+
+    private async firePlugin(eventName: string) {
+        await Player.pluginHandler.fire(eventName, this)
+        await this.pluginHandler.fire(eventName, this)
     }
 
     static registerPlayerFactory(factory: IPlayerFactory) {
@@ -26,20 +44,24 @@ export class Player implements IPlayer {
         return this.player
     }
 
-    play(): IPlayer {
-        this.player.play()
+    async play(): Promise<Player> {
+        await this.firePlugin('play')
+        await this.player.play()
         return this
     }
-    pause(): IPlayer {
-        this.player.pause()
+    async pause(): Promise<Player> {
+        await this.firePlugin('pause')
+        await this.player.pause()
         return this
     }
-    mute(): IPlayer {
-        this.player.mute()
+    async mute(): Promise<Player> {
+        await this.firePlugin('mute')
+        await this.player.mute()
         return this
     }
-    unmute(): IPlayer {
-        this.player.unmute()
+    async unmute(): Promise<Player> {
+        await this.firePlugin('unmute')
+        await this.player.unmute()
         return this
     }
 
